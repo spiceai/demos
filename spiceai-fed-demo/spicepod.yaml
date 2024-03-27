@@ -1,0 +1,9 @@
+version: v1beta1
+kind: Spicepod
+name: hn_launch_federated_demo
+datasets:
+- ref: datasets/pg_source
+- ref: datasets/s3_source
+- ref: datasets/s3_source_accelerated
+- ref: datasets/spiceai_source
+- ref: datasets/spiceai_source_accelerated

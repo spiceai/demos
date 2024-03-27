@@ -1,0 +1,8 @@
+from: s3://spiceai-demo-datasets/cleaned_sales_data.parquet
+name: s3_source_accelerated
+acceleration:
+  enabled: true
+  refresh_mode: full
+  refresh_interval: 1h
+  engine: sqlite # duckdb, arrow, postgres
+  mode: file # memory

@@ -1,0 +1,7 @@
+from: eth.recent_blocks
+name: spiceai_source_accelerated
+acceleration:
+  enabled: true
+  refresh_mode: append
+  engine: arrow
+  mode: memory
