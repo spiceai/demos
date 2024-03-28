@@ -1,0 +1,9 @@
+from: dremio:datasets.taxi_trips
+name: dremio_source_accelerated
+description: dremio taxi trips
+params:
+  endpoint: grpc://20.163.171.8:32010
+acceleration:
+  enabled: true
+  refresh_interval: 10s
+  refresh_mode: full

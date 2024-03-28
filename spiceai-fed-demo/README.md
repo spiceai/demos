@@ -16,16 +16,8 @@ curl https://install.spiceai.org | /bin/bash
 1. Clone the repository
 
 ```bash
-git clone https://github.com/phillipleblanc/spiceai-fed-demo.git
-cd spiceai-fed-demo
-```
-
-2. Login to each data source
-
-```bash
-spice login # Logs into https://spice.ai
-spice s3 login --access-key <access-key> --access-secret <secret-key>
-spice postgres login --host <host> --port <port> --username <username> --password <password> --database <database>
+git clone https://github.com/spiceai/demos.git
+cd demos/spiceai-fed-demo
 ```
 
 Pull up the `SHOW.md` as a Preview for the intro.
@@ -52,8 +44,8 @@ sql> show tables
 sql> select * from s3_source
 sql> select * from s3_source_accelerated
 sql> select * from pg_source
-sql> select * from spiceai_source
-sql> select * from spiceai_source_accelerated
+sql> select * from dremio_source
+sql> select * from dremio_source_accelerated
 ```
 
 ```sql
@@ -62,9 +54,15 @@ WITH all_sales AS (
   SELECT sales FROM pg_source 
   UNION ALL 
   SELECT sales FROM s3_source_accelerated
+  UNION ALL
+  select fare_amount+tip_amount as sales from dremio_source_accelerated
 )
 
-SELECT SUM(sales) FROM all_sales
+SELECT SUM(sales) as total_sales, 
+       COUNT(*) AS total_transactions,
+       MAX(sales) AS max_sale,
+       AVG(sales) AS avg_sale
+FROM all_sales
 ```
 
 5. Walk through the yaml definition for each dataset and explain how it works
