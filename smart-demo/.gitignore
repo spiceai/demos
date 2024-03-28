@@ -1,0 +1,10 @@
+# Python
+/venv
+
+# DuckDB
+*.db
+*.wal
+
+# Spice
+/spicepods
+spicepod.yaml
