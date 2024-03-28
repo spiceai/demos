@@ -5,5 +5,5 @@ datasets:
 - ref: datasets/pg_source
 - ref: datasets/s3_source
 - ref: datasets/s3_source_accelerated
-- ref: datasets/spiceai_source
-- ref: datasets/spiceai_source_accelerated
+- ref: datasets/dremio_source
+- ref: datasets/dremio_source_accelerated

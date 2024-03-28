@@ -1,0 +1,5 @@
+from: dremio:datasets.taxi_trips
+name: dremio_source
+description: dremio taxi trips
+params:
+  endpoint: grpc://20.163.171.8:32010
