@@ -74,7 +74,7 @@ export function Chat() {
             </div>
             <div>
               <div className="font-semibold text-sm">
-                {m.role === "user" ? "User: " : "@Pepper AI"}
+                {m.role === "user" ? "User" : "@Pepper AI"}
               </div>
               <div className="whitespace-pre-wrap">{m.content as string}</div>
             </div>
