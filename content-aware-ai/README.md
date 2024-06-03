@@ -20,6 +20,7 @@ Add `.env.local` to `./app` with the following content
 
 ```bash
 SPICE_HTTP_ENDPOINT=http://localhost:3001
+OPENAI_API_KEY=<your-openai-api-key>
 ```
 
 ## Start Spice
