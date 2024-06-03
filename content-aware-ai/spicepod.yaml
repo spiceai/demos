@@ -1,0 +1,3 @@
+version: v1beta1
+kind: Spicepod
+name: content-aware-ai
