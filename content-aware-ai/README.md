@@ -5,13 +5,38 @@ Use Spice for high-performance content-aware generative-AI.
 ## Machine Setup
 
 ```bash
-# Clone this repository
+# Build and install Spice with Models
+git clone https://github.com/spiceai/spiceai.git
+cd spiceai
+make install-with-models
+
+# Clone this repository and install packages
 git clone git@github.com:spiceai/demos.git
 cd content-aware-ai
-
-# Install the Spice CLI
-curl https://install.spiceai.org | /bin/bash
+npm install
 ```
+
+Add `.env.local` to `./app` with the following content
+
+```bash
+SPICE_HTTP_ENDPOINT=http://localhost:3001
+```
+
+## Start Spice
+
+Start spice runtime
+
+```bash
+spiced --http 0.0.0.0:3001
+```
+
+## Start App
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ## Unified SQL Layer
 
@@ -20,40 +45,3 @@ curl https://install.spiceai.org | /bin/bash
 ## "Dumb" GenAI
 
 ## Content-Aware GenAI
-
----
-
-## Start app and spice docker compose
-
-```bash
-make
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Start web app and spice separately
-
-Start spice runtime
-
-```bash
-spiced --http 0.0.0.0:3001
-```
-
-Navigate to `./app` and install dependencies
-
-```bash
-npm i
-```
-
-Add `.env.local` to `./app` with the following content
-
-```
-SPICE_HTTP_ENDPOINT=http://localhost:3001
-```
-
-Run
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

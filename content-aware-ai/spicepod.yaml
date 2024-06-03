@@ -4,17 +4,30 @@ name: content-aware-ai
 
 datasets:
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
-    name: dataset1
-    description: taxi trips in s3
+    name: federated_dataset
+    description: taxi trips in s3 (federated)
+    results_cache:
+      enabled: false
     params:
       file_format: parquet
 
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
-    name: dataset2
-    description: taxi trips in s3
+    name: accelerated_dataset
+    description: taxi trips in s3 (accelerated)
     params:
       file_format: parquet
     acceleration:
       enabled: true
-      refresh_check_interval: 10s
-      refresh_mode: full
+
+  - from: s3://spiceai-demo-datasets/cleaned_sales_data.parquet
+    name: sales_data_cleaned_embedded
+    description: cleaned sales data with embeddings
+    acceleration:
+      enabled: true
+    embeddings:
+      - column: address_line1
+        use: openai_embeddings
+
+embeddings:
+  - name: openai_embeddings
+    from: openai
