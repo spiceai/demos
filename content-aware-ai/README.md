@@ -28,7 +28,13 @@ Start spice runtime
 spiced --http 0.0.0.0:3001
 ```
 
-Add `./app/.env.local`
+Navigate to `./app` and install dependencies
+
+```bash
+npm i
+```
+
+Add `.env.local` to `./app` with the following content
 
 ```
 SPICE_HTTP_ENDPOINT=http://localhost:3001
