@@ -3,24 +3,24 @@
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function useThreadMessages(thread: string) {
+function useConversationMessages(conversation: string) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`/api/threads/${thread}`)
+    fetch(`/api/conversations/${conversation}`)
       .then((r) => r.json())
       .then((response: any[]) => {
         setLoading(false);
         setMessages(response);
       });
-  }, [thread]);
+  }, [conversation]);
 
   return { messages, loading };
 }
 
 export const Messages = ({ dataset }: { dataset: string }) => {
-  const { messages, loading } = useThreadMessages(dataset);
+  const { messages, loading } = useConversationMessages(dataset);
 
   if (loading) {
     return (

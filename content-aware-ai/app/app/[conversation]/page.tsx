@@ -3,21 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { threads } from "@/lib/data";
+import { conversations } from "@/lib/data";
 import { Messages } from "@/components/Messages";
 
 interface Params {
   params: {
-    thread: string;
+    conversation: string;
   };
 }
 
 export const dynamic = "force-dynamic";
 
 export default function Home({ params }: Params) {
-  const currentThread = threads[params.thread];
+  const currentConversation = conversations[params.conversation];
 
-  if (!currentThread) {
+  if (!currentConversation) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="flex flex-col items-center gap-4">
@@ -36,19 +36,19 @@ export default function Home({ params }: Params) {
         <div className="h-full overflow-y-auto p-4 flex gap-2 flex-col">
           <span className="font-semibold text-muted-foreground">Threads</span>
           <nav className="flex flex-col items-start font-medium">
-            {Object.values(threads).map((thread) => (
+            {Object.values(conversations).map((conversation) => (
               <Link
-                key={thread.id}
-                href={`/${thread.id}`}
+                key={conversation.id}
+                href={`/${conversation.id}`}
                 prefetch={false}
                 className={cn(
                   "flex items-center rounded-lg px-2 py-1 gap-1",
-                  params.thread === thread.id
+                  params.conversation === conversation.id
                     ? "text-primary"
                     : "text-muted-foreground transition-all hover:text-primary",
                 )}
               >
-                # {thread.title}
+                # {conversation.title}
               </Link>
             ))}
           </nav>
@@ -57,7 +57,7 @@ export default function Home({ params }: Params) {
 
       <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
         <div className="h-full overflow-y-auto">
-          <Messages dataset={currentThread.dataset} />
+          <Messages dataset={currentConversation.dataset} />
         </div>
 
         <div className="flex-shrink-0 min-w-0 w-full min-h-0 pb-4 px-4">

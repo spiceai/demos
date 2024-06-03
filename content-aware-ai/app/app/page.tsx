@@ -1,19 +1,6 @@
-import { threads } from "@/lib/data";
-import Link from "next/link";
+import { conversations } from "@/lib/data";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-2">
-      {Object.values(threads).map((thread) => (
-        <Link
-          key={thread.id}
-          href={`/${thread.id}`}
-          prefetch={false}
-          className="flex items-center rounded-lg px-2 py-1 gap-1 text-base text-muted-foreground transition-all hover:text-primary"
-        >
-          # {thread.title}
-        </Link>
-      ))}
-    </main>
-  );
+  return redirect(`/${Object.keys(conversations)[0]}`);
 }
