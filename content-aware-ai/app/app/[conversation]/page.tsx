@@ -1,10 +1,8 @@
-import { PaperAirplaneIcon, InboxIcon } from "@heroicons/react/24/outline";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { InboxIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { conversations } from "@/lib/data";
-import { Messages } from "@/components/Messages";
+import { Chat } from "./Chat";
 
 interface Params {
   params: {
@@ -13,6 +11,7 @@ interface Params {
 }
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 export default function Home({ params }: Params) {
   const currentConversation = conversations[params.conversation];
@@ -32,9 +31,11 @@ export default function Home({ params }: Params) {
 
   return (
     <main className="flex h-screen row items-stretch">
-      <aside className="border-r min-w-[220px] flex flex-col overflow-hidden bg-secondary">
+      <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary">
         <div className="h-full overflow-y-auto p-4 flex gap-2 flex-col">
-          <span className="font-semibold text-muted-foreground">Threads</span>
+          <span className="font-semibold text-muted-foreground">
+            Conversations
+          </span>
           <nav className="flex flex-col items-start font-medium">
             {Object.values(conversations).map((conversation) => (
               <Link
@@ -55,8 +56,11 @@ export default function Home({ params }: Params) {
         </div>
       </aside>
 
-      <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
+      <Chat />
+
+      {/* <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
         <div className="h-full overflow-y-auto">
+
           <Messages dataset={currentConversation.dataset} />
         </div>
 
@@ -75,6 +79,7 @@ export default function Home({ params }: Params) {
           </form>
         </div>
       </div>
+       */}
     </main>
   );
 }
