@@ -5,31 +5,13 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { threads } from "@/lib/data";
 
 interface Params {
   params: {
     thread: string;
   };
 }
-
-interface Thread {
-  id: string;
-  title: string;
-  dataset: string;
-}
-
-const threads: Record<string, Thread> = {
-  thread1: {
-    id: "thread1",
-    title: "Thread 1 (slow 🐢)",
-    dataset: "dataset1",
-  },
-  thread2: {
-    id: "thread2",
-    title: "Thread 2 (fast 🚀)",
-    dataset: "dataset2",
-  },
-};
 
 export default function Home({ params }: Params) {
   const currentThread = threads[params.thread];
@@ -112,8 +94,7 @@ export default function Home({ params }: Params) {
 }
 
 async function Messages({ dataset }: { dataset: string }) {
-  const hash = Math.random().toString(36).substring(7);
-  const request = await fetch("http://localhost:3001/v1/sql", {
+  const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
     method: "POST",
     body: `SELECT * FROM ${dataset} limit 50`,
     cache: "no-store",

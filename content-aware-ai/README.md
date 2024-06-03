@@ -12,10 +12,23 @@ Use Spice for high-performance content-aware generative-AI.
 
 ---
 
+## Start app and spice docker compose
+
+```bash
+make
+```
+
+Navigate to `http://localhost:3001/thread1`
+
 ## Start web app
 
-Run
+Add `./app/.env.local`
 
+```
+SPICE_HTTP_ENDPOINT=http://localhost:3001
+```
+
+Run
 ```bash
 npm run dev
 ```
