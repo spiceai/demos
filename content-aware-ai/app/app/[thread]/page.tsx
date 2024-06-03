@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { threads } from "@/lib/data";
+import { Messages } from "@/components/Messages";
 
 interface Params {
   params: {
     thread: string;
   };
 }
+
+export const dynamic = "force-dynamic";
 
 export default function Home({ params }: Params) {
   const currentThread = threads[params.thread];
@@ -31,18 +32,17 @@ export default function Home({ params }: Params) {
 
   return (
     <main className="flex h-screen row items-stretch">
-      <aside className="border-r min-w-[220px] flex flex-col overflow-hidden">
+      <aside className="border-r min-w-[220px] flex flex-col overflow-hidden bg-secondary">
         <div className="h-full overflow-y-auto p-4 flex gap-2 flex-col">
-          <span className="font-semibold text-sm text-muted-foreground">
-            Threads
-          </span>
-          <nav className="flex flex-col items-start text-sm font-medium">
+          <span className="font-semibold text-muted-foreground">Threads</span>
+          <nav className="flex flex-col items-start font-medium">
             {Object.values(threads).map((thread) => (
               <Link
                 key={thread.id}
                 href={`/${thread.id}`}
+                prefetch={false}
                 className={cn(
-                  "flex items-center rounded-lg px-2 py-1 gap-1  text-sm",
+                  "flex items-center rounded-lg px-2 py-1 gap-1",
                   params.thread === thread.id
                     ? "text-primary"
                     : "text-muted-foreground transition-all hover:text-primary",
@@ -57,21 +57,7 @@ export default function Home({ params }: Params) {
 
       <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
         <div className="h-full overflow-y-auto">
-          <Suspense
-            fallback={
-              <div className="p-4 flex flex-col gap-4">
-                <Skeleton className="h-8 w-32 rounded-md" />
-                <Skeleton className="h-8 w-32 rounded-md" />
-                <Skeleton className="h-8 w-32 rounded-md" />
-                <Skeleton className="h-8 w-32 rounded-md" />
-                <Skeleton className="h-8 w-32 rounded-md" />
-                <Skeleton className="h-8 w-32 rounded-md" />
-                <Skeleton className="h-8 w-32 rounded-md" />
-              </div>
-            }
-          >
-            <Messages dataset={currentThread.dataset} />
-          </Suspense>
+          <Messages dataset={currentThread.dataset} />
         </div>
 
         <div className="flex-shrink-0 min-w-0 w-full min-h-0 pb-4 px-4">
@@ -84,27 +70,11 @@ export default function Home({ params }: Params) {
               type="submit"
             >
               <PaperAirplaneIcon className="size-4" />
-              <span className="text-xs font-normal">Send</span>
+              <span className="font-normal">Send</span>
             </Button>
           </form>
         </div>
       </div>
     </main>
   );
-}
-
-async function Messages({ dataset }: { dataset: string }) {
-  const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
-    method: "POST",
-    body: `SELECT * FROM ${dataset} limit 50`,
-    cache: "no-store",
-  });
-
-  const response = (await request.json()) as any[];
-
-  return response.map((message: any, i) => (
-    <div key={i} className="px-4 py-8 text-xs">
-      <pre className="whitespace-pre  ">{JSON.stringify(message, null, 2)}</pre>
-    </div>
-  ));
 }

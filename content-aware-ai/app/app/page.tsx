@@ -8,7 +8,8 @@ export default function HomePage() {
         <Link
           key={thread.id}
           href={`/${thread.id}`}
-          className="flex items-center rounded-lg px-2 py-1 gap-1 text-sm text-muted-foreground transition-all hover:text-primary"
+          prefetch={false}
+          className="flex items-center rounded-lg px-2 py-1 gap-1 text-base text-muted-foreground transition-all hover:text-primary"
         >
           # {thread.title}
         </Link>

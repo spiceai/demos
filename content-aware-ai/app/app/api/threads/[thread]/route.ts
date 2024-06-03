@@ -14,7 +14,5 @@ export const GET = async (_: NextRequest, { params: { thread } }: Params) => {
 
   const response = await request.json();
 
-  return NextResponse.json({
-    response,
-  });
+  return NextResponse.json(response);
 };

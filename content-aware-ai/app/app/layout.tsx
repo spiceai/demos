@@ -15,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="overscroll-none">{children}</body>
+      <body className="overscroll-none bg-background text-foreground">
+        {children}
+      </body>
     </html>
   );
 }
