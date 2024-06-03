@@ -3,7 +3,7 @@ services:
     image: spiceai/spiceai
     container_name: spice
     ports:
-      - "3000:3000"
+      - "3001:3000"
       - "50051:50051"
     working_dir: /app
     volumes:
@@ -18,4 +18,4 @@ services:
     environment:
       SPICE_HTTP_ENDPOINT: "http://spice:3000"
     ports:
-      - "3001:3000"
+      - "3000:3000"

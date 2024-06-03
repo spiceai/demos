@@ -20,7 +20,13 @@ make
 
 Navigate to `http://localhost:3001/thread1`
 
-## Start web app
+## Start web app and spice separately
+
+Start spice runtime
+
+```bash
+spiced --http 0.0.0.0:3001
+```
 
 Add `./app/.env.local`
 
