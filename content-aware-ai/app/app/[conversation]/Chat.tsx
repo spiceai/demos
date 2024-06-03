@@ -103,10 +103,10 @@ export function Chat() {
             <div
               className={cn(
                 "size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center",
-                m.role === "user" ? "bg-blue-200" : "bg-amber-500",
+                m.role === "user" ? "bg-blue-200" : "bg-red-200",
               )}
             >
-              {m.role === "user" ? <UserIcon className="size-6" /> : "🤖"}
+              {m.role === "user" ? <UserIcon className="size-6" /> : "🌶️"}
             </div>
             <div>
               <div className="font-semibold text-sm">
@@ -138,7 +138,7 @@ export function Chat() {
                   textareaRef.current?.focus();
                 }}
               >
-                @PepperAI
+                🌶️ @PepperAI
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
