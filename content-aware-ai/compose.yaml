@@ -1,0 +1,21 @@
+services:
+  spice:
+    image: spiceai/spiceai
+    container_name: spice
+    ports:
+      - "3001:3000"
+      - "50051:50051"
+    working_dir: /app
+    volumes:
+      - ./spicepod.yaml:/app/spicepod.yaml
+    command: ["--http", "0.0.0.0:3000", "--flight", "0.0.0.0:50051"]
+
+  app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    container_name: grafana
+    environment:
+      SPICE_HTTP_ENDPOINT: "http://spice:3000"
+    ports:
+      - "3000:3000"
