@@ -18,7 +18,7 @@ Use Spice for high-performance content-aware generative-AI.
 make
 ```
 
-Navigate to `http://localhost:3001/thread1`
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Start web app and spice separately
 
