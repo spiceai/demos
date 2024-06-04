@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MegaphoneIcon } from "@heroicons/react/24/solid";
+import { MegaphoneIcon } from "@heroicons/react/24/outline";
 
 function useConversationMessages(conversation: string) {
   const [loading, setLoading] = useState(true);
@@ -58,7 +58,6 @@ export const Messages = ({ dataset }: { dataset: string }) => {
             </div>
             <div>
               <div className="font-semibold text-sm">
-                Sync{" "}
                 <span className="text-secondary-foreground text-xs">
                   {message.timestamp}
                 </span>
