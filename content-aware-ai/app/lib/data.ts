@@ -22,7 +22,7 @@ export const conversations: Record<string, Conversation> = {
   },
   conversation2: {
     id: "conversation2",
-    title: "Conversation 2 (fast 🚀)",
+    title: "general (fast 🚀)",
     dataset: "accelerated_dataset",
     type: "conversation",
   },
