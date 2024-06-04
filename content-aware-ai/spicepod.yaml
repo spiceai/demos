@@ -2,6 +2,9 @@ version: v1beta1
 kind: Spicepod
 name: content-aware-ai
 
+secrets:
+  store: env
+
 datasets:
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
     name: federated_dataset
@@ -27,6 +30,20 @@ datasets:
     embeddings:
       - column: address_line1
         use: openai_embeddings
+
+  - from: postgres:syncs
+    name: daily_journal
+    params:
+      pg_host: aws-0-us-west-1.pooler.supabase.com
+      pg_db: postgres
+      pg_port: 5432
+      pg_user: "[supabase_user]"
+      pg_pass_key: password
+      pg_sslmode: require
+    acceleration:
+      enabled: true
+      refresh_mode: full
+      refresh_check_interval: 10s
 
 embeddings:
   - name: openai_embeddings
