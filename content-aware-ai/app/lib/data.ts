@@ -16,7 +16,7 @@ export const conversations: Record<string, Conversation> = {
   },
   conversation1: {
     id: "conversation1",
-    title: "Conversation 1 (slow 🐢)",
+    title: "archive (slow 🐢)",
     dataset: "federated_dataset",
     type: "conversation",
   },
