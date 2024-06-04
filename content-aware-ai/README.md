@@ -25,6 +25,8 @@ OPENAI_API_KEY=<your-openai-api-key>
 
 ## Start Spice
 
+Set supabase db username for `daily_journal` dataset.
+
 Start spice runtime
 
 ```bash
