@@ -9,7 +9,7 @@ export interface Conversation {
 export const conversations: Record<string, Conversation> = {
   daily_journal: {
     id: "daily_journal",
-    title: "Daily Journal",
+    title: "daily-journal",
     dataset: "daily_journal",
     type: "channel",
     sql: `SELECT id, timestamp, question, answer FROM daily_journal order by "timestamp" desc limit 400`,
