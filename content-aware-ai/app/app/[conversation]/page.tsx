@@ -1,8 +1,14 @@
-import { InboxIcon } from "@heroicons/react/24/outline";
+import {
+  InboxIcon,
+  ChatBubbleLeftIcon,
+  HashtagIcon,
+  MegaphoneIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { conversations } from "@/lib/data";
 import { Chat } from "./Chat";
+import { Messages } from "@/components/Messages";
 
 interface Params {
   params: {
@@ -43,20 +49,29 @@ export default function Home({ params }: Params) {
                 href={`/${conversation.id}`}
                 prefetch={false}
                 className={cn(
-                  "flex items-center rounded-lg px-2 py-1 gap-1",
+                  "flex items-center rounded-lg px-2 py-1 gap-2",
                   params.conversation === conversation.id
                     ? "text-primary"
                     : "text-muted-foreground transition-all hover:text-primary",
                 )}
               >
-                # {conversation.title}
+                {conversation.type === "channel" ? (
+                  <MegaphoneIcon className="size-4" />
+                ) : (
+                  <HashtagIcon className="size-4" />
+                )}
+                {conversation.title}
               </Link>
             ))}
           </nav>
         </div>
       </aside>
 
-      <Chat />
+      {currentConversation?.type === "conversation" ? (
+        <Chat />
+      ) : (
+        <Messages dataset={currentConversation.dataset} />
+      )}
 
       {/* <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
         <div className="h-full overflow-y-auto">

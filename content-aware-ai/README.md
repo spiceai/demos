@@ -25,10 +25,12 @@ OPENAI_API_KEY=<your-openai-api-key>
 
 ## Start Spice
 
+Set supabase db username for `daily_journal` dataset.
+
 Start spice runtime
 
 ```bash
-spiced --http 0.0.0.0:3001
+SPICE_SECRET_POSTGRES_PASSWORD="<supabase_db_password>" spiced --http 0.0.0.0:3001
 ```
 
 ## Start App
