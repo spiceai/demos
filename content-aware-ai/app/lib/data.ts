@@ -12,7 +12,7 @@ export const conversations: Record<string, Conversation> = {
     title: "Daily Journal",
     dataset: "daily_journal",
     type: "channel",
-    sql: `SELECT id, timestamp, question, answer FROM spicehq_syncs order by "timestamp" asc limit 400`,
+    sql: `SELECT id, timestamp, question, answer FROM daily_journal order by "timestamp" desc limit 400`,
   },
   conversation1: {
     id: "conversation1",

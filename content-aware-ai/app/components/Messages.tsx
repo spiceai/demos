@@ -1,5 +1,6 @@
 "use client";
 
+import * as dayjs from "dayjs";
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MegaphoneIcon } from "@heroicons/react/24/outline";
@@ -59,7 +60,8 @@ export const Messages = ({ dataset }: { dataset: string }) => {
             <div>
               <div className="font-semibold text-sm">
                 <span className="text-secondary-foreground text-xs">
-                  {message.timestamp}
+                  {/* @ts-ignore */}
+                  {dayjs(message.timestamp).format("YYYY-MM-DD hh:mm")}
                 </span>
               </div>
               <div className="whitespace-pre-wrap">{message.answer}</div>
