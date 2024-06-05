@@ -19,6 +19,7 @@ function useConversationMessages(conversation: string, accelerated?: boolean) {
         setMessages(response);
       });
   }, [conversation]);
+  k;
 
   return { messages, loading };
 }
