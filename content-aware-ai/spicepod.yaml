@@ -41,6 +41,20 @@ datasets:
       - column: address_line1
         use: openai_embeddings
 
+  # Slack messages
+  - from: databricks:hive_metastore.default.messages
+    name: messages
+    params:
+      endpoint: adb-4473752745667967.7.azuredatabricks.net
+      databricks-cluster-id: 0423-065654-nu3nflpo
+
+  # Accelerated Slack messages
+  - from: databricks:hive_metastore.default.messages
+    name: messages_accelerated
+    params:
+      endpoint: adb-4473752745667967.7.azuredatabricks.net
+      databricks-cluster-id: 0423-065654-nu3nflpo
+
   - from: postgres:syncs
     name: daily_journal
     params:
