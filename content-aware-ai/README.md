@@ -79,13 +79,16 @@ kind: Spicepod
 name: content-aware-ai
 
 datasets:
-  - from: s3://spiceai-demo-datasets/taxi_trips/2024/
-    name: federated_dataset
-    description: taxi trips in s3 (federated)
-    results_cache:
-      enabled: false
+  # Application data (PostgreSQL)
+  - from: postgres:syncs
+    name: daily_journal
     params:
-      file_format: parquet
+      pg_host: aws-0-us-west-1.pooler.supabase.com
+      pg_db: postgres
+      pg_port: 5432
+      pg_user: '[supabase_user]'
+      pg_pass_key: password
+      pg_sslmode: require
 ```
 
 These datasets are now available for query through a single view through the Spice runtime using a single endpoint.
@@ -103,13 +106,14 @@ Worse, if I want Pepper to use that information in her reply, it's almost to slo
 With Spice, you can materialize and accelerate datasets. By adding the `acceleration` section, we can replicate a copy of the data we expect to need and colocate it with the application for very fast retrieval.
 
 ```yaml
-- from: s3://spiceai-demo-datasets/taxi_trips/2024/
-  name: accelerated_dataset
-  description: taxi trips in s3 (accelerated)
-  params:
-    file_format: parquet
+# Accelerated Datalake data (Databricks)
+- from: databricks:hive_metastore.default.messages
+  name: messages_accelerated
   acceleration:
     enabled: true
+  params:
+    endpoint: adb-4473752745667967.7.azuredatabricks.net
+    databricks-cluster-id: 0423-065654-nu3nflpo
 ```
 
 If I click on the `spiced-archive` channel, which has been materialized by Spice, you can see it's like night and day; significantly faster.
@@ -127,16 +131,17 @@ Note, though, Pepper actually missed an important piece. At Spice, writing is fu
 To enhance Pepper's capabilities, let's add a new FTP dataset, and in addition, have Spice automatically generate embeddings, which is a fancy way of saying, let's index these documents for fast search.
 
 ```yaml
-- from: s3://spiceai-demo-datasets/cleaned_sales_data.parquet
-  name: sales_data_cleaned_embedded
-  description: cleaned sales data with embeddings
-  acceleration:
-    enabled: true
+# File data, indexed using OpenAI embeddings
+- from: file://Users/evgenii/Developer/Spice/demos/content-aware-ai/decisions
+  name: decisions
+  metadata: true
+  params:
+    file_format: md
   embeddings:
-    - column: address_line1
+    - column: content
       use: openai_embeddings
 
-embeddings:
+  embeddings:
   - name: openai_embeddings
     from: openai
 ```
