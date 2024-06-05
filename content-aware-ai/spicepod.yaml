@@ -10,6 +10,8 @@ datasets:
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
     name: app_dataset
     description: taxi trips in s3 (federated)
+    params:
+      file_format: parquet
 
   # Datalake data (S3 queried by Databricks)
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
@@ -48,10 +50,19 @@ datasets:
       pg_user: "[supabase_user]"
       pg_pass_key: password
       pg_sslmode: require
-    acceleration:
-      enabled: true
-      refresh_mode: full
-      refresh_check_interval: 10s
+    embeddings:
+      - column: answer
+        use: openai_embeddings
+
+  # Raw text content and separate metadata table.
+  - from: file://Users/evgenii/Developer/Spice/demos/content-aware-ai/decisions
+    name: decisions
+    metadata: true
+    params:
+      file_format: md
+    embeddings:
+      - column: content
+        use: openai_embeddings
 
 embeddings:
   - name: openai_embeddings
