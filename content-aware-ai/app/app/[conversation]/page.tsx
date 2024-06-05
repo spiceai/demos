@@ -38,11 +38,11 @@ export default function Home({ params }: Params) {
 
   return (
     <div className="flex h-screen flex-col items-stretch">
-      <div className="w-full flex h-64 border-b justify-center items-center">
+      <div className="w-full flex flex-shrink-0 h-64 border-b justify-center items-center">
         <span className="text-xl">SLIDES AND ANIMATIONS</span>
       </div>
 
-      <main className="flex grow row items-stretch">
+      <main className="flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
         <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary">
           <div className="h-full overflow-y-auto p-4 flex gap-2 flex-col">
             <span className="font-semibold text-muted-foreground">

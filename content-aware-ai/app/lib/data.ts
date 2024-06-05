@@ -26,4 +26,11 @@ export const conversations: Record<string, Conversation> = {
     dataset: "accelerated_dataset",
     type: "conversation",
   },
+  messages: {
+    id: "messages",
+    title: "general",
+    dataset: "messages",
+    type: "channel",
+    sql: `select ts, "user", text as answer from messages where text is not null limit 100`,
+  },
 };

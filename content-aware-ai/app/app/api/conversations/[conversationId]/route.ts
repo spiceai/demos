@@ -3,16 +3,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 interface Params {
   params: {
-    dataset: string;
+    conversationId: string;
   };
 }
 
-export const GET = async (_: NextRequest, { params: { dataset } }: Params) => {
-  const ds = conversations[dataset];
+export const GET = async (
+  _: NextRequest,
+  { params: { conversationId } }: Params,
+) => {
+  const conversation = conversations[conversationId];
 
   const request = await fetch("http://localhost:3001/v1/sql", {
     method: "POST",
-    body: ds.sql ? ds.sql : `SELECT * FROM ${dataset} limit 50`,
+    body: conversation.sql
+      ? conversation.sql
+      : `SELECT * FROM ${conversation.dataset} limit 50`,
   });
 
   const response = await request.json();
