@@ -31,28 +31,30 @@ export async function POST(req: Request) {
           datasets: string[];
         }) => {
           console.log("query", query, datasets);
-          await new Promise((resolve) => setTimeout(resolve, 3000));
-          return {
-            text: `This is a simulated response from Spice Assistant, using query: "${query}" and datasets: "${datasets.join(", ")}"`,
-          };
-          // const request = await fetch(
-          //   `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
-          //   {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({
-          //       text: query,
-          //       from: datasets,
-          //       use: "openai",
-          //     }),
-          //   },
-          // );
 
-          // const response = await request.json();
-          // console.log(response);
-          // return response;
+          const request = await fetch(
+            `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                text: query,
+                from: datasets,
+                use: "openai",
+              }),
+            },
+          );
+
+          console.log(request);
+
+          try {
+            const response = await request.text();
+            return { text: response };
+          } catch (e) {
+            return { text: "Something went wrong: " + e };
+          }
         },
       },
 
@@ -62,6 +64,8 @@ export async function POST(req: Request) {
           question: z.string(),
         }),
         execute: async ({ question }: { question: string }) => {
+          console.log("query", question);
+
           const request = await fetch(
             `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
             {
@@ -71,14 +75,14 @@ export async function POST(req: Request) {
               },
               body: JSON.stringify({
                 text: question,
-                from: "decisions",
+                from: ["decisions"],
                 use: "openai",
               }),
             },
           );
 
           try {
-            const response = await request.json();
+            const response = await request.text();
             return { text: response };
           } catch (e) {
             return { text: "Something went wrong: " + e };
