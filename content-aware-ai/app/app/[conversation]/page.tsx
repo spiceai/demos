@@ -37,44 +37,49 @@ export default function Home({ params }: Params) {
   }
 
   return (
-    <main className="flex h-screen row items-stretch">
-      <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary">
-        <div className="h-full overflow-y-auto p-4 flex gap-2 flex-col">
-          <span className="font-semibold text-muted-foreground">
-            Conversations
-          </span>
-          <nav className="flex flex-col items-start font-medium">
-            {Object.values(conversations).map((conversation) => (
-              <Link
-                key={conversation.id}
-                href={`/${conversation.id}`}
-                prefetch={false}
-                className={cn(
-                  "flex items-center rounded-lg px-2 py-1 gap-2",
-                  params.conversation === conversation.id
-                    ? "text-primary"
-                    : "text-muted-foreground transition-all hover:text-primary",
-                )}
-              >
-                {conversation.type === "channel" ? (
-                  <MegaphoneIcon className="size-4" />
-                ) : (
-                  <HashtagIcon className="size-4" />
-                )}
-                {conversation.title}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </aside>
+    <div className="flex h-screen flex-col items-stretch">
+      <div className="w-full flex h-64 border-b justify-center items-center">
+        <span className="text-xl">SLIDES AND ANIMATIONS</span>
+      </div>
 
-      {currentConversation?.type === "conversation" ? (
-        <Chat />
-      ) : (
-        <Messages dataset={currentConversation.dataset} />
-      )}
+      <main className="flex grow row items-stretch">
+        <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary">
+          <div className="h-full overflow-y-auto p-4 flex gap-2 flex-col">
+            <span className="font-semibold text-muted-foreground">
+              Conversations
+            </span>
+            <nav className="flex flex-col items-start font-medium">
+              {Object.values(conversations).map((conversation) => (
+                <Link
+                  key={conversation.id}
+                  href={`/${conversation.id}`}
+                  prefetch={false}
+                  className={cn(
+                    "flex items-center rounded-lg px-2 py-1 gap-2",
+                    params.conversation === conversation.id
+                      ? "text-primary"
+                      : "text-muted-foreground transition-all hover:text-primary",
+                  )}
+                >
+                  {conversation.type === "channel" ? (
+                    <MegaphoneIcon className="size-4" />
+                  ) : (
+                    <HashtagIcon className="size-4" />
+                  )}
+                  {conversation.title}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </aside>
 
-      {/* <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
+        {currentConversation?.type === "conversation" ? (
+          <Chat />
+        ) : (
+          <Messages dataset={currentConversation.dataset} />
+        )}
+
+        {/* <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
         <div className="h-full overflow-y-auto">
 
           <Messages dataset={currentConversation.dataset} />
@@ -96,6 +101,7 @@ export default function Home({ params }: Params) {
         </div>
       </div>
        */}
-    </main>
+      </main>
+    </div>
   );
 }
