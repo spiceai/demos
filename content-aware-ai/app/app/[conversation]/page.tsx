@@ -17,7 +17,8 @@ interface Params {
 }
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 30;
+// Allow streaming responses up to 300 seconds
+export const maxDuration = 300;
 
 export default function Home({ params }: Params) {
   const currentConversation = conversations[params.conversation];
