@@ -6,14 +6,21 @@ secrets:
   store: env
 
 datasets:
+  # Application data (PostgreSQL)
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
-    name: federated_dataset
+    name: app_dataset
     description: taxi trips in s3 (federated)
+
+  # Datalake data (S3 queried by Databricks)
+  - from: s3://spiceai-demo-datasets/taxi_trips/2024/
+    name: datalake_dataset
+    description: taxi trips in s3
     results_cache:
       enabled: false
     params:
       file_format: parquet
 
+  # Accelerated Datalake data
   - from: s3://spiceai-demo-datasets/taxi_trips/2024/
     name: accelerated_dataset
     description: taxi trips in s3 (accelerated)
@@ -22,6 +29,7 @@ datasets:
     acceleration:
       enabled: true
 
+  # File data, indexed using OpenAI embeddings
   - from: s3://spiceai-demo-datasets/cleaned_sales_data.parquet
     name: sales_data_cleaned_embedded
     description: cleaned sales data with embeddings
