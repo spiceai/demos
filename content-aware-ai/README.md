@@ -30,7 +30,10 @@ Set supabase db username for `daily_journal` dataset.
 Start spice runtime
 
 ```bash
-SPICE_SECRET_POSTGRES_PASSWORD="<supabase_db_password>" spiced --http 0.0.0.0:3001
+OPENAI_API_KEY="<openai_api_key>
+SPICE_SECRET_POSTGRES_PASSWORD="<supabase_db_password>" \
+SPICE_SECRET_DATABRICKS_TOKEN="<databricks_token>" \
+spiced --http 0.0.0.0:3001
 ```
 
 ## Start App
