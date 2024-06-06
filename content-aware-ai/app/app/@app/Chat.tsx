@@ -18,8 +18,9 @@ import type { SpiceAssistantRsult } from '../api/chat/route';
 import { useConversationMessages } from './Messages';
 import { MessageComponent } from '@/components/message-component';
 import { useAnimationStore } from '@/lib/store';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export function Chat() {
+export function Chat({ accelerated }: { accelerated: boolean }) {
   const { messages, setMessages, append, input, setInput } = useChat({
     maxToolRoundtrips: 0,
     onToolCall: ({ toolCall }) => {
@@ -39,9 +40,9 @@ export function Chat() {
 
   const store = useAnimationStore();
 
-  const { messages: preloadedMessages } = useConversationMessages(
+  const { messages: preloadedMessages, loading } = useConversationMessages(
     'archive',
-    true,
+    accelerated,
   );
 
   useEffect(() => {
@@ -113,6 +114,18 @@ export function Chat() {
 
   return (
     <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
+      {loading ? (
+        <div className="p-4 flex flex-col gap-4">
+          <Skeleton className="h-8 w-32 rounded-md" />
+          <Skeleton className="h-8 w-32 rounded-md" />
+          <Skeleton className="h-8 w-32 rounded-md" />
+          <Skeleton className="h-8 w-32 rounded-md" />
+          <Skeleton className="h-8 w-32 rounded-md" />
+          <Skeleton className="h-8 w-32 rounded-md" />
+          <Skeleton className="h-8 w-32 rounded-md" />
+        </div>
+      ) : null}
+
       <div
         className="h-full overflow-y-auto py-4 space-y-4"
         ref={chatContainerRef}

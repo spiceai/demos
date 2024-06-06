@@ -31,6 +31,12 @@ export const GET = async (
       cache: 'no-cache',
     });
 
+    if (!request.ok) {
+      const response = await request.text();
+      console.error(response);
+      return NextResponse.json([]);
+    }
+
     const response = await request.json();
 
     if (Array.isArray(response)) {
