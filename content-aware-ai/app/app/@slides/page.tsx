@@ -33,16 +33,16 @@ export const BlockNode: FC<
   <div
     className={cn(
       'border p-4 gap-4 flex items-center justify-center rounded-md relative min-w-28',
-      data.className
+      data.className,
     )}
   >
-    <Handle type='source' position={Position.Left} className='opacity-0' />
-    <div className='flex flex-col gap-2 items-center justify-center'>
+    <Handle type="source" position={Position.Left} className="opacity-0" />
+    <div className="flex flex-col gap-2 items-center justify-center">
       {data.icon}
-      <div className='text-sm'>{data.label}</div>
+      <div className="text-sm">{data.label}</div>
       {data.badge}
     </div>
-    <Handle type='target' position={Position.Right} className='opacity-0' />
+    <Handle type="target" position={Position.Right} className="opacity-0" />
   </div>
 );
 
@@ -53,7 +53,7 @@ const nodeTypes = {
 export default function Slide({ searchParams: { state } }: Params) {
   const slide = slides[state] || slides[0];
   return (
-    <div className='relative w-full flex flex-shrink-0 h-96 justify-center items-center px-8 pt-8'>
+    <div className="relative w-full flex flex-shrink-0 h-96 justify-center items-center px-8 pt-8">
       <ReactFlowProvider>
         <SlideView {...slide} />
       </ReactFlowProvider>
@@ -70,13 +70,13 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
   }, [nodes]);
 
   return (
-    <div className='flex w-full h-full flex-row grow align-middle'>
-      <div className='flex w-40 items-center'>
-        <h2 className='text-xl font-semibold text-wrap mx-auto text-center'>
+    <div className="flex w-full h-full flex-row grow align-middle">
+      <div className="flex w-40 items-center">
+        <h2 className="text-xl font-semibold text-wrap mx-auto text-center">
           {title}
         </h2>
       </div>
-      <div className='grow -ml-20'>
+      <div className="grow">
         <ReactFlow
           fitView
           zoomOnScroll={false}
@@ -89,6 +89,8 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
           }}
         />
       </div>
+
+      <div className="w-40" />
     </div>
   );
 };

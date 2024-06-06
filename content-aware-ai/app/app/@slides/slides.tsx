@@ -1,11 +1,10 @@
 'use client';
 
 import { Position, Node, Edge, MarkerType } from 'reactflow';
-import { PostgresIcon, SpiceIcon } from './icons';
+import { PostgresIcon, SpiceIcon, DuckDbIcon } from './icons';
 
 import { Database } from 'lucide-react';
 import { CpuChipIcon, DocumentIcon } from '@heroicons/react/24/outline';
-import { TableCellsIcon } from '@heroicons/react/24/outline';
 
 function spiceChatBlock(node: Partial<Node> = {}): Node {
   return {
@@ -15,7 +14,7 @@ function spiceChatBlock(node: Partial<Node> = {}): Node {
     targetPosition: Position.Left,
     position: { x: 0, y: 0 },
     data: {
-      icon: <div className='text-2xl size-6'>🌶</div>,
+      icon: <div className="text-2xl size-6">🌶</div>,
       label: 'Spicy Chat',
       className: 'bg-blue-500 text-white',
     },
@@ -31,7 +30,7 @@ function postgresBlock(node: Partial<Node> = {}): Node {
     targetPosition: Position.Left,
     position: { x: 300, y: 0 },
     data: {
-      icon: <PostgresIcon className='size-6' />,
+      icon: <PostgresIcon className="size-6" />,
       label: 'PostgreSQL',
     },
     ...node,
@@ -46,7 +45,7 @@ function spiceBlock(node: Partial<Node> = {}, data: any = {}): Node {
     targetPosition: Position.Left,
     position: { x: 350, y: 0 },
     data: {
-      icon: <SpiceIcon className='size-6' />,
+      icon: <SpiceIcon className="size-6" />,
       label: 'Spice OSS',
       className: 'bg-orange-500 text-white',
       ...data,
@@ -63,7 +62,7 @@ function datalakeBlock(node: Partial<Node> = {}): Node {
     targetPosition: Position.Left,
     position: { x: 600, y: 100 },
     data: {
-      icon: <Database className='size-6' />,
+      icon: <Database className="size-6" />,
       label: 'Databricks',
     },
     ...node,
@@ -78,7 +77,7 @@ function ftpBlock(node: Partial<Node> = {}): Node {
     targetPosition: Position.Left,
     position: { x: 600, y: 100 },
     data: {
-      icon: <DocumentIcon className='size-6' />,
+      icon: <DocumentIcon className="size-6" />,
       label: 'FTP Server',
     },
     ...node,
@@ -93,7 +92,7 @@ function aiBlock(node: Partial<Node> = {}): Node {
     targetPosition: Position.Left,
     position: { x: 500, y: 200 },
     data: {
-      icon: <CpuChipIcon className='size-6' />,
+      icon: <CpuChipIcon className="size-6" />,
       label: 'OpenAI',
     },
     ...node,
@@ -102,12 +101,14 @@ function aiBlock(node: Partial<Node> = {}): Node {
 
 function AccelerationBadge() {
   return (
-    <div className='absolute bg-amber-500 text-black p-1 text-xs rounded-sm border border-amber-800 -bottom-8 -right-4 flex flex-col'>
-      <div className='flex items-center gap-2 text-xs'>
-        <TableCellsIcon className='size-4' /> postgres
+    <div className="absolute bg-amber-500 text-black p-1 text-xs rounded-sm border border-amber-800 -bottom-12 -right-1 flex flex-col gap-1">
+      <div className="flex items-center gap-2 text-xs">
+        <DuckDbIcon className="h-5" />
+        postgres
       </div>
-      <div className='flex items-center gap-2 text-xs'>
-        <TableCellsIcon className='size-4' /> databricks
+      <div className="flex items-center gap-2 text-xs">
+        <DuckDbIcon className="h-5" />
+        databricks
       </div>
     </div>
   );
@@ -118,7 +119,7 @@ function edge(
   source: string,
   target: string,
   mode: any = {},
-  e: Partial<Edge> = {}
+  e: Partial<Edge> = {},
 ): Edge {
   const m = {
     color: '#000',
@@ -205,7 +206,7 @@ export const slides: Record<string, Slide> = {
         {},
         {
           badge: <AccelerationBadge />,
-        }
+        },
       ),
       postgresBlock({
         position: { x: 700, y: -50 },
@@ -273,7 +274,7 @@ export const slides: Record<string, Slide> = {
         {},
         {
           badge: <AccelerationBadge />,
-        }
+        },
       ),
       postgresBlock({
         position: { x: 700, y: -50 },

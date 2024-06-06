@@ -1,5 +1,5 @@
-import { conversations } from "@/lib/data";
-import { NextRequest, NextResponse } from "next/server";
+import { conversations } from '@/lib/data';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface Params {
   params: {
@@ -12,24 +12,23 @@ export const GET = async (
   { params: { conversationId } }: Params,
 ) => {
   const searchParams = new URL(req.url).searchParams;
-  const accelerated = searchParams.get("accelerated") === "true";
+  const accelerated = searchParams.get('accelerated') === 'true';
   const conversation = conversations[conversationId];
 
   if (!conversation?.sql) {
-    return NextResponse.json({ error: "No SQL query found" }, { status: 400 });
+    return NextResponse.json([]);
   }
 
   const sql =
     accelerated && conversation.sql_accelerated
       ? conversation.sql_accelerated
       : conversation.sql;
-  try {
-    console.log(sql);
 
-    const request = await fetch("http://localhost:3001/v1/sql", {
-      method: "POST",
+  try {
+    const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
+      method: 'POST',
       body: sql,
-      cache: "no-cache",
+      cache: 'no-cache',
     });
 
     const response = await request.json();

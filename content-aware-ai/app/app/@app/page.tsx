@@ -25,12 +25,12 @@ export default function Home({
     conversations[conversationId] || Object.values(conversations)[0];
 
   return (
-    <main className='flex grow row items-stretch overflow-hidden min-h-0 min-w-0'>
-      <aside className='border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4'>
-        <div className='px-4 text-lg font-semibold'>🌶️ Spicy Chat</div>
+    <main className="flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
+      <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4">
+        <div className="px-4 text-lg font-semibold">🌶️ Spicy Chat</div>
 
-        <div className='h-full overflow-y-auto px-4 flex gap-2 flex-col'>
-          <nav className='flex flex-col items-start font-medium'>
+        <div className="h-full overflow-y-auto px-4 flex gap-2 flex-col">
+          <nav className="flex flex-col items-start font-medium">
             {Object.values(conversations)
               .filter((c) => c.states.includes(state))
               .map((conversation) => (
@@ -42,20 +42,20 @@ export default function Home({
                     'flex items-center rounded-lg px-2 py-1 gap-2',
                     conversationId === conversation.id
                       ? 'text-primary'
-                      : 'text-muted-foreground transition-all hover:text-primary'
+                      : 'text-muted-foreground transition-all hover:text-primary',
                   )}
                 >
                   {conversation.type === 'channel' ? (
-                    <MegaphoneIcon className='size-4' />
+                    <MegaphoneIcon className="size-4" />
                   ) : (
-                    <HashtagIcon className='size-4' />
+                    <HashtagIcon className="size-4" />
                   )}
                   {conversation.title}
                 </Link>
               ))}
           </nav>
-          <div className='grow' />
-          <div className='text-muted-foreground'>using mode: {state}</div>
+          <div className="grow" />
+          <div className="text-muted-foreground">using mode: {state}</div>
         </div>
       </aside>
 

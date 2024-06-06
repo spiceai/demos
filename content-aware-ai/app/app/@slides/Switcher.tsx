@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Button } from '@/components/ui/button';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 const maxState = 3;
 
 export const Switcher = () => {
   const router = useRouter();
   const params = useSearchParams();
-  const state = parseInt(params.get("state") || "0");
+  const state = parseInt(params.get('state') || '0');
 
   useEffect(() => {
-    if (!params.has("state")) {
+    if (!params.has('state')) {
       const newParams = new URLSearchParams(params);
-      newParams.set("state", "0");
+      newParams.set('state', '0');
       router.push(`?${newParams.toString()}`);
     }
   }, []);
@@ -25,7 +25,7 @@ export const Switcher = () => {
       return;
     }
     const newParams = new URLSearchParams(params);
-    newParams.set("state", String(next));
+    newParams.set('state', String(next));
     router.push(`?${newParams.toString()}`);
   };
 
