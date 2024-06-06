@@ -23,16 +23,23 @@ export const GET = async (
     accelerated && conversation.sql_accelerated
       ? conversation.sql_accelerated
       : conversation.sql;
+  try {
+    console.log(sql);
 
-  console.log(sql);
+    const request = await fetch("http://localhost:3001/v1/sql", {
+      method: "POST",
+      body: sql,
+      cache: "no-cache",
+    });
 
-  const request = await fetch("http://localhost:3001/v1/sql", {
-    method: "POST",
-    body: sql,
-    cache: "no-cache",
-  });
+    const response = await request.json();
 
-  const response = await request.json();
+    if (Array.isArray(response)) {
+      return NextResponse.json(response);
+    }
+  } catch (e) {
+    console.error(e);
+  }
 
-  return NextResponse.json(response);
+  return NextResponse.json([]);
 };

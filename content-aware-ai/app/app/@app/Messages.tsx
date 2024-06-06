@@ -19,7 +19,6 @@ function useConversationMessages(conversation: string, accelerated?: boolean) {
         setMessages(response);
       });
   }, [conversation]);
-  k;
 
   return { messages, loading };
 }
@@ -64,7 +63,7 @@ export const Messages = ({
         className="h-full overflow-y-auto py-4 space-y-4"
         ref={chatContainerRef}
       >
-        {messages.map((message: any, i) => (
+        {(messages || []).map((message: any, i) => (
           <div key={i} className="px-4 flex items-center gap-3">
             <div className="size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center">
               <MegaphoneIcon className="size-6" />

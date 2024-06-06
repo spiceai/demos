@@ -98,7 +98,7 @@ export function Chat() {
         className="h-full overflow-y-auto py-4 space-y-4"
         ref={chatContainerRef}
       >
-        {messages.map((m, i) => (
+        {(messages || []).map((m, i) => (
           <div key={i} className="px-4 flex items-center gap-3">
             <div
               className={cn(

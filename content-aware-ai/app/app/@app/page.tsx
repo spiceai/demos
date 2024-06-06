@@ -34,26 +34,28 @@ export default function Home({
             Conversations
           </span>
           <nav className="flex flex-col items-start font-medium">
-            {Object.values(conversations).map((conversation) => (
-              <Link
-                key={conversation.id}
-                href={`?conversation=${conversation.id}&state=${state}`}
-                prefetch={false}
-                className={cn(
-                  "flex items-center rounded-lg px-2 py-1 gap-2",
-                  conversationId === conversation.id
-                    ? "text-primary"
-                    : "text-muted-foreground transition-all hover:text-primary",
-                )}
-              >
-                {conversation.type === "channel" ? (
-                  <MegaphoneIcon className="size-4" />
-                ) : (
-                  <HashtagIcon className="size-4" />
-                )}
-                {conversation.title}
-              </Link>
-            ))}
+            {Object.values(conversations)
+              .filter((c) => c.states.includes(state))
+              .map((conversation) => (
+                <Link
+                  key={conversation.id}
+                  href={`?conversation=${conversation.id}&state=${state}`}
+                  prefetch={false}
+                  className={cn(
+                    "flex items-center rounded-lg px-2 py-1 gap-2",
+                    conversationId === conversation.id
+                      ? "text-primary"
+                      : "text-muted-foreground transition-all hover:text-primary",
+                  )}
+                >
+                  {conversation.type === "channel" ? (
+                    <MegaphoneIcon className="size-4" />
+                  ) : (
+                    <HashtagIcon className="size-4" />
+                  )}
+                  {conversation.title}
+                </Link>
+              ))}
           </nav>
           <div className="grow" />
           <div className="text-muted-foreground">using mode: {state}</div>
@@ -63,7 +65,10 @@ export default function Home({
       {currentConversation?.type === "conversation" ? (
         <Chat />
       ) : (
-        <Messages conversation={conversationId} accelerated={state !== "0"} />
+        <Messages
+          conversation={conversationId}
+          accelerated={state !== "0" && state !== "1"}
+        />
       )}
     </main>
   );

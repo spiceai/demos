@@ -1,5 +1,25 @@
-import { ReactNode } from "react";
+"use client";
+
+import "reactflow/dist/style.css";
+
+import { FC, ReactNode, useEffect } from "react";
+import ReactFlow, {
+  Position,
+  Node,
+  Edge,
+  MarkerType,
+  Handle,
+  NodeProps,
+  useReactFlow,
+  useStore,
+  ReactFlowProvider,
+} from "reactflow";
 import { Switcher } from "./Switcher";
+import { PostgresIcon, SpiceIcon } from "./icons";
+import { cn } from "@/lib/utils";
+import { Database, Table2 } from "lucide-react";
+import { CpuChipIcon } from "@heroicons/react/24/outline";
+import { TableCellsIcon } from "@heroicons/react/24/outline";
 
 interface Params {
   searchParams: {
@@ -7,74 +27,606 @@ interface Params {
   };
 }
 
+export const BlockNode: FC<
+  NodeProps<{
+    icon?: ReactNode;
+    className?: string;
+    label: string;
+    badge?: ReactNode;
+  }>
+> = ({ data }) => (
+  <div
+    className={cn(
+      "border p-4 gap-4 flex items-center rounded-md relative",
+      data.className,
+    )}
+  >
+    <Handle type="target" position={Position.Left} className="opacity-0" />
+    <div className="flex flex-col gap-2 items-center justify-center">
+      {data.icon}
+      <div className="text-sm">{data.label}</div>
+      {data.badge}
+    </div>
+    <Handle type="source" position={Position.Right} className="opacity-0" />
+  </div>
+);
+
+const nodeTypes = {
+  block: BlockNode,
+};
+
 export default function Slide({ searchParams: { state } }: Params) {
+  const slide = slides[state] || slides[0];
   return (
-    <div className="relative w-full flex flex-shrink-0 h-80 justify-center items-center">
-      {slides[state]}
+    <div className="relative w-full flex flex-shrink-0 h-96 justify-center items-center px-8 pt-8">
+      <ReactFlowProvider>
+        <SlideView {...slide} />
+      </ReactFlowProvider>
       <Switcher />
     </div>
   );
 }
 
-const PostgresIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 256 264"
-    className={className}
-  >
-    <path d="M255 158c-2-5-6-8-11-9l-8 1-14 2c12-20 22-43 27-65 9-34 5-50-1-57a77 77 0 0 0-62-30c-14 0-27 3-33 5l-19-2c-12 0-24 3-33 8L78 5c-23-3-42 0-55 9C7 26-1 46 0 74a342 342 0 0 0 28 97c7 14 14 22 23 24 5 2 13 3 22-4l5 4 9 3c11 3 22 2 31-1a643 643 0 0 1 0 10 109 109 0 0 0 5 33c1 4 4 11 9 16 6 6 13 8 20 8l9-1c10-2 21-6 29-17s11-27 12-53v-2l1-2 1 1h1c10 0 22-2 30-6 5-2 24-12 20-26" />
-    <path
-      d="M238 161c-30 6-32-4-32-4 32-47 45-106 33-120-31-40-84-21-85-21l-20-2c-14 0-24 4-32 10 0 0-95-40-91 49 1 19 28 143 59 106l22-26c6 4 12 6 19 5h1v5c-8 9-6 10-22 14-16 3-7 9 0 11s25 4 36-12v2c3 2 5 16 5 29-1 12-1 21 2 27 2 7 5 22 26 18 17-4 27-14 28-30 1-12 3-10 3-20l1-5c2-16 1-21 12-19l2 1c8 0 19-2 25-5 13-6 21-16 8-13"
-      fill="#336791"
-    />
-    <path
-      d="M108 82h-6l-1 2 1 3c1 2 3 3 5 3h1c3 0 6-2 6-4 1-2-3-4-6-4M197 82c0-2-4-3-7-2-3 0-6 1-6 3 1 2 3 4 6 4h1l4-2 2-3"
-      fill="#FFF"
-    />
-    <path
-      d="M248 160c-1-3-5-5-11-3-18 3-24 1-27-1 14-21 26-47 32-71 3-11 5-22 5-30 0-10-2-17-5-21a70 70 0 0 0-57-27c-16 0-30 4-33 6-5-2-12-3-18-3-13 0-23 3-32 9-4-2-14-5-26-7-21-3-37-1-49 8C13 30 6 48 8 73c0 8 5 35 13 60 10 33 21 51 32 55l5 1c4 0 9-2 14-9l21-22c4 2 9 3 14 3v1l-2 3c-4 5-5 5-16 8-3 0-12 2-12 8 0 7 10 10 11 10l12 1c9 0 17-3 24-8-1 23 0 46 3 53 3 6 8 20 26 20l9-1c18-4 26-12 29-30l6-45 11 1c8 0 17-2 23-5 7-3 19-10 17-17Zm-44-83-1 10-2 12 1 14c1 9 3 19-2 28l-2-4-3-6c-7-12-22-39-14-50 2-3 8-6 23-4Zm-18-62c21 0 38 8 50 23 9 12-1 65-30 111l-1-1c7-13 6-25 5-36l-1-13 1-11a72 72 0 0 0 1-16c0-5-6-20-18-34-6-7-16-16-28-21l21-2ZM67 176c-6 7-10 6-12 5-8-3-19-21-27-51-8-25-13-50-13-57-1-23 4-39 16-47 20-14 52-6 64-2v1C74 46 74 82 74 85v3c1 7 2 18 0 31a38 38 0 0 0 12 34l-19 23Zm22-30c-6-7-9-16-8-26 2-14 1-26 1-32v-2c3-3 17-11 27-8 5 1 8 4 9 9 6 28 1 40-4 50l-2 5-1 2-3 10c-7 0-14-3-19-8Zm1 38-5-2 6-2c13-3 15-5 19-10l4-5c3-3 4-2 6-1 1 0 3 2 4 5l-1 4c-9 13-23 13-33 11Zm70 65c-16 3-22-5-26-15a293 293 0 0 1-3-67c-2-5-5-9-8-10-2-1-5-2-8-1l3-10 1-1 2-5c5-10 11-24 4-54-2-12-11-17-23-16a54 54 0 0 0-20 7c1-12 5-33 18-47 9-8 20-13 34-12 27 0 44 14 54 26 8 10 13 20 15 25-14-1-23 1-28 8-10 15 6 44 13 57l3 6 8 13 2 2c-4 2-11 4-11 18l-6 51c-3 16-8 21-24 25Zm68-78c-4 2-11 3-18 3-8 1-11 0-12-1-1-9 3-10 6-11h2l1 1c6 4 16 4 31 1h1l-11 7Z"
-      fill="#FFF"
-    />
-  </svg>
-);
+const nodes: Node[] = [
+  {
+    id: "app",
+    type: "block",
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    position: { x: 0, y: 0 },
+    data: {
+      icon: <div className="text-2xl size-6">🌶</div>,
+      label: "Spicy Chat",
+      className: "bg-blue-500 text-white",
+    },
+  },
 
-const SpiceIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="32"
-    height="32"
-    fill="none"
-    className={className}
-  >
-    <rect width="32" height="32" fill="#F37721" rx="10" />
-    <path
-      fill="#fff"
-      d="M27.054 9.834h-2.258a2.652 2.652 0 0 1-1.892-.791 2.703 2.703 0 0 1-.784-1.91v-2.28a.962.962 0 0 0-.277-.674.944.944 0 0 0-.669-.279h-3.352a.915.915 0 0 0-.652.272.93.93 0 0 0-.27.659v3.396a.948.948 0 0 0 .575.87.924.924 0 0 0 .356.071h2.272c.71 0 1.391.285 1.893.79.502.508.784 1.195.784 1.91v2.287c0 .251.099.492.275.67a.935.935 0 0 0 .664.278h3.346c.248 0 .486-.1.661-.277a.949.949 0 0 0 .274-.668v-3.366a.963.963 0 0 0-.276-.677.947.947 0 0 0-.67-.281ZM27.077 16.92H23.71c-.247 0-.484.1-.659.276a.946.946 0 0 0-.273.665v2.293c0 .717-.282 1.404-.784 1.91a2.665 2.665 0 0 1-1.892.791h-2.26c-.25 0-.488.1-.664.277a.951.951 0 0 0-.275.67v3.378c0 .25.098.49.274.667a.93.93 0 0 0 .661.276h3.331a.94.94 0 0 0 .875-.59.962.962 0 0 0 .072-.365v-2.279c0-.716.282-1.403.783-1.91a2.665 2.665 0 0 1 1.893-.79h2.259c.25 0 .49-.101.668-.28a.959.959 0 0 0 .277-.674V17.85a.935.935 0 0 0-.27-.657.918.918 0 0 0-.65-.274ZM14.168 22.852h-2.271c-.71 0-1.39-.285-1.892-.791a2.703 2.703 0 0 1-.785-1.91v-2.287a.951.951 0 0 0-.275-.67.934.934 0 0 0-.663-.277H4.935a.926.926 0 0 0-.661.276.944.944 0 0 0-.274.668v3.369a.964.964 0 0 0 .277.675.946.946 0 0 0 .67.28h2.258c.71 0 1.39.285 1.892.791.502.507.784 1.194.784 1.91v2.277c0 .253.1.495.277.674.177.179.417.28.668.28h3.356a.92.92 0 0 0 .652-.274.936.936 0 0 0 .27-.658V23.79a.946.946 0 0 0-.275-.664.928.928 0 0 0-.66-.273ZM4.923 15.103h3.365a.925.925 0 0 0 .66-.276.941.941 0 0 0 .272-.665v-2.293a2.72 2.72 0 0 1 .785-1.91 2.663 2.663 0 0 1 1.891-.79h2.267c.248 0 .487-.1.663-.278a.951.951 0 0 0 .275-.67V4.844c0-.25-.099-.49-.274-.668a.931.931 0 0 0-.661-.276h-3.338a.939.939 0 0 0-.875.59.962.962 0 0 0-.072.365v2.278a2.722 2.722 0 0 1-.784 1.91 2.674 2.674 0 0 1-1.893.79H4.947c-.25.001-.49.102-.668.28a.96.96 0 0 0-.277.675v3.383c0 .247.097.483.27.658a.92.92 0 0 0 .65.274ZM18.262 12.298h-4.316c-.897 0-1.624.734-1.624 1.639v4.356c0 .905.727 1.639 1.624 1.639h4.316c.897 0 1.625-.734 1.625-1.64v-4.355c0-.905-.728-1.64-1.625-1.64Z"
-    />
-  </svg>
-);
+  {
+    id: "spice",
+    type: "block",
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    position: { x: 300, y: 0 },
+    data: {
+      icon: <SpiceIcon className="size-6" />,
+      label: "Spicy Chat",
+      className: "bg-orange-500 text-white",
+    },
+  },
 
-const slides: Record<string, ReactNode> = {
-  0: (
-    <div className="flex items-center justify-center gap-4">
-      Spicy chat {"<- (slow) ->"} <PostgresIcon className="size-8" />
+  {
+    id: "db",
+    type: "block",
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    position: { x: 600, y: 0 },
+    data: {
+      icon: <PostgresIcon className="size-6" />,
+      label: "Postgres",
+    },
+  },
+
+  {
+    id: "datalake",
+    type: "block",
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    position: { x: 600, y: 100 },
+    data: {
+      icon: <Database className="size-6" />,
+      label: "Databricks",
+    },
+  },
+
+  {
+    id: "ai",
+    type: "block",
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    position: { x: 500, y: 200 },
+    data: {
+      icon: <CpuChipIcon className="size-6" />,
+      label: "OpenAI",
+    },
+  },
+];
+const edges: Edge[] = [
+  {
+    id: "e1-2",
+    source: "app",
+    target: "spice",
+    animated: true,
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+    markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+  },
+  {
+    id: "e2-3",
+    source: "spice",
+    target: "db",
+    animated: true,
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+    markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+  },
+  {
+    id: "e2-4",
+    source: "spice",
+    target: "datalake",
+    animated: true,
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+    markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+  },
+  {
+    id: "e2-5",
+    source: "spice",
+    target: "ai",
+    animated: true,
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+    markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+  },
+];
+
+const SlideView = ({ nodes, edges }: { nodes: Node[]; edges: Edge[] }) => {
+  const { fitView } = useReactFlow();
+
+  useEffect(() => {
+    setTimeout(() => fitView({ padding: 0.1, duration: 500 }), 300);
+  }, [nodes]);
+
+  return (
+    <div className="w-full h-full">
+      <ReactFlow
+        fitView
+        zoomOnScroll={false}
+        draggable={false}
+        nodeTypes={nodeTypes}
+        nodes={nodes}
+        edges={edges}
+        proOptions={{
+          hideAttribution: true,
+        }}
+      ></ReactFlow>
+      {/* Spicy chat {"<- (slow) ->"} <PostgresIcon className="size-8" /> */}
     </div>
-  ),
-  1: (
-    <div className="flex items-center justify-center gap-4">
-      Spicy chat {"<- (fast) ->"}
-      <SpiceIcon className="size-8" />
-      {"<- (slow)->"} <PostgresIcon className="size-8" />
-    </div>
-  ),
-  2: (
-    <div className="flex items-center justify-center gap-4">
-      Spicy chat {"<- (fast) ->"}
-      <SpiceIcon className="size-8" />
-      {"<- (slow)->"}
-      <PostgresIcon className="size-8" />
-    </div>
-  ),
-  3: <div>Slide 4</div>,
-  4: <div>Slide 5</div>,
+  );
+};
+
+const slides: Record<string, { nodes: Node[]; edges: Edge[] }> = {
+  0: {
+    nodes: [
+      {
+        id: "app",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 0, y: 0 },
+        data: {
+          icon: <div className="text-2xl size-6">🌶</div>,
+          label: "Spicy Chat",
+          className: "bg-blue-500 text-white",
+        },
+      },
+
+      {
+        id: "db",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 300, y: 0 },
+        data: {
+          icon: <PostgresIcon className="size-6" />,
+          label: "Postgres",
+        },
+      },
+    ],
+    edges: [
+      {
+        id: "e1-2",
+        source: "app",
+        target: "db",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+    ],
+  },
+
+  1: {
+    nodes: [
+      {
+        id: "app",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 0, y: 0 },
+        data: {
+          icon: <div className="text-2xl size-6">🌶</div>,
+          label: "Spicy Chat",
+          className: "bg-blue-500 text-white",
+        },
+      },
+
+      {
+        id: "spice",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 300, y: 0 },
+        data: {
+          icon: <SpiceIcon className="size-6" />,
+          label: "Spice OSS",
+          className: "bg-orange-500 text-white",
+        },
+      },
+
+      {
+        id: "db",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 0 },
+        data: {
+          icon: <PostgresIcon className="size-6" />,
+          label: "Postgres",
+        },
+      },
+
+      {
+        id: "datalake",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 100 },
+        data: {
+          icon: <Database className="size-6" />,
+          label: "Databricks",
+        },
+      },
+    ],
+    edges: [
+      {
+        id: "e1-2",
+        source: "app",
+        target: "spice",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-3",
+        source: "spice",
+        target: "db",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-4",
+        source: "spice",
+        target: "datalake",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+    ],
+  },
+
+  2: {
+    nodes: [
+      {
+        id: "app",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 0, y: 0 },
+        data: {
+          icon: <div className="text-2xl size-6">🌶</div>,
+          label: "Spicy Chat",
+          className: "bg-blue-500 text-white",
+        },
+      },
+
+      {
+        id: "spice",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 300, y: 0 },
+        data: {
+          icon: <SpiceIcon className="size-6" />,
+          label: "Spice OSS",
+          className: "bg-orange-500 text-white",
+          badge: (
+            <div className="absolute bg-white text-black p-1 text-xs rounded-sm border -bottom-4 -right-4">
+              <TableCellsIcon className="size-6" />
+            </div>
+          ),
+        },
+      },
+
+      {
+        id: "db",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 0 },
+        data: {
+          icon: <PostgresIcon className="size-6" />,
+          label: "Postgres",
+        },
+      },
+
+      {
+        id: "datalake",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 100 },
+        data: {
+          icon: <Database className="size-6" />,
+          label: "Databricks",
+        },
+      },
+    ],
+    edges: [
+      {
+        id: "e1-2",
+        source: "app",
+        target: "spice",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-3",
+        source: "spice",
+        target: "db",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-4",
+        source: "spice",
+        target: "datalake",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+    ],
+  },
+
+  3: {
+    nodes: [
+      {
+        id: "app",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 0, y: 0 },
+        data: {
+          icon: <div className="text-2xl size-6">🌶</div>,
+          label: "Spicy Chat",
+          className: "bg-blue-500 text-white",
+        },
+      },
+
+      {
+        id: "spice",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 300, y: 0 },
+        data: {
+          icon: <SpiceIcon className="size-6" />,
+          label: "Spicy Chat",
+          className: "bg-orange-500 text-white",
+          badge: (
+            <div className="absolute bg-white text-black p-1 text-xs rounded-sm border -bottom-4 -right-4">
+              <TableCellsIcon className="size-6" />
+            </div>
+          ),
+        },
+      },
+
+      {
+        id: "db",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 0 },
+        data: {
+          icon: <PostgresIcon className="size-6" />,
+          label: "Postgres",
+        },
+      },
+
+      {
+        id: "datalake",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 100 },
+        data: {
+          icon: <Database className="size-6" />,
+          label: "Databricks",
+        },
+      },
+
+      {
+        id: "ai",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 500, y: 200 },
+        data: {
+          icon: <CpuChipIcon className="size-6" />,
+          label: "OpenAI",
+        },
+      },
+    ],
+    edges: [
+      {
+        id: "e1-2",
+        source: "app",
+        target: "spice",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-3",
+        source: "spice",
+        target: "db",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-4",
+        source: "spice",
+        target: "datalake",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e1-5",
+        source: "app",
+        target: "ai",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+    ],
+  },
+
+  4: {
+    nodes: [
+      {
+        id: "app",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 0, y: 0 },
+        data: {
+          icon: <div className="text-2xl size-6">🌶</div>,
+          label: "Spicy Chat",
+          className: "bg-blue-500 text-white",
+        },
+      },
+
+      {
+        id: "spice",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 300, y: 0 },
+        data: {
+          icon: <SpiceIcon className="size-6" />,
+          label: "Spicy Chat",
+          className: "bg-orange-500 text-white",
+          badge: (
+            <div className="absolute bg-white text-black p-1 text-xs rounded-sm border -bottom-4 -right-4">
+              <TableCellsIcon className="size-6" />
+            </div>
+          ),
+        },
+      },
+
+      {
+        id: "db",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 0 },
+        data: {
+          icon: <PostgresIcon className="size-6" />,
+          label: "Postgres",
+        },
+      },
+
+      {
+        id: "datalake",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 600, y: 100 },
+        data: {
+          icon: <Database className="size-6" />,
+          label: "Databricks",
+        },
+      },
+
+      {
+        id: "ai",
+        type: "block",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        position: { x: 500, y: 200 },
+        data: {
+          icon: <CpuChipIcon className="size-6" />,
+          label: "OpenAI",
+        },
+      },
+    ],
+    edges: [
+      {
+        id: "e1-2",
+        source: "app",
+        target: "spice",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-3",
+        source: "spice",
+        target: "db",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-4",
+        source: "spice",
+        target: "datalake",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e1-5",
+        source: "app",
+        target: "ai",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+      {
+        id: "e2-5",
+        source: "spice",
+        target: "ai",
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#000" },
+        markerStart: { type: MarkerType.ArrowClosed, color: "#000" },
+      },
+    ],
+  },
+  // 1: (
+  //   <div className="flex items-center justify-center gap-4">
+  //     Spicy chat {"<- (fast) ->"}
+  //     <SpiceIcon className="size-8" />
+  //     {"<- (slow)->"} <PostgresIcon className="size-8" />
+  //   </div>
+  // ),
+  // 2: (
+  //   <div className="flex items-center justify-center gap-4">
+  //     Spicy chat {"<- (fast) ->"}
+  //     <SpiceIcon className="size-8" />
+  //     {"<- (slow)->"}
+  //     <PostgresIcon className="size-8" />
+  //   </div>
+  // ),
+  // 3: <div>Slide 4</div>,
+  // 4: <div>Slide 5</div>,
 };

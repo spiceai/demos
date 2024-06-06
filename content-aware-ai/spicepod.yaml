@@ -20,6 +20,21 @@ datasets:
       - column: answer
         use: openai_embeddings
 
+  - from: postgres:syncs
+    name: daily_journal_accelerated
+    params:
+      pg_host: aws-0-us-west-1.pooler.supabase.com
+      pg_db: postgres
+      pg_port: 5432
+      pg_user: '[supabase_user]'
+      pg_pass_key: password
+      pg_sslmode: require
+    acceleration:
+      enabled: true
+    # embeddings:
+    #   - column: answer
+    #     use: openai_embeddings
+
   # Datalake data (Databricks)
   - from: databricks:hive_metastore.default.messages
     name: messages
