@@ -4,7 +4,7 @@ import { Position, Node, Edge, MarkerType } from 'reactflow';
 import { PostgresIcon, SpiceIcon, DuckDbIcon, OpenAiIcon } from './icons';
 
 import { Database } from 'lucide-react';
-import { CpuChipIcon, DocumentIcon } from '@heroicons/react/24/outline';
+import { DocumentIcon } from '@heroicons/react/24/outline';
 
 function spiceChatBlock(node: Partial<Node> = {}): Node {
   return {
@@ -132,10 +132,11 @@ function edge(
     id,
     source,
     target,
-    animated: true,
+    type: 'connection',
     style: {
       stroke: m.color,
       strokeWidth: m.strokeWidth,
+      strokeDasharray: 5,
       animation: `dashdraw ${m.speed}s linear infinite`,
     },
     // markerEnd: { type: MarkerType.ArrowClosed, color: m.color },
@@ -167,8 +168,8 @@ export const slides: Record<string, Slide> = {
     ],
     edges: [
       edge('e1-3', 'db', 'app'),
-      edge('e1-4', 'datalake', 'app'),
-      edge('e1-5', 'ai', 'app'),
+      edge('e-datalake', 'datalake', 'app'),
+      edge('e-openai', 'ai', 'app'),
     ],
   },
 
@@ -188,13 +189,13 @@ export const slides: Record<string, Slide> = {
       }),
     ],
     edges: [
-      edge('e1-2', 'spice', 'app', {
+      edge('e-spice', 'spice', 'app', {
         color: '#f80',
         strokeWidth: 2,
       }),
       edge('e2-3', 'db', 'spice'),
-      edge('e2-4', 'datalake', 'spice'),
-      edge('e1-5', 'ai', 'app'),
+      edge('e-datalake', 'datalake', 'spice'),
+      edge('e-openai', 'ai', 'app'),
     ],
   },
 
@@ -219,52 +220,16 @@ export const slides: Record<string, Slide> = {
       }),
     ],
     edges: [
-      edge('e1-2', 'spice', 'app', {
+      edge('e-spice', 'spice', 'app', {
         color: '#f80',
         speed: 0.2,
         strokeWidth: 2,
       }),
       edge('e2-3', 'db', 'spice'),
       edge('e2-4', 'datalake', 'spice'),
-      edge('e1-5', 'ai', 'app'),
+      edge('e-openai', 'ai', 'app'),
     ],
   },
-
-  // 3: {
-  //   title: "Spice AI Gateway",
-  //   nodes: [
-  //     spiceChatBlock(),
-  //     spiceBlock(
-  //       {},
-  //       {
-  //         badge: (
-  //           <div className="absolute bg-white text-black p-1 text-xs rounded-sm border -bottom-4 -right-4">
-  //             <TableCellsIcon className="size-6" />
-  //           </div>
-  //         ),
-  //       },
-  //     ),
-  //     postgresBlock({
-  //       position: { x: 600, y: 0 },
-  //     }),
-  //     datalakeBlock({
-  //       position: { x: 600, y: 100 },
-  //     }),
-  //     aiBlock({
-  //       position: { x: 500, y: 200 },
-  //     }),
-  //   ],
-  //   edges: [
-  //     edge("e1-2", "spice", "app", {
-  //       color: "#f80",
-  //       speed: 0.2,
-  //       strokeWidth: 2,
-  //     }),
-  //     edge("e2-3", "db", "spice"),
-  //     edge("e2-4", "datalake", "spice"),
-  //     edge("e1-5", "ai", "app"),
-  //   ],
-  // },
 
   3: {
     title: 'Spice Content-Aware AI',
@@ -290,15 +255,15 @@ export const slides: Record<string, Slide> = {
       }),
     ],
     edges: [
-      edge('e1-2', 'spice', 'app', {
+      edge('e-spice', 'spice', 'app', {
         color: '#f80',
         speed: 0.2,
         strokeWidth: 2,
       }),
       edge('e2-3', 'db', 'spice'),
       edge('e2-5', 'ftp', 'spice'),
-      edge('e2-4', 'datalake', 'spice'),
-      edge('e2-6', 'ai', 'spice', 'spice'),
+      edge('e-datalake', 'datalake', 'spice'),
+      edge('e-openai', 'ai', 'spice', 'spice'),
     ],
   },
 };

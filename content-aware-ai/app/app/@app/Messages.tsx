@@ -5,15 +5,22 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
 import { MessageComponent } from '@/components/message-component';
+import { useAnimationStore } from '@/lib/store';
+import { conversations } from '@/lib/data';
 
 export function useConversationMessages(
   conversation: string,
   accelerated?: boolean,
 ) {
+  const store = useAnimationStore();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
+    conversations[conversation]?.edge_ids.forEach((id) => {
+      store.setAnimatedEdge(id, true);
+    });
+
     setMessages([]);
     setLoading(true);
     fetch(`/api/conversations/${conversation}?accelerated=${accelerated}`)
@@ -21,6 +28,11 @@ export function useConversationMessages(
       .then((response: any[]) => {
         setLoading(false);
         setMessages(response);
+      })
+      .finally(() => {
+        conversations[conversation]?.edge_ids.forEach((id) => {
+          store.setAnimatedEdge(id, false);
+        });
       });
   }, [conversation]);
 

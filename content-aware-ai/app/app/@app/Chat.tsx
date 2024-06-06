@@ -17,10 +17,17 @@ import { Loader2 } from 'lucide-react';
 import type { SpiceAssistantRsult } from '../api/chat/route';
 import { useConversationMessages } from './Messages';
 import { MessageComponent } from '@/components/message-component';
+import { useAnimationStore } from '@/lib/store';
 
 export function Chat() {
   const { messages, setMessages, append, input, setInput } = useChat({
     maxToolRoundtrips: 0,
+    onToolCall: ({ toolCall }) => {
+      console.log(toolCall);
+    },
+    onFinish: () => {
+      store.setAnimatedEdge('e-openai', false);
+    },
   });
 
   const [showCompletions, setShowCompletions] = useState(false);
@@ -30,7 +37,9 @@ export function Chat() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const { messages: preloadedMessages, loading } = useConversationMessages(
+  const store = useAnimationStore();
+
+  const { messages: preloadedMessages } = useConversationMessages(
     'archive',
     true,
   );
@@ -44,6 +53,9 @@ export function Chat() {
 
   async function submit() {
     if (input.toLowerCase().startsWith('@pepperai')) {
+      store.setAnimatedEdge('e-openai', true);
+      // store.setAnimatedEdge('spice', true);
+
       append({
         content: input,
         role: 'user',
