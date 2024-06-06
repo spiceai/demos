@@ -211,7 +211,7 @@ export function Chat() {
             onOpenChange={setShowCompletions}
             modal={false}
           >
-            <DropdownMenuTrigger></DropdownMenuTrigger>
+            <DropdownMenuTrigger className="absolute" />
             <DropdownMenuContent
               align="start"
               alignOffset={10}

@@ -26,7 +26,7 @@ export default function Home({
 
   return (
     <main className="flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
-      <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4">
+      <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4 bg-gray-900 text-white dark">
         <div className="px-4 text-lg font-semibold">🌶️ Spicy Chat</div>
 
         <div className="h-full overflow-y-auto px-4 flex gap-2 flex-col">
@@ -41,7 +41,7 @@ export default function Home({
                   className={cn(
                     'flex items-center rounded-lg px-2 py-1 gap-2',
                     conversationId === conversation.id
-                      ? 'text-primary'
+                      ? 'text-primary font-semibold'
                       : 'text-muted-foreground transition-all hover:text-primary',
                   )}
                 >
