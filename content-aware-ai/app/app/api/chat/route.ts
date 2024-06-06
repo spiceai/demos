@@ -52,8 +52,6 @@ export async function POST(req: Request) {
             },
           );
 
-          console.log(request);
-
           try {
             const response = await request.text();
             return { text: response };

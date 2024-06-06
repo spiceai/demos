@@ -148,7 +148,7 @@ export function Chat() {
                       ) : (
                         <>
                           <span className="text-muted-foreground">
-                            Searching in decision records:
+                            Searching in sources:
                           </span>
                           <Loader2 className="size-4 animate-spin text-muted-foreground" />
                         </>
