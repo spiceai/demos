@@ -60,7 +60,10 @@ export default function Home({
       </aside>
 
       {currentConversation?.type === 'conversation' ? (
-        <Chat />
+        <Chat
+          key={currentConversation.id}
+          accelerated={state !== '0' && state !== '1'}
+        />
       ) : (
         <Messages
           conversation={conversationId}
