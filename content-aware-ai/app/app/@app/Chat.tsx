@@ -16,10 +16,18 @@ import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
 import type { SpiceAssistantRsult } from '../api/chat/route';
 import { useConversationMessages } from './Messages';
+import { MessageComponent } from '@/components/message-component';
+import { useAnimationStore } from '@/lib/store';
 
 export function Chat() {
   const { messages, setMessages, append, input, setInput } = useChat({
     maxToolRoundtrips: 0,
+    onToolCall: ({ toolCall }) => {
+      console.log(toolCall);
+    },
+    onFinish: () => {
+      store.setAnimatedEdge('e-openai', false);
+    },
   });
 
   const [showCompletions, setShowCompletions] = useState(false);
@@ -29,7 +37,9 @@ export function Chat() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const { messages: preloadedMessages, loading } = useConversationMessages(
+  const store = useAnimationStore();
+
+  const { messages: preloadedMessages } = useConversationMessages(
     'archive',
     true,
   );
@@ -43,6 +53,9 @@ export function Chat() {
 
   async function submit() {
     if (input.toLowerCase().startsWith('@pepperai')) {
+      store.setAnimatedEdge('e-openai', true);
+      // store.setAnimatedEdge('spice', true);
+
       append({
         content: input,
         role: 'user',
@@ -122,85 +135,84 @@ export function Chat() {
         ))}
 
         {(messages || []).map((m, i) => (
-          <div key={i} className="px-4 flex items-center gap-3">
-            <div
-              className={cn(
-                'size-10 self-start text-2xl overflow-hidden text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center',
-                m.role === 'user' ? 'bg-blue-200' : 'bg-red-200',
-              )}
-            >
-              {m.role === 'user' ? (
-                <img src="https://avatars.githubusercontent.com/u/23766767?v=4" />
-              ) : (
-                '🌶️'
-              )}
-            </div>
-            <div>
-              <div className="font-semibold text-sm">
-                {m.role === 'user' ? 'Jack' : '@Pepper AI'}
+          <MessageComponent
+            key={i}
+            avatar={
+              <div
+                className={cn(
+                  'size-10 self-start text-2xl overflow-hidden text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center',
+                  m.role === 'user' ? 'bg-blue-200' : 'bg-red-200',
+                )}
+              >
+                {m.role === 'user' ? (
+                  <img src="https://avatars.githubusercontent.com/u/23766767?v=4" />
+                ) : (
+                  '🌶️'
+                )}
               </div>
-              <div className="whitespace-pre-wrap">{m.content as string}</div>
+            }
+            header={m.role === 'user' ? 'Jack' : '@Pepper AI'}
+            content={m.content as string}
+          >
+            {m.toolInvocations?.slice(-1).map((invocation) => {
+              const toolCallId = invocation.toolCallId;
 
-              {m.toolInvocations?.slice(-1).map((invocation) => {
-                const toolCallId = invocation.toolCallId;
-
-                if (invocation.toolName === 'spiceAssist') {
-                  return (
-                    <div key={toolCallId} className="flex items-center gap-2">
-                      {'result' in invocation ? (
-                        <span className="text-primary">
-                          {invocation.result.text}
+              if (invocation.toolName === 'spiceAssist') {
+                return (
+                  <div key={toolCallId} className="flex items-center gap-2">
+                    {'result' in invocation ? (
+                      <span className="text-primary">
+                        {invocation.result.text}
+                      </span>
+                    ) : (
+                      <>
+                        <span className="text-muted-foreground">
+                          Searching in datasets:
                         </span>
-                      ) : (
-                        <>
-                          <span className="text-muted-foreground">
-                            Searching in datasets:
-                          </span>
-                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                        </>
-                      )}
-                    </div>
-                  );
-                }
+                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                      </>
+                    )}
+                  </div>
+                );
+              }
 
-                if (invocation.toolName === 'searchInDecisions') {
-                  return (
-                    <div key={toolCallId} className="flex items-center gap-2">
-                      {'result' in invocation ? (
-                        <SpiceAssitanceCard result={invocation.result} />
-                      ) : (
-                        <>
-                          <span className="text-muted-foreground">
-                            Searching in sources:
-                          </span>
-                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                        </>
-                      )}
-                    </div>
-                  );
-                }
+              if (invocation.toolName === 'searchInDecisions') {
+                return (
+                  <div key={toolCallId} className="flex items-center gap-2">
+                    {'result' in invocation ? (
+                      <SpiceAssitanceCard result={invocation.result} />
+                    ) : (
+                      <>
+                        <span className="text-muted-foreground">
+                          Searching in sources:
+                        </span>
+                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                      </>
+                    )}
+                  </div>
+                );
+              }
 
-                if (invocation.toolName === 'summarizeConversation') {
-                  return (
-                    <div key={toolCallId} className="flex items-center gap-2">
-                      {'result' in invocation ? (
-                        invocation.result
-                      ) : (
-                        <>
-                          <span className="text-muted-foreground">
-                            Sumarizing:
-                          </span>
-                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                        </>
-                      )}
-                    </div>
-                  );
-                }
+              if (invocation.toolName === 'summarizeConversation') {
+                return (
+                  <div key={toolCallId} className="flex items-center gap-2">
+                    {'result' in invocation ? (
+                      invocation.result
+                    ) : (
+                      <>
+                        <span className="text-muted-foreground">
+                          Sumarizing:
+                        </span>
+                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                      </>
+                    )}
+                  </div>
+                );
+              }
 
-                return invocation.toolName;
-              })}
-            </div>
-          </div>
+              return invocation.toolName;
+            })}
+          </MessageComponent>
         ))}
       </div>
 

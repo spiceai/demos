@@ -5,16 +5,18 @@ import 'reactflow/dist/style.css';
 import { FC, ReactNode, useEffect } from 'react';
 import ReactFlow, {
   Position,
-  Node,
-  Edge,
   Handle,
   NodeProps,
   useReactFlow,
   ReactFlowProvider,
+  getBezierPath,
+  EdgeProps,
+  BaseEdge,
 } from 'reactflow';
 import { Switcher } from './Switcher';
 import { cn } from '@/lib/utils';
 import { slides, Slide as SlideProps } from './slides';
+import { useAnimationStore } from '@/lib/store';
 
 interface Params {
   searchParams: {
@@ -46,8 +48,69 @@ export const BlockNode: FC<
   </div>
 );
 
+export const Connection: FC<EdgeProps> = ({
+  id,
+  sourceX,
+  sourceY,
+  sourcePosition,
+  targetX,
+  targetY,
+  targetPosition,
+  style,
+  markerStart,
+  markerEnd,
+}) => {
+  const store = useAnimationStore();
+  const [path] = getBezierPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+  });
+
+  if (store.animatedEdges[id] === true) {
+    return (
+      <BaseEdge
+        id={id}
+        key={`${id}-animated`}
+        path={path}
+        style={{
+          ...style,
+          strokeWidth: 2,
+          strokeDasharray: 5,
+          animation: style?.animation,
+        }}
+        markerStart={markerStart}
+        markerEnd={markerEnd}
+      />
+    );
+  }
+
+  return (
+    <BaseEdge
+      id={id}
+      key={`${id}-static`}
+      path={path}
+      style={{
+        ...style,
+        strokeWidth: 2,
+        strokeDasharray: 5,
+        animation: undefined,
+      }}
+      markerStart={markerStart}
+      markerEnd={markerEnd}
+    />
+  );
+};
+
 const nodeTypes = {
   block: BlockNode,
+};
+
+const edgeTypes = {
+  connection: Connection,
 };
 
 export default function Slide({ searchParams: { state } }: Params) {
@@ -82,6 +145,7 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
           zoomOnScroll={false}
           draggable={false}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
           nodes={nodes}
           edges={edges}
           proOptions={{
