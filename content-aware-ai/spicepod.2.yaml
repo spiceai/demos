@@ -26,26 +26,3 @@ datasets:
     params:
       endpoint: adb-4473752745667967.7.azuredatabricks.net
       databricks-cluster-id: 0423-065654-nu3nflpo
-
-  # Accelerated Datalake data (Databricks)
-  - from: databricks:hive_metastore.default.messages
-    name: messages_accelerated
-    acceleration:
-      enabled: true
-    params:
-      endpoint: adb-4473752745667967.7.azuredatabricks.net
-      databricks-cluster-id: 0423-065654-nu3nflpo
-
-  # File data, indexed using OpenAI embeddings
-  - from: file://Users/evgenii/Developer/Spice/demos/content-aware-ai/decisions
-    name: decisions
-    metadata: true
-    params:
-      file_format: md
-    embeddings:
-      - column: content
-        use: openai_embeddings
-
-embeddings:
-  - name: openai_embeddings
-    from: openai
