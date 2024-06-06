@@ -1,0 +1,15 @@
+version: v1beta1
+kind: Spicepod
+name: content-aware-ai
+
+datasets:
+  # Application data (PostgreSQL)
+  - from: postgres:syncs
+    name: daily_journal
+    params:
+      pg_host: aws-0-us-west-1.pooler.supabase.com
+      pg_db: postgres
+      pg_port: 5432
+      pg_user: '[supabase_user]'
+      pg_pass_key: password
+      pg_sslmode: require
