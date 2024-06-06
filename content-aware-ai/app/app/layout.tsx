@@ -9,14 +9,17 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  slides,
+  app,
 }: Readonly<{
-  children: React.ReactNode;
+  slides: React.ReactNode;
+  app: React.ReactNode;
 }>) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="overscroll-none bg-background text-foreground">
-        {children}
+      <body className="overscroll-none bg-background text-foreground h-screen flex flex-col">
+        {slides}
+        {app}
       </body>
     </html>
   );

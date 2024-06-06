@@ -5,25 +5,37 @@ import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MegaphoneIcon } from "@heroicons/react/24/outline";
 
-function useConversationMessages(conversation: string) {
+function useConversationMessages(conversation: string, accelerated?: boolean) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`/api/conversations/${conversation}`)
+    setMessages([]);
+    setLoading(true);
+    fetch(`/api/conversations/${conversation}?accelerated=${accelerated}`)
       .then((r) => r.json())
       .then((response: any[]) => {
         setLoading(false);
         setMessages(response);
       });
   }, [conversation]);
+  k;
 
   return { messages, loading };
 }
 
-export const Messages = ({ dataset }: { dataset: string }) => {
+export const Messages = ({
+  conversation,
+  accelerated,
+}: {
+  conversation: string;
+  accelerated?: boolean;
+}) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const { messages, loading } = useConversationMessages(dataset);
+  const { messages, loading } = useConversationMessages(
+    conversation,
+    accelerated,
+  );
 
   useEffect(() => {
     if (chatContainerRef.current) {

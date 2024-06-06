@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useChat } from "ai/react";
 import { Loader2 } from "lucide-react";
+import type { SpiceAssistantRsult } from "../api/chat/route";
 
 export function Chat() {
   const { messages, setMessages, append, input, setInput } = useChat({
@@ -116,7 +117,8 @@ export function Chat() {
                 {m.role === "user" ? "Jack" : "@Pepper AI"}
               </div>
               <div className="whitespace-pre-wrap">{m.content as string}</div>
-              {m.toolInvocations?.map((invocation) => {
+
+              {m.toolInvocations?.slice(-1).map((invocation) => {
                 const toolCallId = invocation.toolCallId;
 
                 if (invocation.toolName === "spiceAssist") {
@@ -142,9 +144,7 @@ export function Chat() {
                   return (
                     <div key={toolCallId} className="flex items-center gap-2">
                       {"result" in invocation ? (
-                        <span className="text-primary">
-                          {invocation.result.text}
-                        </span>
+                        <SpiceAssitanceCard result={invocation.result} />
                       ) : (
                         <>
                           <span className="text-muted-foreground">
@@ -210,3 +210,33 @@ export function Chat() {
     </div>
   );
 }
+
+const SpiceAssitanceCard = ({ result }: { result: SpiceAssistantRsult }) => {
+  console.log(result);
+  return (
+    <div className="flex flex-col gap-2">
+      <div>{result.text}</div>
+
+      {result.from
+        ? Object.keys(result.from).map((from) => {
+            const entries = result.from[from];
+            return (
+              <div key={from} className="flex flex-col gap-1">
+                {from}:
+                <div className="grid gap-1 grid-cols-3">
+                  {entries.map((entry, i) => (
+                    <div
+                      className="border rounded-lg shadow-sm p-2 text-xs max-h-24 text-ellipsis min-w-0 overflow-hidden"
+                      key={i}
+                    >
+                      {entry.content}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })
+        : null}
+    </div>
+  );
+};

@@ -10,6 +10,11 @@ import { z } from "zod";
 // Allow streaming responses up to 300 seconds
 export const maxDuration = 300;
 
+export interface SpiceAssistantRsult {
+  text: string;
+  from: Record<string, Array<{ content: string }>>;
+}
+
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
@@ -64,8 +69,6 @@ export async function POST(req: Request) {
           question: z.string(),
         }),
         execute: async ({ question }: { question: string }) => {
-          console.log("query", question);
-
           const request = await fetch(
             `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
             {
@@ -82,8 +85,8 @@ export async function POST(req: Request) {
           );
 
           try {
-            const response = await request.text();
-            return { text: response };
+            const response = (await request.json()) as SpiceAssistantRsult;
+            return response;
           } catch (e) {
             return { text: "Something went wrong: " + e };
           }
