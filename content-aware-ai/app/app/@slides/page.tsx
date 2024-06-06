@@ -32,7 +32,7 @@ export const BlockNode: FC<
 > = ({ data }) => (
   <div
     className={cn(
-      'border p-4 gap-4 flex items-center justify-center rounded-md relative min-w-28',
+      'border p-4 gap-4 flex items-center justify-center rounded-md relative min-w-28 shadow-md',
       data.className,
     )}
   >

@@ -1,7 +1,7 @@
 'use client';
 
 import { Position, Node, Edge, MarkerType } from 'reactflow';
-import { PostgresIcon, SpiceIcon, DuckDbIcon } from './icons';
+import { PostgresIcon, SpiceIcon, DuckDbIcon, OpenAiIcon } from './icons';
 
 import { Database } from 'lucide-react';
 import { CpuChipIcon, DocumentIcon } from '@heroicons/react/24/outline';
@@ -92,7 +92,7 @@ function aiBlock(node: Partial<Node> = {}): Node {
     targetPosition: Position.Left,
     position: { x: 500, y: 200 },
     data: {
-      icon: <CpuChipIcon className="size-6" />,
+      icon: <OpenAiIcon className="size-6" />,
       label: 'OpenAI',
     },
     ...node,
