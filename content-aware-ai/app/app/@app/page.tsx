@@ -42,7 +42,7 @@ export default function Home({
                     'flex items-center rounded-lg px-2 py-1 gap-2',
                     conversationId === conversation.id
                       ? 'text-primary'
-                      : 'text-muted-foreground transition-all hover:text-primary'
+                      : 'text-muted-foreground transition-all hover:text-primary',
                   )}
                 >
                   {conversation.type === 'channel' ? (

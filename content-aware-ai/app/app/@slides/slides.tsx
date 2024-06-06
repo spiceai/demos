@@ -1,11 +1,10 @@
 'use client';
 
 import { Position, Node, Edge, MarkerType } from 'reactflow';
-import { PostgresIcon, SpiceIcon } from './icons';
+import { PostgresIcon, SpiceIcon, DuckDbIcon } from './icons';
 
 import { Database } from 'lucide-react';
 import { CpuChipIcon, DocumentIcon } from '@heroicons/react/24/outline';
-import { TableCellsIcon } from '@heroicons/react/24/outline';
 
 function spiceChatBlock(node: Partial<Node> = {}): Node {
   return {
@@ -120,7 +119,7 @@ function edge(
   source: string,
   target: string,
   mode: any = {},
-  e: Partial<Edge> = {}
+  e: Partial<Edge> = {},
 ): Edge {
   const m = {
     color: '#000',
@@ -207,7 +206,7 @@ export const slides: Record<string, Slide> = {
         {},
         {
           badge: <AccelerationBadge />,
-        }
+        },
       ),
       postgresBlock({
         position: { x: 700, y: -50 },
@@ -275,7 +274,7 @@ export const slides: Record<string, Slide> = {
         {},
         {
           badge: <AccelerationBadge />,
-        }
+        },
       ),
       postgresBlock({
         position: { x: 700, y: -50 },

@@ -33,7 +33,7 @@ export const BlockNode: FC<
   <div
     className={cn(
       'border p-4 gap-4 flex items-center justify-center rounded-md relative min-w-28',
-      data.className
+      data.className,
     )}
   >
     <Handle type="source" position={Position.Left} className="opacity-0" />
@@ -76,7 +76,7 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
           {title}
         </h2>
       </div>
-      <div className="grow -ml-20">
+      <div className="grow">
         <ReactFlow
           fitView
           zoomOnScroll={false}
@@ -89,6 +89,8 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
           }}
         />
       </div>
+
+      <div className="w-40" />
     </div>
   );
 };
