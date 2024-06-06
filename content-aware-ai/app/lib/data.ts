@@ -25,13 +25,13 @@ export const conversations: Record<string, Conversation> = {
     sql: `select ts, "user", text as answer from messages where text is not null and channel_id = 'C0170U650CQ' limit 100`,
     sql_accelerated: `select ts, "user", text as answer from messages_accelerated where text is not null and channel_id = 'C0170U650CQ' limit 100`,
     states: ['0', '1', '2', '3', '4', '5'],
-    edge_ids: [],
+    edge_ids: ['e-postgres', 'e-spice'],
   },
   general: {
     id: 'general',
     title: 'general',
     type: 'conversation',
     states: ['0', '1', '2', '3', '4', '5'],
-    edge_ids: [],
+    edge_ids: ['e-postgres', 'e-spice'],
   },
 };
