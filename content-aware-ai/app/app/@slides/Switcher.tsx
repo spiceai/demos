@@ -19,7 +19,7 @@ export const Switcher = () => {
   const toState = (d: number) => {
     const state = parseInt(params.get("state") || "0");
     const next = state + d;
-    if (next < 0 || next > 5) {
+    if (next < 0 || next > 3) {
       return;
     }
     const newParams = new URLSearchParams(params);
