@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
+import { MessageComponent } from '@/components/message-component';
 
 export function useConversationMessages(
   conversation: string,
@@ -67,20 +68,21 @@ export const Messages = ({
         ref={chatContainerRef}
       >
         {(messages || []).map((message: any, i) => (
-          <div key={i} className="px-4 flex items-center gap-3">
-            <div className="size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center">
-              <MegaphoneIcon className="size-6" />
-            </div>
-            <div>
-              <div className="font-semibold text-sm">
-                <span className="text-secondary-foreground text-xs">
-                  {/* @ts-ignore */}
-                  {dayjs(message.timestamp).format('YYYY-MM-DD hh:mm')}
-                </span>
+          <MessageComponent
+            key={i}
+            avatar={
+              <div className="size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center">
+                <MegaphoneIcon className="size-6" />
               </div>
-              <div className="whitespace-pre-wrap">{message.answer}</div>
-            </div>
-          </div>
+            }
+            header={
+              <span className="text-secondary-foreground text-xs">
+                {/* @ts-ignore */}
+                {dayjs(message.timestamp).format('YYYY-MM-DD hh:mm')}
+              </span>
+            }
+            content={message.answer}
+          />
         ))}
       </div>
     </div>
