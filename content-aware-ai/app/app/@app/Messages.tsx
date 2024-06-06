@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import * as dayjs from "dayjs";
-import { useState, useEffect, useRef } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { MegaphoneIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect, useRef } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { MegaphoneIcon } from '@heroicons/react/24/outline';
 
-function useConversationMessages(conversation: string, accelerated?: boolean) {
+export function useConversationMessages(
+  conversation: string,
+  accelerated?: boolean,
+) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
 
@@ -72,7 +74,7 @@ export const Messages = ({
               <div className="font-semibold text-sm">
                 <span className="text-secondary-foreground text-xs">
                   {/* @ts-ignore */}
-                  {dayjs(message.timestamp).format("YYYY-MM-DD hh:mm")}
+                  {dayjs(message.timestamp).format('YYYY-MM-DD hh:mm')}
                 </span>
               </div>
               <div className="whitespace-pre-wrap">{message.answer}</div>

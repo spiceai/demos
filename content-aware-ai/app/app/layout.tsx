@@ -1,11 +1,11 @@
-import "./globals.css";
+import './globals.css';
 
-import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import type { Metadata } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 
 export const metadata: Metadata = {
-  title: "Spice AI Demo",
+  title: 'Spice AI Demo',
 };
 
 export default function RootLayout({

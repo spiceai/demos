@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { Message, type CoreMessage } from "ai";
-import { useState, useEffect, useRef } from "react";
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Message, type CoreMessage } from 'ai';
+import { useState, useEffect, useRef } from 'react';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useChat } from "ai/react";
-import { Loader2 } from "lucide-react";
-import type { SpiceAssistantRsult } from "../api/chat/route";
+} from '@/components/ui/dropdown-menu';
+import { useChat } from 'ai/react';
+import { Loader2 } from 'lucide-react';
+import type { SpiceAssistantRsult } from '../api/chat/route';
+import { useConversationMessages } from './Messages';
 
 export function Chat() {
   const { messages, setMessages, append, input, setInput } = useChat({
@@ -28,6 +29,11 @@ export function Chat() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  const { messages: preloadedMessages, loading } = useConversationMessages(
+    'archive',
+    true,
+  );
+
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -36,29 +42,29 @@ export function Chat() {
   }, [messages]);
 
   async function submit() {
-    if (input.toLowerCase().startsWith("@pepperai")) {
+    if (input.toLowerCase().startsWith('@pepperai')) {
       append({
         content: input,
-        role: "user",
+        role: 'user',
       });
-      setInput("");
+      setInput('');
     } else {
       const newMessages: Message[] = [
         ...messages,
         {
           content: input,
-          role: "user",
+          role: 'user',
         } as any,
       ];
       setMessages(newMessages);
-      setInput("");
+      setInput('');
     }
   }
 
   function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (
-      (event.key === "Enter" && event.metaKey) ||
-      (event.key === "Enter" && event.ctrlKey)
+      (event.key === 'Enter' && event.metaKey) ||
+      (event.key === 'Enter' && event.ctrlKey)
     ) {
       event.preventDefault();
       submit();
@@ -72,8 +78,8 @@ export function Chat() {
     const cursorPos = textareaRef.current?.selectionStart;
     setCursorPosition(cursorPos);
 
-    if (cursorPos !== undefined && cursorPos !== null && value.includes("@")) {
-      const atIndex = value.lastIndexOf("@", cursorPos - 1);
+    if (cursorPos !== undefined && cursorPos !== null && value.includes('@')) {
+      const atIndex = value.lastIndexOf('@', cursorPos - 1);
       if (atIndex === cursorPos - 1) {
         setShowCompletions(true);
       } else {
@@ -84,7 +90,7 @@ export function Chat() {
 
   function onCompletionSelect(completion: string) {
     const value = input;
-    const atIndex = value.lastIndexOf("@", (cursorPosition || 0) - 1);
+    const atIndex = value.lastIndexOf('@', (cursorPosition || 0) - 1);
     const newText = `${value.slice(0, atIndex + 1)}${completion} ${value.slice(
       cursorPosition || 0,
     )}`;
@@ -98,33 +104,50 @@ export function Chat() {
         className="h-full overflow-y-auto py-4 space-y-4"
         ref={chatContainerRef}
       >
+        {(preloadedMessages || []).map((message: any, i) => (
+          <div key={i} className="px-4 flex items-center gap-3">
+            <div className="size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center">
+              <img src={`https://robohash.org/${message.user}.png`} />
+              {/* <MegaphoneIcon className="size-6" /> */}
+            </div>
+            <div className=" max-w-full overflow-hidden">
+              <div className="font-semibold text-sm">
+                <span className="text-secondary-foreground text-xs">
+                  {message.username}
+                </span>
+              </div>
+              <div className="whitespace-pre-wrap">{message.answer}</div>
+            </div>
+          </div>
+        ))}
+
         {(messages || []).map((m, i) => (
           <div key={i} className="px-4 flex items-center gap-3">
             <div
               className={cn(
-                "size-10 self-start text-2xl overflow-hidden text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center",
-                m.role === "user" ? "bg-blue-200" : "bg-red-200",
+                'size-10 self-start text-2xl overflow-hidden text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center',
+                m.role === 'user' ? 'bg-blue-200' : 'bg-red-200',
               )}
             >
-              {m.role === "user" ? (
+              {m.role === 'user' ? (
                 <img src="https://avatars.githubusercontent.com/u/23766767?v=4" />
               ) : (
-                "🌶️"
+                '🌶️'
               )}
             </div>
             <div>
               <div className="font-semibold text-sm">
-                {m.role === "user" ? "Jack" : "@Pepper AI"}
+                {m.role === 'user' ? 'Jack' : '@Pepper AI'}
               </div>
               <div className="whitespace-pre-wrap">{m.content as string}</div>
 
               {m.toolInvocations?.slice(-1).map((invocation) => {
                 const toolCallId = invocation.toolCallId;
 
-                if (invocation.toolName === "spiceAssist") {
+                if (invocation.toolName === 'spiceAssist') {
                   return (
                     <div key={toolCallId} className="flex items-center gap-2">
-                      {"result" in invocation ? (
+                      {'result' in invocation ? (
                         <span className="text-primary">
                           {invocation.result.text}
                         </span>
@@ -140,15 +163,32 @@ export function Chat() {
                   );
                 }
 
-                if (invocation.toolName === "searchInDecisions") {
+                if (invocation.toolName === 'searchInDecisions') {
                   return (
                     <div key={toolCallId} className="flex items-center gap-2">
-                      {"result" in invocation ? (
+                      {'result' in invocation ? (
                         <SpiceAssitanceCard result={invocation.result} />
                       ) : (
                         <>
                           <span className="text-muted-foreground">
                             Searching in sources:
+                          </span>
+                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                        </>
+                      )}
+                    </div>
+                  );
+                }
+
+                if (invocation.toolName === 'summarizeConversation') {
+                  return (
+                    <div key={toolCallId} className="flex items-center gap-2">
+                      {'result' in invocation ? (
+                        invocation.result
+                      ) : (
+                        <>
+                          <span className="text-muted-foreground">
+                            Sumarizing:
                           </span>
                           <Loader2 className="size-4 animate-spin text-muted-foreground" />
                         </>
@@ -180,7 +220,7 @@ export function Chat() {
             >
               <DropdownMenuItem
                 onSelect={() => {
-                  onCompletionSelect("PepperAI");
+                  onCompletionSelect('PepperAI');
                   textareaRef.current?.focus();
                 }}
               >
