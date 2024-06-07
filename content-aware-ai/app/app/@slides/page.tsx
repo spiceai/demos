@@ -119,30 +119,34 @@ const edgeTypes = {
 export default function Slide({ searchParams: { state } }: Params) {
   const slide = slides[state] || slides[0];
   return (
-    <div className="relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-8 pt-8">
+    <div
+      className={cn(
+        'w-full flex flex-shrink-0 h-[500px] justify-center items-center px-16 pt-4',
+        slide.fullscreen ? 'h-full grow' : 'h-[500px]',
+      )}
+    >
       <ReactFlowProvider>
         <SlideView {...slide} />
       </ReactFlowProvider>
-      <Switcher />
     </div>
   );
 }
 
-const SlideView = ({ title, nodes, edges }: SlideProps) => {
+const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
   const { fitView } = useReactFlow();
 
   useEffect(() => {
-    setTimeout(() => fitView({ padding: 0.2, duration: 500 }), 200);
+    setTimeout(() => fitView({ padding: 0.2, duration: 500 }), 300);
   }, [nodes]);
 
   return (
-    <div className="flex w-full h-full flex-row grow align-middle">
-      <div className="flex w-40 items-center">
-        <h2 className="text-xl font-semibold text-wrap mx-auto text-center">
-          {title}
-        </h2>
-      </div>
-      <div className="grow">
+    <div
+      className={cn(
+        'flex w-full h-full grow align-middle gap-8',
+        fullscreen ? 'flex-col pb-8' : 'flex-col max-w-7xl',
+      )}
+    >
+      <div className="relative grow bg-gray-300 border border-gray-400 rounded-lg">
         <ReactFlow
           fitView
           zoomOnScroll={false}
@@ -155,9 +159,13 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
             hideAttribution: true,
           }}
         />
+        <Switcher />
       </div>
-
-      <div className="w-40" />
+      <div className={cn('flex items-center', !fullscreen && 'whitespace-pre')}>
+        <h2 className="text-4xl font-semibold text-wrap mx-auto text-center">
+          {title}
+        </h2>
+      </div>
     </div>
   );
 };

@@ -23,7 +23,8 @@ export function useConversationMessages(
 
   const updateAnimation = useCallback(
     (v: boolean) => {
-      const list = edge_ids ? edge_ids : conversations[conversation]?.edge_ids;
+      const list =
+        (edge_ids ? edge_ids : conversations[conversation]?.edge_ids) || [];
       list?.forEach((id) => {
         store.setAnimatedEdge(id, v);
       });
