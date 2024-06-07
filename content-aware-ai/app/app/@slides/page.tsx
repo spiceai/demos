@@ -132,7 +132,7 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
   const { fitView } = useReactFlow();
 
   useEffect(() => {
-    setTimeout(() => fitView({ padding: 0.1, duration: 500 }), 300);
+    setTimeout(() => fitView({ padding: 0.2, duration: 500 }), 200);
   }, [nodes]);
 
   return (

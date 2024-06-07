@@ -7,6 +7,7 @@ import { conversations } from '@/lib/data';
 import { Chat } from './Chat';
 import { Messages } from './Messages';
 import { Input } from '@/components/ui/input';
+import { slides } from '../@slides/slides';
 
 interface Params {
   searchParams: {
@@ -22,6 +23,8 @@ export const maxDuration = 300;
 export default function Home({
   searchParams: { conversation: conversationId, state },
 }: Params) {
+  const slide = slides[state] || slides['0'];
+
   const currentConversation =
     conversations[conversationId] || Object.values(conversations)[0];
 
@@ -69,7 +72,9 @@ export default function Home({
           {currentConversation?.type === 'conversation' ? (
             <Chat
               key={currentConversation.id}
-              accelerated={state !== '0' && state !== '1'}
+              conversation={currentConversation.id}
+              accelerated={!!slide.accelerated}
+              augmented={!!slide.augmented}
             />
           ) : (
             <Messages

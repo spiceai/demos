@@ -1,11 +1,10 @@
 'use client';
 
-import { Message, type CoreMessage } from 'ai';
+import { Message } from 'ai';
 import { useState, useEffect, useRef } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +22,15 @@ import {
 import { useAnimationStore } from '@/lib/store';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
-export function Chat({ accelerated }: { accelerated: boolean }) {
+export function Chat({
+  conversation,
+  accelerated,
+  augmented,
+}: {
+  conversation: string;
+  accelerated: boolean;
+  augmented: boolean;
+}) {
   const { messages, setMessages, append, input, setInput } = useChat({
     maxToolRoundtrips: 0,
     onToolCall: ({ toolCall }) => {
@@ -52,12 +59,12 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
   >();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-
   const store = useAnimationStore();
 
   const { messages: preloadedMessages, loading } = useConversationMessages(
     'archive',
     accelerated,
+    conversation !== 'archive' ? ['e-postgres', 'e-spice'] : undefined,
   );
 
   useEffect(() => {

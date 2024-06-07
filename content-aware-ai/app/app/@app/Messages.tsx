@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
@@ -15,15 +15,24 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 export function useConversationMessages(
   conversation: string,
   accelerated?: boolean,
+  edge_ids?: string[],
 ) {
   const store = useAnimationStore();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
 
+  const updateAnimation = useCallback(
+    (v: boolean) => {
+      const list = edge_ids ? edge_ids : conversations[conversation]?.edge_ids;
+      list.forEach((id) => {
+        store.setAnimatedEdge(id, v);
+      });
+    },
+    [conversation, edge_ids],
+  );
+
   useEffect(() => {
-    conversations[conversation]?.edge_ids.forEach((id) => {
-      store.setAnimatedEdge(id, true);
-    });
+    updateAnimation(true);
 
     setMessages([]);
     setLoading(true);
@@ -34,9 +43,7 @@ export function useConversationMessages(
         setMessages(response);
       })
       .finally(() => {
-        conversations[conversation]?.edge_ids.forEach((id) => {
-          store.setAnimatedEdge(id, false);
-        });
+        updateAnimation(false);
       });
   }, [conversation]);
 

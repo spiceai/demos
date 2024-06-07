@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="overscroll-none bg-background text-foreground h-screen flex flex-col">
+      <body className="overscroll-none bg-gray-200 text-foreground h-screen flex flex-col">
         <Provider>
           {slides}
           {app}

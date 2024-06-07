@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-const maxState = 3;
+const maxState = 6;
 
 export const Switcher = () => {
   const router = useRouter();
