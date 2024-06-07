@@ -6,6 +6,7 @@ export interface Conversation {
   sql_accelerated?: string;
   states: string[];
   edge_ids: string[];
+  artifial_delay?: number;
 }
 
 export const conversations: Record<string, Conversation> = {
@@ -26,6 +27,7 @@ export const conversations: Record<string, Conversation> = {
     sql_accelerated: `select ts, "user", text as answer from messages_accelerated where text is not null and channel_id = 'C0170U650CQ' limit 100`,
     states: ['0', '1', '2', '3', '4', '5'],
     edge_ids: ['e-postgres', 'e-spice'],
+    artifial_delay: 3000,
   },
   general: {
     id: 'general',

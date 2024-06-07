@@ -16,9 +16,12 @@ import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
 import type { SpiceAssistantRsult } from '../api/chat/route';
 import { useConversationMessages } from './Messages';
-import { MessageComponent } from '@/components/message-component';
+import {
+  MessageComponent,
+  MessageSkeleton,
+} from '@/components/message-component';
 import { useAnimationStore } from '@/lib/store';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
 export function Chat({ accelerated }: { accelerated: boolean }) {
   const { messages, setMessages, append, input, setInput } = useChat({
@@ -50,7 +53,7 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, preloadedMessages]);
 
   async function submit() {
     if (input.toLowerCase().startsWith('@pepperai')) {
@@ -113,56 +116,57 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
   }
 
   return (
-    <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
-      {loading ? (
-        <div className="p-4 flex flex-col gap-4">
-          <Skeleton className="h-8 w-32 rounded-md" />
-          <Skeleton className="h-8 w-32 rounded-md" />
-          <Skeleton className="h-8 w-32 rounded-md" />
-          <Skeleton className="h-8 w-32 rounded-md" />
-          <Skeleton className="h-8 w-32 rounded-md" />
-          <Skeleton className="h-8 w-32 rounded-md" />
-          <Skeleton className="h-8 w-32 rounded-md" />
-        </div>
-      ) : null}
-
+    <div className="grow min-w-0 overflow-hidden flex flex-col">
       <div
         className="h-full overflow-y-auto py-4 space-y-4"
         ref={chatContainerRef}
       >
+        {loading ? (
+          <>
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+          </>
+        ) : null}
+
         {(preloadedMessages || []).map((message: any, i) => (
-          <div key={i} className="px-4 flex items-center gap-3">
-            <div className="size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center">
-              <img src={`https://robohash.org/${message.user}.png`} />
-              {/* <MegaphoneIcon className="size-6" /> */}
-            </div>
-            <div className=" max-w-full overflow-hidden">
-              <div className="font-semibold text-sm">
-                <span className="text-secondary-foreground text-xs">
-                  {message.username}
-                </span>
-              </div>
-              <div className="whitespace-pre-wrap">{message.answer}</div>
-            </div>
-          </div>
+          <MessageComponent
+            key={i}
+            avatar={
+              <Avatar>
+                <AvatarImage src={`https://robohash.org/${message.user}.png`} />
+              </Avatar>
+            }
+            header={
+              <span className="text-secondary-foreground text-xs">
+                {/* @ts-ignore */}
+                {/* {dayjs(message.timestamp).format('YYYY-MM-DD hh:mm')} */}
+              </span>
+            }
+            content={message.answer}
+          />
         ))}
 
         {(messages || []).map((m, i) => (
           <MessageComponent
             key={i}
             avatar={
-              <div
-                className={cn(
-                  'size-10 self-start text-2xl overflow-hidden text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center',
-                  m.role === 'user' ? 'bg-blue-200' : 'bg-red-200',
-                )}
-              >
+              <Avatar>
                 {m.role === 'user' ? (
-                  <img src="https://avatars.githubusercontent.com/u/23766767?v=4" />
+                  <AvatarImage src="https://avatars.githubusercontent.com/u/23766767?v=4" />
                 ) : (
-                  '🌶️'
+                  <div className="text-center bg-red-200 text-3xl flex flex-col justify-center items-center w-full h-full">
+                    🌶️
+                  </div>
                 )}
-              </div>
+              </Avatar>
             }
             header={m.role === 'user' ? 'Jack' : '@Pepper AI'}
             content={m.content as string}
@@ -229,7 +233,7 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
         ))}
       </div>
 
-      <div className="flex-shrink-0 min-w-0 w-full min-h-0 pb-4 px-4 text-xl">
+      <div className="flex-shrink-0 min-w-0 w-full min-h-0 pb-4 px-4 text-xl ">
         <form className="relative" action={submit}>
           <DropdownMenu
             open={showCompletions}
@@ -255,7 +259,7 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
           </DropdownMenu>
           <Textarea
             ref={textareaRef}
-            className="resize-none text-lg"
+            className="resize-none text-xl"
             value={input}
             placeholder="Say something..."
             onChange={onInputChange}
@@ -268,7 +272,7 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
             type="submit"
           >
             <PaperAirplaneIcon className="size-6" />
-            <span className="font-normal">Send</span>
+            <span className="font-normal text-xl">Send</span>
           </Button>
         </form>
       </div>
