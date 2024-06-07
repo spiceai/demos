@@ -27,14 +27,14 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
   const { messages, setMessages, append, input, setInput } = useChat({
     maxToolRoundtrips: 0,
     onToolCall: ({ toolCall }) => {
+      store.setAnimatedEdge('e-spice', true);
       if (!accelerated) {
-        store.setAnimatedEdge('e-spice', true);
         if (toolCall.toolName === 'summarizeConversation') {
           store.setAnimatedEdge('e-datalake', true);
         }
-        if (toolCall.toolName === 'searchInDecisions') {
-          store.setAnimatedEdge('e-ftp', true);
-        }
+      }
+      if (toolCall.toolName === 'searchInDecisions') {
+        store.setAnimatedEdge('e-ftp', true);
       }
     },
     onFinish: () => {
@@ -69,6 +69,9 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
 
   async function submit() {
     if (input.toLowerCase().startsWith('@pepperai')) {
+      if (accelerated) {
+        store.setAnimatedEdge('e-spice', true);
+      }
       store.setAnimatedEdge('e-openai', true);
       // store.setAnimatedEdge('spice', true);
 
