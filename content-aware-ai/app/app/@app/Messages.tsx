@@ -4,9 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
-import { MessageComponent } from '@/components/message-component';
+import {
+  MessageComponent,
+  MessageSkeleton,
+} from '@/components/message-component';
 import { useAnimationStore } from '@/lib/store';
 import { conversations } from '@/lib/data';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export function useConversationMessages(
   conversation: string,
@@ -61,20 +65,23 @@ export const Messages = ({
 
   if (loading) {
     return (
-      <div className="p-4 flex flex-col gap-4">
-        <Skeleton className="h-8 w-32 rounded-md" />
-        <Skeleton className="h-8 w-32 rounded-md" />
-        <Skeleton className="h-8 w-32 rounded-md" />
-        <Skeleton className="h-8 w-32 rounded-md" />
-        <Skeleton className="h-8 w-32 rounded-md" />
-        <Skeleton className="h-8 w-32 rounded-md" />
-        <Skeleton className="h-8 w-32 rounded-md" />
+      <div className="py-4 flex gap-4 flex-col-reverse">
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
+        <MessageSkeleton />
       </div>
     );
   }
 
   return (
-    <div className="grow min-w-0 h-full overflow-hidden flex flex-col">
+    <div className="grow min-w-0 overflow-hidden flex flex-col">
       <div
         className="h-full overflow-y-auto py-4 space-y-4"
         ref={chatContainerRef}
@@ -83,9 +90,11 @@ export const Messages = ({
           <MessageComponent
             key={i}
             avatar={
-              <div className="size-10 self-start text-2xl text-center bg-secondary border rounded-xl flex-shrink-0 flex items-center justify-center">
-                <MegaphoneIcon className="size-6" />
-              </div>
+              <Avatar>
+                <AvatarFallback>
+                  <MegaphoneIcon className="size-6" />
+                </AvatarFallback>
+              </Avatar>
             }
             header={
               <span className="text-secondary-foreground text-xs">

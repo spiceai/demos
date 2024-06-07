@@ -24,6 +24,12 @@ export const GET = async (
       ? conversation.sql_accelerated
       : conversation.sql;
 
+  if (!accelerated && conversation.artifial_delay) {
+    await new Promise((resolve) =>
+      setTimeout(resolve, conversation.artifial_delay),
+    );
+  }
+
   try {
     const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
       method: 'POST',
