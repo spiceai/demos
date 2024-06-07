@@ -34,7 +34,7 @@ export default function Home({
 
   return (
     <div className="px-4 pt-4 pb-4 grow flex row items-stretch justify-center min-w-0 min-h-0">
-      <div className="border rounded-lg overflow-hidden grow flex flex-col shadow-xl max-w-6xl">
+      <div className="border rounded-lg overflow-hidden grow flex flex-col shadow-xl max-w-7xl">
         <main className="flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
           <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4 bg-gray-900 text-white dark">
             <div className="px-4 text-xl font-semibold">🌶️ Spicy Chat</div>
@@ -75,7 +75,13 @@ export default function Home({
             </div>
 
             <div className="grow w-full bg-white light overflow-hidden flex flex-col min-w-0 rounded-tl-lg">
-              {currentConversation?.type === 'conversation' ? (
+              {!conversationId ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="">
+                    Select a conversation to start chatting
+                  </div>
+                </div>
+              ) : currentConversation?.type === 'conversation' ? (
                 <Chat
                   key={currentConversation.id}
                   conversation={currentConversation.id}

@@ -390,7 +390,7 @@ export const slides: Record<string, Slide> = {
         { position: { x: -100, y: -250 } },
         {
           icon: <DatabaseZap className="size-6" />,
-          label: 'Data appp',
+          label: 'Data app',
         },
       ),
       spiceBlock({
