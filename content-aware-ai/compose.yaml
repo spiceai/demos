@@ -19,3 +19,15 @@ services:
       SPICE_HTTP_ENDPOINT: "http://spice:3000"
     ports:
       - "3000:3000"
+
+  ftp:
+    image: garethflowers/ftp-server
+    container_name: my-ftp-server
+    environment:
+      - FTP_PASS=123
+      - FTP_USER=user
+    ports:
+      - '20-21:20-21/tcp'
+      - '40000-40009:40000-40009/tcp'
+    volumes:
+      - '${FTP_VOLUME_PATH}:/home/user'

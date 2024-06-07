@@ -23,6 +23,12 @@ SPICE_HTTP_ENDPOINT=http://localhost:3001
 OPENAI_API_KEY=<your-openai-api-key>
 ```
 
+## Start local ftp-server with decision records
+
+```bash
+FTP_VOLUME_PATH="<local path to decision records folder>" make ftp
+```
+
 ## Start Spice
 
 Set supabase db username for `daily_journal` dataset.
