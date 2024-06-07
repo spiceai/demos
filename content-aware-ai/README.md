@@ -53,7 +53,9 @@ But like other types of software, there's a ton of challenges to create this typ
 
 In this demo, we're going to show you how Spice provides building-blocks to connect applications with data and AI, so you can build your own AI-native production-grade application, focusing on the business value you bring, without worrying about all the plumbing.
 
-### Introducing Spicy Chat
+
+### Mode 0
+#### Introducing Spicy Chat
 
 Today, we are building Spicy Chat - our own AI-native enterprise messaging app.
 
@@ -65,7 +67,8 @@ If I ask Pepper a question, she already has private, local access to Spicy Chat 
 
 "@Pepper, summarize today's conversations"
 
-### Create Data-Driven App
+### Mode 1
+#### Create Data-Driven App
 
 The first step in creating an enterprise AI-driven experience is data-readiness. For many organizations this often means querying data from many disparate sources, like agumenting application data with big data stored in data lakes or warehouses and fetching content from files.
 
@@ -73,27 +76,11 @@ In this example, we need to query archival messaging data stored in our S3 datal
 
 With Spice, this is easy. We can simply define datasets in the `spicepod.yaml` manifest.
 
-```yaml
-version: v1beta1
-kind: Spicepod
-name: content-aware-ai
-
-datasets:
-  # Application data (PostgreSQL)
-  - from: postgres:syncs
-    name: daily_journal
-    params:
-      pg_host: aws-0-us-west-1.pooler.supabase.com
-      pg_db: postgres
-      pg_port: 5432
-      pg_user: '[supabase_user]'
-      pg_pass_key: password
-      pg_sslmode: require
-```
+See [spicepod.yaml](./spicepod.1.yaml)
 
 These datasets are now available for query through a single view through the Spice runtime using a single endpoint.
 
-### Using this data in the App
+#### Using this data in the App
 
 When I click the `archive` channel which includes this additional data, note that it's very slow to load, and this is because it's trying to query across all the messages in the data lake, which is a lot of data, and slow to query.
 
@@ -101,7 +88,8 @@ Worse, if I want Pepper to use that information in her reply, it's almost to slo
 
 "@Pepper, when did we decide to use the vitest testing framework instead of jest, and what conversations happened to make that decision?"
 
-## Accelerated Datasets
+### Mode 2
+#### Accelerated Datasets
 
 With Spice, you can materialize and accelerate datasets. By adding the `acceleration` section, we can replicate a copy of the data we expect to need and colocate it with the application for very fast retrieval.
 
@@ -124,7 +112,8 @@ Let's re-ask the question.
 
 Wow, see how much faster that was. That's why fast access to data across your enterprise is critical for building intelligent applications.
 
-## Content-Aware GenAI
+### Mode 3
+#### Content-Aware GenAI
 
 Note, though, Pepper actually missed an important piece. At Spice, writing is fundamental, and we record all our decisions using Spice Decision Records. Pepper didn't have access to these because they are stored in files on our FTP server. Yep, you heard me right, like 30% of the enterprises we recently talked to, a lot of our data is stored in legacy systems like FTP, which the Spice runtime can connect to.
 
