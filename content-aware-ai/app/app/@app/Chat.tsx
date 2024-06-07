@@ -27,10 +27,24 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
   const { messages, setMessages, append, input, setInput } = useChat({
     maxToolRoundtrips: 0,
     onToolCall: ({ toolCall }) => {
-      console.log(toolCall);
+      if (!accelerated) {
+        store.setAnimatedEdge('e-spice', true);
+      }
+
+      if (toolCall.toolName === 'summarizeConversation') {
+        store.setAnimatedEdge('e-datalake', true);
+      }
+
+      if (toolCall.toolName === 'searchInDecisions') {
+        store.setAnimatedEdge('e-ftp', true);
+      }
     },
     onFinish: () => {
       store.setAnimatedEdge('e-openai', false);
+      store.setAnimatedEdge('e-spice', false);
+      store.setAnimatedEdge('e-postgres', false);
+      store.setAnimatedEdge('e-datalake', false);
+      store.setAnimatedEdge('e-ftp', false);
     },
   });
 

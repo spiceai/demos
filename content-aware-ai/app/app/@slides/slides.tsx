@@ -1,10 +1,15 @@
 'use client';
 
 import { Position, Node, Edge, MarkerType } from 'reactflow';
-import { PostgresIcon, SpiceIcon, DuckDbIcon, OpenAiIcon } from './icons';
-
-import { Database } from 'lucide-react';
+import {
+  PostgresIcon,
+  SpiceIcon,
+  DuckDbIcon,
+  OpenAiIcon,
+  DatabricksIcon,
+} from './icons';
 import { DocumentIcon } from '@heroicons/react/24/outline';
+import { TableCellsIcon } from '@heroicons/react/24/outline';
 
 function spiceChatBlock(node: Partial<Node> = {}): Node {
   return {
@@ -22,16 +27,19 @@ function spiceChatBlock(node: Partial<Node> = {}): Node {
   };
 }
 
-function postgresBlock(node: Partial<Node> = {}): Node {
+function postgresBlock(node: Partial<Node> = {}, data: any = {}): Node {
   return {
     id: 'db',
     type: 'block',
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    position: { x: 300, y: 0 },
+    position: { x: 700, y: -60 },
     data: {
       icon: <PostgresIcon className="size-6" />,
       label: 'PostgreSQL',
+      badge: <TableBadge table="#daily-journal" />,
+      className: 'bg-white',
+      ...data,
     },
     ...node,
   };
@@ -43,7 +51,7 @@ function spiceBlock(node: Partial<Node> = {}, data: any = {}): Node {
     type: 'block',
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    position: { x: 350, y: 0 },
+    position: { x: 300, y: 0 },
     data: {
       icon: <SpiceIcon className="size-6" />,
       label: 'Spice OSS',
@@ -54,16 +62,18 @@ function spiceBlock(node: Partial<Node> = {}, data: any = {}): Node {
   };
 }
 
-function datalakeBlock(node: Partial<Node> = {}): Node {
+function datalakeBlock(node: Partial<Node> = {}, data: any = {}): Node {
   return {
     id: 'datalake',
     type: 'block',
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    position: { x: 600, y: 100 },
+    position: { x: 700, y: 60 },
     data: {
-      icon: <Database className="size-6" />,
+      icon: <DatabricksIcon className="size-6" />,
       label: 'Databricks',
+      badge: <TableBadge table="#archive" />,
+      ...data,
     },
     ...node,
   };
@@ -75,7 +85,7 @@ function ftpBlock(node: Partial<Node> = {}): Node {
     type: 'block',
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    position: { x: 600, y: 100 },
+    position: { x: 900, y: 0 },
     data: {
       icon: <DocumentIcon className="size-6" />,
       label: 'FTP Server',
@@ -90,7 +100,7 @@ function aiBlock(node: Partial<Node> = {}): Node {
     type: 'block',
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    position: { x: 500, y: 200 },
+    position: { x: 550, y: 200 },
     data: {
       icon: <OpenAiIcon className="size-6" />,
       label: 'OpenAI',
@@ -99,16 +109,38 @@ function aiBlock(node: Partial<Node> = {}): Node {
   };
 }
 
+function FederationBadge() {
+  return (
+    <div className="bg-blue-800 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+      <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
+        <TableCellsIcon className="h-5" /> + <TableCellsIcon className="h-5" />→
+        #archive
+      </div>
+    </div>
+  );
+}
+
 function AccelerationBadge() {
   return (
-    <div className="absolute bg-amber-500 text-black p-1 text-xs rounded-sm border border-amber-800 -bottom-12 -right-1 flex flex-col gap-1">
-      <div className="flex items-center gap-2 text-xs">
+    <div className="bg-orange-800 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+      <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
         <DuckDbIcon className="h-5" />
-        postgres
+        #archive
       </div>
-      <div className="flex items-center gap-2 text-xs">
+      <div className="flex items-center gap-2 text-sm">
         <DuckDbIcon className="h-5" />
-        databricks
+        #general
+      </div>
+    </div>
+  );
+}
+
+function TableBadge({ table }: { table: string }) {
+  return (
+    <div className="bg-gray-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+      <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
+        <TableCellsIcon className="h-5" />
+        {table}
       </div>
     </div>
   );
@@ -136,7 +168,7 @@ function edge(
     style: {
       stroke: m.color,
       strokeWidth: m.strokeWidth,
-      strokeDasharray: 5,
+      // strokeDasharray: 5,
       animation: `dashdraw ${m.speed}s linear infinite`,
     },
     // markerEnd: { type: MarkerType.ArrowClosed, color: m.color },
@@ -154,21 +186,10 @@ export interface Slide {
 export const slides: Record<string, Slide> = {
   0: {
     title: 'Without Spice',
-    nodes: [
-      spiceChatBlock(),
-      postgresBlock({
-        position: { x: 700, y: -50 },
-      }),
-      datalakeBlock({
-        position: { x: 700, y: 50 },
-      }),
-      aiBlock({
-        position: { x: 600, y: 150 },
-      }),
-    ],
+    nodes: [spiceChatBlock(), postgresBlock(), aiBlock()],
     edges: [
       edge('e-postgres', 'db', 'app'),
-      edge('e-datalake', 'datalake', 'app'),
+      // edge('e-datalake', 'datalake', 'app'),
       edge('e-openai', 'ai', 'app'),
     ],
   },
@@ -177,21 +198,19 @@ export const slides: Record<string, Slide> = {
     title: 'Spice Unified Query',
     nodes: [
       spiceChatBlock(),
-      spiceBlock(),
-      postgresBlock({
-        position: { x: 700, y: -50 },
-      }),
-      datalakeBlock({
-        position: { x: 700, y: 50 },
-      }),
-      aiBlock({
-        position: { x: 600, y: 150 },
-      }),
+      spiceBlock(
+        {},
+        {
+          badge: <FederationBadge />,
+        },
+      ),
+      postgresBlock(),
+      datalakeBlock(),
+      aiBlock(),
     ],
     edges: [
       edge('e-spice', 'spice', 'app', {
         color: '#f80',
-        strokeWidth: 2,
       }),
       edge('e-postgres', 'db', 'spice'),
       edge('e-datalake', 'datalake', 'spice'),
@@ -206,24 +225,22 @@ export const slides: Record<string, Slide> = {
       spiceBlock(
         {},
         {
-          badge: <AccelerationBadge />,
+          badge: (
+            <>
+              <FederationBadge />
+              <AccelerationBadge />
+            </>
+          ),
         },
       ),
-      postgresBlock({
-        position: { x: 700, y: -50 },
-      }),
-      datalakeBlock({
-        position: { x: 700, y: 50 },
-      }),
-      aiBlock({
-        position: { x: 600, y: 150 },
-      }),
+      postgresBlock(),
+      datalakeBlock(),
+      aiBlock(),
     ],
     edges: [
       edge('e-spice', 'spice', 'app', {
         color: '#f80',
         speed: 0.2,
-        strokeWidth: 2,
       }),
       edge('e-postgres', 'db', 'spice'),
       edge('e-datalake', 'datalake', 'spice'),
@@ -238,27 +255,23 @@ export const slides: Record<string, Slide> = {
       spiceBlock(
         {},
         {
-          badge: <AccelerationBadge />,
+          badge: (
+            <>
+              <FederationBadge />
+              <AccelerationBadge />
+            </>
+          ),
         },
       ),
-      postgresBlock({
-        position: { x: 700, y: -50 },
-      }),
-      datalakeBlock({
-        position: { x: 700, y: 50 },
-      }),
-      aiBlock({
-        position: { x: 600, y: 150 },
-      }),
-      ftpBlock({
-        position: { x: 850, y: 0 },
-      }),
+      postgresBlock(),
+      datalakeBlock(),
+      aiBlock(),
+      ftpBlock(),
     ],
     edges: [
       edge('e-spice', 'spice', 'app', {
         color: '#f80',
         speed: 0.2,
-        strokeWidth: 2,
       }),
       edge('e-postgres', 'db', 'spice'),
       edge('e-ftp', 'ftp', 'spice'),

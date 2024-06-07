@@ -62,3 +62,16 @@ export const DuckDbIcon = ({ className }: { className?: string }) => (
     />
   </svg>
 );
+
+export const DatabricksIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 40.1 42"
+    className={className}
+  >
+    <path
+      d="M40.1 31.1v-7.4l-.8-.5-19.2 10.5-18.2-10v-4.3l18.2 9.9 20.1-10.9v-7.3l-.8-.5-19.3 10.6-17.5-9.6L20.1 2l14.1 7.7 1.1-.6v-.8L20.1 0 0 10.9V12l20.1 11 18.2-10v4.4l-18.2 10L.8 16.8l-.8.5v7.4l20.1 10.9 18.2-9.9V30L20.1 40 .8 29.5 0 30v1.1L20.1 42l20-10.9z"
+      fill="#ff3621"
+    />
+  </svg>
+);

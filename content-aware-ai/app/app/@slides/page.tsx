@@ -34,15 +34,17 @@ export const BlockNode: FC<
 > = ({ data }) => (
   <div
     className={cn(
-      'border p-4 gap-4 flex items-center justify-center rounded-md relative min-w-28 shadow-md',
+      'border-2 border-black p-4 gap-4 flex items-center justify-center rounded-md relative min-w-32 shadow-md',
       data.className,
     )}
   >
     <Handle type="source" position={Position.Left} className="opacity-0" />
     <div className="flex flex-col gap-2 items-center justify-center">
       {data.icon}
-      <div className="text-sm">{data.label}</div>
-      {data.badge}
+      <div className="font-semibold">{data.label}</div>
+      <div className="absolute top-[80%] left-8 flex flex-col gap-1">
+        {data.badge}
+      </div>
     </div>
     <Handle type="target" position={Position.Right} className="opacity-0" />
   </div>
@@ -78,7 +80,7 @@ export const Connection: FC<EdgeProps> = ({
         path={path}
         style={{
           ...style,
-          strokeWidth: 2,
+          strokeWidth: 4,
           strokeDasharray: 5,
           animation: style?.animation,
         }}
@@ -97,6 +99,7 @@ export const Connection: FC<EdgeProps> = ({
         ...style,
         strokeWidth: 2,
         strokeDasharray: 5,
+        opacity: 0.5,
         animation: undefined,
       }}
       markerStart={markerStart}
@@ -116,7 +119,7 @@ const edgeTypes = {
 export default function Slide({ searchParams: { state } }: Params) {
   const slide = slides[state] || slides[0];
   return (
-    <div className="relative w-full flex flex-shrink-0 h-96 justify-center items-center px-8 pt-8">
+    <div className="relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-8 pt-8">
       <ReactFlowProvider>
         <SlideView {...slide} />
       </ReactFlowProvider>
