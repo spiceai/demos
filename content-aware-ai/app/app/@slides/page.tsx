@@ -34,15 +34,15 @@ export const BlockNode: FC<
 > = ({ data }) => (
   <div
     className={cn(
-      'border-2 border-black p-4 gap-4 flex items-center justify-center rounded-md relative min-w-32 shadow-md',
-      data.className,
+      'border-2 border-gray-800 p-4 gap-4 flex items-center justify-center rounded-md relative min-w-32 shadow-md',
+      data.className
     )}
   >
     <Handle type="source" position={Position.Left} className="opacity-0" />
     <div className="flex flex-col gap-2 items-center justify-center">
       {data.icon}
       <div className="font-semibold">{data.label}</div>
-      <div className="absolute top-[80%] left-8 flex flex-col gap-1">
+      <div className="absolute top-[85%] left-8 flex flex-col gap-1">
         {data.badge}
       </div>
     </div>

@@ -114,10 +114,10 @@ function aiBlock(node: Partial<Node> = {}): Node {
 
 function FederationBadge() {
   return (
-    <div className="bg-blue-800 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+    <div className="bg-blue-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-gray-800 flex flex-col gap-1">
       <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
-        <TableCellsIcon className="h-5" /> + <TableCellsIcon className="h-5" />→
-        #archive
+        <TableCellsIcon className="h-5" />+<TableCellsIcon className="h-5" />
+        &nbsp;#archive
       </div>
     </div>
   );
@@ -125,14 +125,14 @@ function FederationBadge() {
 
 function AccelerationBadge() {
   return (
-    <div className="bg-orange-800 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+    <div className="bg-blue-600 text-white py-1 px-2 text-xs rounded-sm border-2 border-gray-800 flex flex-col gap-1">
       <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
         <DuckDbIcon className="h-5" />
-        #archive
+        #archive ⚡️
       </div>
       <div className="flex items-center gap-2 text-sm">
         <DuckDbIcon className="h-5" />
-        #general
+        #general ⚡️
       </div>
     </div>
   );
@@ -140,7 +140,7 @@ function AccelerationBadge() {
 
 function TablesBadge({ tables }: { tables: string[] }) {
   return (
-    <div className="bg-blue-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+    <div className="bg-blue-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-gray-800 flex flex-col gap-1">
       {tables.map((table) => (
         <div
           key={table}
@@ -159,7 +159,7 @@ function edge(
   source: string,
   target: string,
   mode: any = {},
-  e: Partial<Edge> = {},
+  e: Partial<Edge> = {}
 ): Edge {
   const m = {
     color: '#000',
@@ -195,13 +195,13 @@ export interface Slide {
 
 export const slides: Record<string, Slide> = {
   0: {
-    title: 'Without Spice',
+    title: 'App with database',
     nodes: [spiceChatBlock(), postgresBlock({ position: { x: 400, y: 0 } })],
     edges: [edge('e-postgres', 'db', 'app')],
   },
 
   1: {
-    title: 'Without Spice',
+    title: 'App with AI',
     nodes: [
       spiceChatBlock(),
       postgresBlock({ position: { x: 600, y: 0 } }),
@@ -209,30 +209,34 @@ export const slides: Record<string, Slide> = {
     ],
     edges: [
       edge('e-postgres', 'db', 'app'),
-      edge('e-datalake', 'datalake', 'app'),
+      edge('e-datalake', 'datalake', 'app', {
+        speed: 1.2,
+      }),
       edge('e-openai', 'ai', 'app'),
     ],
   },
 
   2: {
-    title: 'Without Spice',
+    title: 'App with multiple data sources',
     nodes: [spiceChatBlock(), postgresBlock(), datalakeBlock(), aiBlock()],
     edges: [
       edge('e-postgres', 'db', 'app'),
-      edge('e-datalake', 'datalake', 'app'),
+      edge('e-datalake', 'datalake', 'app', {
+        speed: 1.2,
+      }),
       edge('e-openai', 'ai', 'app'),
     ],
   },
 
   3: {
-    title: 'Spice Unified Query',
+    title: 'Spice app with federated query and AI',
     nodes: [
       spiceChatBlock(),
       spiceBlock(
         {},
         {
           badge: <FederationBadge />,
-        },
+        }
       ),
       postgresBlock(),
       datalakeBlock(),
@@ -243,37 +247,15 @@ export const slides: Record<string, Slide> = {
         color: '#f80',
       }),
       edge('e-postgres', 'db', 'spice'),
-      edge('e-datalake', 'datalake', 'spice'),
-      edge('e-openai', 'ai', 'app'),
-    ],
-  },
-
-  4: {
-    title: 'Spice Unified Query and AI',
-    nodes: [
-      spiceChatBlock(),
-      spiceBlock(
-        {},
-        {
-          badge: <FederationBadge />,
-        },
-      ),
-      postgresBlock(),
-      datalakeBlock(),
-      aiBlock(),
-    ],
-    edges: [
-      edge('e-spice', 'spice', 'app', {
-        color: '#f80',
+      edge('e-datalake', 'datalake', 'spice', {
+        speed: 1.2,
       }),
-      edge('e-postgres', 'db', 'spice'),
-      edge('e-datalake', 'datalake', 'spice'),
       edge('e-openai', 'ai', 'spice'),
     ],
   },
 
-  5: {
-    title: 'Spice Unified Query & Acceleration',
+  4: {
+    title: 'Spice app with DuckDB acceleration',
     accelerated: true,
     nodes: [
       spiceChatBlock(),
@@ -286,7 +268,7 @@ export const slides: Record<string, Slide> = {
               <AccelerationBadge />
             </>
           ),
-        },
+        }
       ),
       postgresBlock(),
       datalakeBlock(),
@@ -303,8 +285,8 @@ export const slides: Record<string, Slide> = {
     ],
   },
 
-  6: {
-    title: 'Spice Content-Aware AI',
+  5: {
+    title: 'Spice app with Retrieval-Augmented-AI (RAG)',
     accelerated: true,
     augmented: true,
     nodes: [
@@ -314,11 +296,10 @@ export const slides: Record<string, Slide> = {
         {
           badge: (
             <>
-              <FederationBadge />
               <AccelerationBadge />
             </>
           ),
-        },
+        }
       ),
       postgresBlock(),
       datalakeBlock(),
