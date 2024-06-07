@@ -34,15 +34,15 @@ export const BlockNode: FC<
 > = ({ data }) => (
   <div
     className={cn(
-      'border-2 border-black p-4 gap-4 flex items-center justify-center rounded-md relative min-w-32 shadow-md',
-      data.className,
+      'border-2 border-gray-800 p-4 gap-4 flex items-center justify-center rounded-md relative min-w-32 shadow-md',
+      data.className
     )}
   >
     <Handle type="source" position={Position.Left} className="opacity-0" />
     <div className="flex flex-col gap-2 items-center justify-center">
       {data.icon}
       <div className="font-semibold">{data.label}</div>
-      <div className="absolute top-[80%] left-8 flex flex-col gap-1">
+      <div className="absolute top-[85%] left-8 flex flex-col gap-1">
         {data.badge}
       </div>
     </div>
@@ -122,7 +122,7 @@ export default function Slide({ searchParams: { state } }: Params) {
     <div
       className={cn(
         'w-full flex flex-shrink-0 h-[500px] justify-center items-center px-16 pt-4',
-        slide.fullscreen ? 'h-full grow' : 'h-[500px]',
+        slide.fullscreen ? 'h-full grow' : 'h-[500px]'
       )}
     >
       <ReactFlowProvider>
@@ -143,7 +143,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
     <div
       className={cn(
         'flex w-full h-full grow align-middle gap-8',
-        fullscreen ? 'flex-col pb-8' : 'flex-col max-w-7xl',
+        fullscreen ? 'flex-col pb-8' : 'flex-col max-w-6xl'
       )}
     >
       <div className="relative grow bg-gray-300 border border-gray-400 rounded-lg">
@@ -162,7 +162,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
         <Switcher />
       </div>
       <div className={cn('flex items-center', !fullscreen && 'whitespace-pre')}>
-        <h2 className="text-4xl font-semibold text-wrap mx-auto text-center">
+        <h2 className="text-3xl font-semibold italic text-wrap mx-auto text-center text-gray-700">
           {title}
         </h2>
       </div>

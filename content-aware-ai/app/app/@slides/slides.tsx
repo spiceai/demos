@@ -139,10 +139,10 @@ function block(id: string, node: Partial<Node> = {}, data: any = {}): Node {
 
 function FederationBadge() {
   return (
-    <div className="bg-blue-800 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+    <div className="bg-blue-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-gray-800 flex flex-col gap-1">
       <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
-        <TableCellsIcon className="h-5" /> + <TableCellsIcon className="h-5" />→
-        #archive
+        <TableCellsIcon className="h-5" />+<TableCellsIcon className="h-5" />
+        &nbsp;#archive
       </div>
     </div>
   );
@@ -150,14 +150,14 @@ function FederationBadge() {
 
 function AccelerationBadge() {
   return (
-    <div className="bg-orange-800 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+    <div className="bg-blue-600 text-white py-1 px-2 text-xs rounded-sm border-2 border-gray-800 flex flex-col gap-1">
       <div className="flex items-center gap-2 text-sm whitespace-nowrap font-semibold">
         <DuckDbIcon className="h-5" />
-        #archive
+        #archive ⚡️
       </div>
       <div className="flex items-center gap-2 text-sm">
         <DuckDbIcon className="h-5" />
-        #general
+        #general ⚡️
       </div>
     </div>
   );
@@ -165,7 +165,7 @@ function AccelerationBadge() {
 
 function TablesBadge({ tables }: { tables: string[] }) {
   return (
-    <div className="bg-blue-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col gap-1">
+    <div className="bg-blue-200 text-black py-1 px-2 text-xs rounded-sm border-2 border-gray-800 flex flex-col gap-1">
       {tables.map((table) => (
         <div
           key={table}
@@ -184,7 +184,7 @@ function edge(
   source: string,
   target: string,
   mode: any = {},
-  e: Partial<Edge> = {},
+  e: Partial<Edge> = {}
 ): Edge {
   const m = {
     color: '#000',
@@ -221,13 +221,13 @@ export interface Slide {
 
 export const slides: Record<string, Slide> = {
   0: {
-    title: 'Just postgres',
+    title: 'Database only',
     nodes: [spiceChatBlock(), postgresBlock({ position: { x: 400, y: 0 } })],
     edges: [edge('e-postgres', 'db', 'app')],
   },
 
   1: {
-    title: 'Add OpenAI',
+    title: 'Database and AI',
     nodes: [
       spiceChatBlock(),
       postgresBlock({ position: { x: 600, y: 0 } }),
@@ -235,30 +235,34 @@ export const slides: Record<string, Slide> = {
     ],
     edges: [
       edge('e-postgres', 'db', 'app'),
-      edge('e-datalake', 'datalake', 'app'),
+      edge('e-datalake', 'datalake', 'app', {
+        speed: 1.2,
+      }),
       edge('e-openai', 'ai', 'app'),
     ],
   },
 
   2: {
-    title: 'Postgres + databricks',
+    title: 'Multiple data sources',
     nodes: [spiceChatBlock(), postgresBlock(), datalakeBlock(), aiBlock()],
     edges: [
       edge('e-postgres', 'db', 'app'),
-      edge('e-datalake', 'datalake', 'app'),
+      edge('e-datalake', 'datalake', 'app', {
+        speed: 1.2,
+      }),
       edge('e-openai', 'ai', 'app'),
     ],
   },
 
   3: {
-    title: 'Spice unified query and intelligence',
+    title: 'Spice federated data and AI',
     nodes: [
       spiceChatBlock(),
       spiceBlock(
         {},
         {
           badge: <FederationBadge />,
-        },
+        }
       ),
       postgresBlock(),
       datalakeBlock(),
@@ -269,37 +273,15 @@ export const slides: Record<string, Slide> = {
         color: '#f80',
       }),
       edge('e-postgres', 'db', 'spice'),
-      edge('e-datalake', 'datalake', 'spice'),
-      edge('e-openai', 'ai', 'app'),
-    ],
-  },
-
-  4: {
-    title: 'LLMs in Spice',
-    nodes: [
-      spiceChatBlock(),
-      spiceBlock(
-        {},
-        {
-          badge: <FederationBadge />,
-        },
-      ),
-      postgresBlock(),
-      datalakeBlock(),
-      aiBlock(),
-    ],
-    edges: [
-      edge('e-spice', 'spice', 'app', {
-        color: '#f80',
+      edge('e-datalake', 'datalake', 'spice', {
+        speed: 1.2,
       }),
-      edge('e-postgres', 'db', 'spice'),
-      edge('e-datalake', 'datalake', 'spice'),
       edge('e-openai', 'ai', 'spice'),
     ],
   },
 
-  5: {
-    title: 'Spice accelerated queries',
+  4: {
+    title: 'Spice acceleration with DuckDB',
     accelerated: true,
     nodes: [
       spiceChatBlock(),
@@ -312,7 +294,7 @@ export const slides: Record<string, Slide> = {
               <AccelerationBadge />
             </>
           ),
-        },
+        }
       ),
       postgresBlock(),
       datalakeBlock(),
@@ -329,8 +311,8 @@ export const slides: Record<string, Slide> = {
     ],
   },
 
-  6: {
-    title: 'Content-aware Spice AI',
+  5: {
+    title: 'Spice Retrieval-Augmented-AI (RAG)',
     accelerated: true,
     augmented: true,
     nodes: [
@@ -340,11 +322,10 @@ export const slides: Record<string, Slide> = {
         {
           badge: (
             <>
-              <FederationBadge />
               <AccelerationBadge />
             </>
           ),
-        },
+        }
       ),
       postgresBlock(),
       datalakeBlock(),
@@ -363,7 +344,7 @@ export const slides: Record<string, Slide> = {
     ],
   },
 
-  7: {
+  6: {
     fullscreen: true,
     title: '',
     accelerated: true,
@@ -375,7 +356,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <CpuIcon className="size-6" />,
           label: 'AI app',
-        },
+        }
       ),
       block(
         'rag',
@@ -383,7 +364,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <SearchCode className="size-6" />,
           label: 'RAG',
-        },
+        }
       ),
       block(
         'dataapp',
@@ -391,7 +372,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <DatabaseZap className="size-6" />,
           label: 'Data app',
-        },
+        }
       ),
       spiceBlock({
         position: { x: 200, y: 0 },
@@ -406,7 +387,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <S3Icon className="size-8" />,
           label: 'AWS S3',
-        },
+        }
       ),
       block(
         'gql',
@@ -414,7 +395,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <GraphQlIcon className="size-6" />,
           label: 'GraphQL',
-        },
+        }
       ),
       block(
         'snowflake',
@@ -422,7 +403,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <SnowflakeIcon className="size-6" />,
           label: 'Snowflake',
-        },
+        }
       ),
       block(
         'clickhouse',
@@ -430,7 +411,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <ClickhouseIcon className="size-6" />,
           label: 'Clickhouse',
-        },
+        }
       ),
       block(
         'mysql',
@@ -438,23 +419,23 @@ export const slides: Record<string, Slide> = {
         {
           icon: <MysqlIcon className="size-6" />,
           label: 'MySQL',
-        },
+        }
       ),
       block(
         'llm',
         { position: { x: 500, y: 300 } },
         {
           icon: <CpuIcon className="size-6" />,
-          label: 'Local LLM',
-        },
+          label: 'GGUF',
+        }
       ),
       block(
         'onnx',
         { position: { x: 550, y: 400 } },
         {
           icon: <OnnxIcon className="size-16" />,
-          label: 'ONNX models',
-        },
+          label: 'ONNX',
+        }
       ),
       block(
         'hf',
@@ -462,7 +443,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <HuggingfaceIcon className="size-6" />,
           label: 'Huggingface',
-        },
+        }
       ),
       block(
         'prometheus',
@@ -470,7 +451,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <PrometheusIcon className="size-6" />,
           label: 'Prometheus',
-        },
+        }
       ),
       block(
         'otel',
@@ -478,7 +459,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <OpentelemetryIcon className="size-6" />,
           label: 'OpenTelemetry',
-        },
+        }
       ),
     ],
     edges: [

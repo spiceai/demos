@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 export function useConversationMessages(
   conversation: string,
   accelerated?: boolean,
-  edge_ids?: string[],
+  edge_ids?: string[]
 ) {
   const store = useAnimationStore();
   const [loading, setLoading] = useState(true);
@@ -25,11 +25,11 @@ export function useConversationMessages(
     (v: boolean) => {
       const list =
         (edge_ids ? edge_ids : conversations[conversation]?.edge_ids) || [];
-      list.forEach((id) => {
+      list?.forEach((id) => {
         store.setAnimatedEdge(id, v);
       });
     },
-    [conversation, edge_ids],
+    [conversation, edge_ids]
   );
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export const Messages = ({
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const { messages, loading } = useConversationMessages(
     conversation,
-    accelerated,
+    accelerated
   );
 
   useEffect(() => {
