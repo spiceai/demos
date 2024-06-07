@@ -13,7 +13,7 @@ datasets:
       pg_host: aws-0-us-west-1.pooler.supabase.com
       pg_db: postgres
       pg_port: 5432
-      pg_user: '[supabase_user]'
+      pg_user: 'postgres.tjtwkekeblroqgenheef'
       pg_pass_key: password
       pg_sslmode: require
     embeddings:
@@ -26,7 +26,7 @@ datasets:
       pg_host: aws-0-us-west-1.pooler.supabase.com
       pg_db: postgres
       pg_port: 5432
-      pg_user: '[supabase_user]'
+      pg_user: 'postgres.tjtwkekeblroqgenheef'
       pg_pass_key: password
       pg_sslmode: require
     acceleration:
@@ -52,11 +52,13 @@ datasets:
       databricks-cluster-id: 0423-065654-nu3nflpo
 
   # File data, indexed using OpenAI embeddings
-  - from: file://Users/evgenii/Developer/Spice/demos/content-aware-ai/decisions
+  - from: file://Users/jeadie/Github/data-platform/docs/decisions
     name: decisions
     metadata: true
     params:
       file_format: md
+    acceleration:
+      enabled: true
     embeddings:
       - column: content
         use: openai_embeddings
@@ -66,8 +68,5 @@ embeddings:
     from: openai
 
 llms:
-  - name: gpt-4o
-    from: openai
-    params:
-      openai_model: gpt-4o
-      openai_api_key: '[openai_api]'
+  - name: openai
+    from: openai/gpt-4o
