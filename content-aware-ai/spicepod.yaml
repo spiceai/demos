@@ -31,9 +31,9 @@ datasets:
       pg_sslmode: require
     acceleration:
       enabled: true
-    # embeddings:
-    #   - column: answer
-    #     use: openai_embeddings
+    embeddings:
+      - column: answer
+        use: openai_embeddings
 
   # Datalake data (Databricks)
   - from: databricks:hive_metastore.default.messages
@@ -64,3 +64,10 @@ datasets:
 embeddings:
   - name: openai_embeddings
     from: openai
+
+llms:
+  - name: gpt-4o
+    from: openai
+    params:
+      openai_model: gpt-4o
+      openai_api_key: '[openai_api]'
