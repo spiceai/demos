@@ -24,7 +24,7 @@ interface Params {
   };
 }
 
-export const BlockNode: FC<
+const BlockNode: FC<
   NodeProps<{
     icon?: ReactNode;
     className?: string;
@@ -50,7 +50,7 @@ export const BlockNode: FC<
   </div>
 );
 
-export const Connection: FC<EdgeProps> = ({
+const Connection: FC<EdgeProps> = ({
   id,
   sourceX,
   sourceY,
@@ -97,9 +97,9 @@ export const Connection: FC<EdgeProps> = ({
       path={path}
       style={{
         ...style,
-        strokeWidth: 2,
+        strokeWidth: 3,
         strokeDasharray: 5,
-        opacity: 0.5,
+        opacity: 0.75,
         animation: undefined,
       }}
       markerStart={markerStart}
