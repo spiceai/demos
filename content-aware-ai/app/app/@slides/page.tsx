@@ -122,7 +122,7 @@ export default function Slide({ searchParams: { state } }: Params) {
     <div
       className={cn(
         'w-full flex flex-shrink-0 h-[500px] justify-center items-center px-16 pt-4',
-        slide.fullscreen ? 'h-full grow' : 'h-[500px]',
+        slide.fullscreen ? 'h-full grow' : 'h-[500px]'
       )}
     >
       <ReactFlowProvider>
@@ -143,7 +143,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
     <div
       className={cn(
         'flex w-full h-full grow align-middle gap-8',
-        fullscreen ? 'flex-col pb-8' : 'flex-col max-w-7xl',
+        fullscreen ? 'flex-col pb-8' : 'flex-col max-w-7xl'
       )}
     >
       <div className="relative grow bg-gray-300 border border-gray-400 rounded-lg">
@@ -162,7 +162,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
         <Switcher />
       </div>
       <div className={cn('flex items-center', !fullscreen && 'whitespace-pre')}>
-        <h2 className="text-4xl font-semibold text-wrap mx-auto text-center">
+        <h2 className="text-3xl font-semibold italic text-wrap mx-auto text-center text-gray-700">
           {title}
         </h2>
       </div>

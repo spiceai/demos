@@ -221,13 +221,13 @@ export interface Slide {
 
 export const slides: Record<string, Slide> = {
   0: {
-    title: 'App with database',
+    title: 'Database only',
     nodes: [spiceChatBlock(), postgresBlock({ position: { x: 400, y: 0 } })],
     edges: [edge('e-postgres', 'db', 'app')],
   },
 
   1: {
-    title: 'App with AI',
+    title: 'Database and AI',
     nodes: [
       spiceChatBlock(),
       postgresBlock({ position: { x: 600, y: 0 } }),
@@ -243,7 +243,7 @@ export const slides: Record<string, Slide> = {
   },
 
   2: {
-    title: 'App with multiple data sources (PostgreSQL + Databricks)',
+    title: 'Multiple data sources',
     nodes: [spiceChatBlock(), postgresBlock(), datalakeBlock(), aiBlock()],
     edges: [
       edge('e-postgres', 'db', 'app'),
@@ -255,7 +255,7 @@ export const slides: Record<string, Slide> = {
   },
 
   3: {
-    title: 'Spice app with federated data and AI',
+    title: 'Spice federated data and AI',
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -276,34 +276,12 @@ export const slides: Record<string, Slide> = {
       edge('e-datalake', 'datalake', 'spice', {
         speed: 1.2,
       }),
-      edge('e-openai', 'ai', 'app'),
-    ],
-  },
-
-  4: {
-    title: 'LLMs in Spice',
-    nodes: [
-      spiceChatBlock(),
-      spiceBlock(
-        {},
-        {
-          badge: <FederationBadge />,
-        },
-      ),
-      postgresBlock(),
-      datalakeBlock(),
-      aiBlock(),
-    ],
-    edges: [
-      edge('e-spice', 'spice', 'app', {
-        color: '#f80',
-      }),
       edge('e-openai', 'ai', 'spice'),
     ],
   },
 
   4: {
-    title: 'Spice app with DuckDB acceleration',
+    title: 'Spice acceleration with DuckDB',
     accelerated: true,
     nodes: [
       spiceChatBlock(),
@@ -334,7 +312,7 @@ export const slides: Record<string, Slide> = {
   },
 
   5: {
-    title: 'Spice app with Retrieval-Augmented-AI (RAG)',
+    title: 'Spice Retrieval-Augmented-AI (RAG)',
     accelerated: true,
     augmented: true,
     nodes: [
@@ -366,7 +344,7 @@ export const slides: Record<string, Slide> = {
     ],
   },
 
-  7: {
+  6: {
     fullscreen: true,
     title: '',
     accelerated: true,
@@ -378,7 +356,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <CpuIcon className="size-6" />,
           label: 'AI app',
-        },
+        }
       ),
       block(
         'rag',
@@ -386,7 +364,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <SearchCode className="size-6" />,
           label: 'RAG',
-        },
+        }
       ),
       block(
         'dataapp',
@@ -394,7 +372,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <DatabaseZap className="size-6" />,
           label: 'Data app',
-        },
+        }
       ),
       spiceBlock({
         position: { x: 200, y: 0 },
@@ -409,7 +387,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <S3Icon className="size-8" />,
           label: 'AWS S3',
-        },
+        }
       ),
       block(
         'gql',
@@ -417,7 +395,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <GraphQlIcon className="size-6" />,
           label: 'GraphQL',
-        },
+        }
       ),
       block(
         'snowflake',
@@ -425,7 +403,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <SnowflakeIcon className="size-6" />,
           label: 'Snowflake',
-        },
+        }
       ),
       block(
         'clickhouse',
@@ -433,7 +411,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <ClickhouseIcon className="size-6" />,
           label: 'Clickhouse',
-        },
+        }
       ),
       block(
         'mysql',
@@ -441,23 +419,23 @@ export const slides: Record<string, Slide> = {
         {
           icon: <MysqlIcon className="size-6" />,
           label: 'MySQL',
-        },
+        }
       ),
       block(
         'llm',
         { position: { x: 500, y: 300 } },
         {
           icon: <CpuIcon className="size-6" />,
-          label: 'Local LLM',
-        },
+          label: 'GGUF',
+        }
       ),
       block(
         'onnx',
         { position: { x: 550, y: 400 } },
         {
           icon: <OnnxIcon className="size-16" />,
-          label: 'ONNX models',
-        },
+          label: 'ONNX',
+        }
       ),
       block(
         'hf',
@@ -465,7 +443,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <HuggingfaceIcon className="size-6" />,
           label: 'Huggingface',
-        },
+        }
       ),
       block(
         'prometheus',
@@ -473,7 +451,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <PrometheusIcon className="size-6" />,
           label: 'Prometheus',
-        },
+        }
       ),
       block(
         'otel',
@@ -481,7 +459,7 @@ export const slides: Record<string, Slide> = {
         {
           icon: <OpentelemetryIcon className="size-6" />,
           label: 'OpenTelemetry',
-        },
+        }
       ),
     ],
     edges: [
