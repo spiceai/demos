@@ -6,8 +6,10 @@
 - Demo has two part: data flows on top, UX of Spicy Chat on bottom. 
 
 
-## Mode 0: 
+## Mode 0: Just postgres
 - Click on general, show conversation, explain application data.
+
+## Mode 1: Add OpenAI
 - Show Pepper: _"Of course Spice Chat is AI native, so it has a built-in AI-assistant called Pepper. Let's say Hi"_
 
 _Ask Pepper to tell us joke_
@@ -18,13 +20,15 @@ __ Ask Pepper to summarise chat __
 
 - Explain we're getting everything postgres, inserting into OpenAI. Fine for a toy app, Slow, lots of work for Spicy Chat
 
-## Mode 0.5: Postgres + databricks
+## Mode 2: Postgres + databricks
 -  The first step in creating an enterprise AI-driven experience is data. For many organizations this often means querying data from many disparate sources, like agumenting application data with big data stored in data lakes or warehouses and fetching content from files.
 In this example, we need to query archival messaging data stored in our S3 datalake using Databricks, journal data stored in PostgreSQL, and combine that with the application's messaging data.
 
 - Two datasets, but most enterprises have many more.
 
-## Mode 1:  Spice unified query and intelligence
+
+
+## Mode 3: Spice unified query and intelligence
 
 - UNified query interface, query across many sources at once. App has one interface
 - Configure this in spice.
@@ -34,6 +38,12 @@ _Walk through spicepod_1.yaml_
 - When I click the `archive` channel which includes this additional data, note that it's very slow to load, and this is because it's trying to query across all the messages in the data lake, which is a lot of data, and slow to query.
 - Very slow, databricks is expensive.
 
+### Mode 4: LLMs in Spice
+- Explain Models in spice
+    - Like datasets, reduce complexity
+    - Reduce data transit
+    - Speed
+
 - If I want Pepper to use that information in her reply, it's unusable, too slow to be productive.
 
 _Ask pepper to summarise #archive channel, don't wait_
@@ -42,7 +52,7 @@ _Ask pepper to summarise #archive channel, don't wait_
 
 <!-- [Spicepod One](./spicepod_1.yaml) -->
 
-## Mode 2: Spice accelerated queries
+## Mode 5: Spice accelerated queries
 - Spice can materialise the data Spicy Chat needs
 
 __ Walk through spicepod_2.yaml and change to acceleration __
@@ -57,7 +67,7 @@ __ Ask pepper to answer GCP question in #archive channel __
 
 <!-- [Spicepod Two](./spicepod_2.yaml) -->
 
-## Mode 3 Content-aware Spice AI
+## Mode 6 Content-aware Spice AI
 
 - Introduce writing at Spice, decision records, show list of documents at [](). 
 - Pepper doesn't have them, in FTP server.
