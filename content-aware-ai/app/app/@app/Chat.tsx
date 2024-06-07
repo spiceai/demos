@@ -20,7 +20,14 @@ import {
   MessageSkeleton,
 } from '@/components/message-component';
 import { useAnimationStore } from '@/lib/store';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UserIcon } from '@heroicons/react/24/outline';
+
+const users = {
+  Luke: 'https://avatars.githubusercontent.com/u/80174?v=4',
+  Jack: 'https://avatars.githubusercontent.com/u/23766767?v=4',
+  Evgenii: 'https://avatars.githubusercontent.com/u/827338?v=4',
+};
 
 export function Chat({
   conversation,
@@ -62,7 +69,7 @@ export function Chat({
   const store = useAnimationStore();
 
   const { messages: preloadedMessages, loading } = useConversationMessages(
-    'archive',
+    conversation,
     accelerated,
     conversation !== 'archive' ? ['e-postgres', 'e-spice'] : undefined,
   );
@@ -158,23 +165,33 @@ export function Chat({
           </>
         ) : null}
 
-        {(preloadedMessages || []).map((message: any, i) => (
-          <MessageComponent
-            key={i}
-            avatar={
-              <Avatar>
-                <AvatarImage src={`https://robohash.org/${message.user}.png`} />
-              </Avatar>
-            }
-            header={
-              <span className="text-secondary-foreground text-xs">
-                {/* @ts-ignore */}
-                {/* {dayjs(message.timestamp).format('YYYY-MM-DD hh:mm')} */}
-              </span>
-            }
-            content={message.answer}
-          />
-        ))}
+        {(preloadedMessages || []).map(
+          (
+            message: { username: 'Jack' | 'Luke' | 'Evgenii'; text: string },
+            i,
+          ) => (
+            <MessageComponent
+              key={i}
+              avatar={
+                <Avatar>
+                  {users[message.username] ? (
+                    <AvatarImage src={users[message.username]} />
+                  ) : (
+                    <AvatarFallback>
+                      <UserIcon className="size-7" />
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+              }
+              header={
+                <span className="text-secondary-foreground text-lg">
+                  {message.username}
+                </span>
+              }
+              content={message.text}
+            />
+          ),
+        )}
 
         {(messages || []).map((m, i) => (
           <MessageComponent
@@ -182,11 +199,11 @@ export function Chat({
             avatar={
               <Avatar>
                 {m.role === 'user' ? (
-                  <AvatarImage src="https://avatars.githubusercontent.com/u/23766767?v=4" />
+                  <AvatarImage src={users['Jack']} />
                 ) : (
-                  <div className="text-center bg-red-200 text-3xl flex flex-col justify-center items-center w-full h-full">
+                  <AvatarFallback className="bg-red-200 text-3xl">
                     🌶️
-                  </div>
+                  </AvatarFallback>
                 )}
               </Avatar>
             }
