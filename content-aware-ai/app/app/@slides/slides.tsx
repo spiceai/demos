@@ -393,27 +393,11 @@ export const slides: Record<string, Slide> = {
           label: 'Data appp',
         },
       ),
-      spiceBlock(
-        {
-          position: { x: 200, y: 0 },
-        },
-        {
-          badge: (
-            <>
-              <FederationBadge />
-              <AccelerationBadge />
-              <div className="bg-red-500 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex items-center gap-1">
-                <TableIcon className="size-4" /> Caching
-              </div>
-              <div className="bg-white text-black py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col justify-start items-start gap-1">
-                ML Runtime
-              </div>
-            </>
-          ),
-        },
-      ),
-      postgresBlock({ position: { x: 700, y: -150 } }),
-      datalakeBlock(),
+      spiceBlock({
+        position: { x: 200, y: 0 },
+      }),
+      postgresBlock({ position: { x: 700, y: -150 } }, { badge: undefined }),
+      datalakeBlock({}, { badge: undefined }),
       aiBlock({ position: { x: 650, y: 300 } }),
       ftpBlock(),
       block(
