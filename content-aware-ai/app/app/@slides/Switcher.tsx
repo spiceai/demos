@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-const maxState = 6;
+const maxState = 7;
 
 export const Switcher = () => {
   const router = useRouter();
@@ -31,22 +32,16 @@ export const Switcher = () => {
 
   return (
     <div className="absolute top-4 right-4 flex items-center gap-1">
-      <Button
-        disabled={state <= 0}
-        variant="ghost"
-        size="sm"
-        onClick={() => toState(-1)}
-      >
-        prev
+      <Button disabled={state <= 0} variant="ghost" onClick={() => toState(-1)}>
+        <ChevronLeftIcon className="w-6 h-6" />
       </Button>
 
       <Button
         disabled={state >= maxState}
         variant="ghost"
-        size="sm"
         onClick={() => toState(1)}
       >
-        next
+        <ChevronRightIcon className="w-6 h-6" />
       </Button>
     </div>
   );

@@ -7,9 +7,19 @@ import {
   DuckDbIcon,
   OpenAiIcon,
   DatabricksIcon,
+  GraphQlIcon,
+  MysqlIcon,
+  S3Icon,
+  SnowflakeIcon,
+  ClickhouseIcon,
+  PrometheusIcon,
+  OpentelemetryIcon,
+  OnnxIcon,
+  HuggingfaceIcon,
 } from './icons';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 import { TableCellsIcon } from '@heroicons/react/24/outline';
+import { DatabaseZap, TableIcon, CpuIcon, SearchCode } from 'lucide-react';
 
 function spiceChatBlock(node: Partial<Node> = {}): Node {
   return {
@@ -89,7 +99,7 @@ function ftpBlock(node: Partial<Node> = {}): Node {
     position: { x: 900, y: 0 },
     data: {
       icon: <DocumentIcon className="size-6" />,
-      label: 'FTP Server',
+      label: 'FTP/SFTP',
       className: 'bg-white',
     },
     ...node,
@@ -107,6 +117,21 @@ function aiBlock(node: Partial<Node> = {}): Node {
       icon: <OpenAiIcon className="size-6" />,
       label: 'OpenAI',
       className: 'bg-white',
+    },
+    ...node,
+  };
+}
+
+function block(id: string, node: Partial<Node> = {}, data: any = {}): Node {
+  return {
+    id,
+    type: 'block',
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    position: { x: 550, y: 200 },
+    data: {
+      className: 'bg-white',
+      ...data,
     },
     ...node,
   };
@@ -186,6 +211,7 @@ function edge(
 }
 
 export interface Slide {
+  fullscreen?: boolean;
   title: string;
   accelerated?: boolean;
   augmented?: boolean;
@@ -333,7 +359,166 @@ export const slides: Record<string, Slide> = {
       edge('e-postgres', 'db', 'spice'),
       edge('e-ftp', 'ftp', 'spice'),
       edge('e-datalake', 'datalake', 'spice'),
-      edge('e-openai', 'ai', 'spice', 'spice'),
+      edge('e-openai', 'ai', 'spice'),
+    ],
+  },
+
+  7: {
+    fullscreen: true,
+    title: '',
+    accelerated: true,
+    augmented: true,
+    nodes: [
+      block(
+        'aiapp',
+        { position: { x: -200, y: -150 } },
+        {
+          icon: <CpuIcon className="size-6" />,
+          label: 'AI app',
+        },
+      ),
+      block(
+        'rag',
+        { position: { x: -220, y: -30 } },
+        {
+          icon: <SearchCode className="size-6" />,
+          label: 'RAG',
+        },
+      ),
+      block(
+        'dataapp',
+        { position: { x: -100, y: -250 } },
+        {
+          icon: <DatabaseZap className="size-6" />,
+          label: 'Data appp',
+        },
+      ),
+      spiceBlock(
+        {
+          position: { x: 200, y: 0 },
+        },
+        {
+          badge: (
+            <>
+              <FederationBadge />
+              <AccelerationBadge />
+              <div className="bg-red-500 text-white py-1 px-2 text-xs rounded-sm border-2 border-black flex items-center gap-1">
+                <TableIcon className="size-4" /> Caching
+              </div>
+              <div className="bg-white text-black py-1 px-2 text-xs rounded-sm border-2 border-black flex flex-col justify-start items-start gap-1">
+                ML Runtime
+              </div>
+            </>
+          ),
+        },
+      ),
+      postgresBlock({ position: { x: 700, y: -150 } }),
+      datalakeBlock(),
+      aiBlock({ position: { x: 650, y: 300 } }),
+      ftpBlock(),
+      block(
+        's3',
+        { position: { x: 900, y: -120 } },
+        {
+          icon: <S3Icon className="size-8" />,
+          label: 'AWS S3',
+        },
+      ),
+      block(
+        'gql',
+        { position: { x: 500, y: -300 } },
+        {
+          icon: <GraphQlIcon className="size-6" />,
+          label: 'GraphQL',
+        },
+      ),
+      block(
+        'snowflake',
+        { position: { x: 700, y: 180 } },
+        {
+          icon: <SnowflakeIcon className="size-6" />,
+          label: 'Snowflake',
+        },
+      ),
+      block(
+        'clickhouse',
+        { position: { x: 850, y: 130 } },
+        {
+          icon: <ClickhouseIcon className="size-6" />,
+          label: 'Clickhouse',
+        },
+      ),
+      block(
+        'mysql',
+        { position: { x: 700, y: -250 } },
+        {
+          icon: <MysqlIcon className="size-6" />,
+          label: 'MySQL',
+        },
+      ),
+      block(
+        'llm',
+        { position: { x: 500, y: 300 } },
+        {
+          icon: <CpuIcon className="size-6" />,
+          label: 'Local LLM',
+        },
+      ),
+      block(
+        'onnx',
+        { position: { x: 550, y: 400 } },
+        {
+          icon: <OnnxIcon className="size-16" />,
+          label: 'ONNX models',
+        },
+      ),
+      block(
+        'hf',
+        { position: { x: 800, y: 300 } },
+        {
+          icon: <HuggingfaceIcon className="size-6" />,
+          label: 'Huggingface',
+        },
+      ),
+      block(
+        'prometheus',
+        { position: { x: -150, y: 250 } },
+        {
+          icon: <PrometheusIcon className="size-6" />,
+          label: 'Prometheus',
+        },
+      ),
+      block(
+        'otel',
+        { position: { x: -150, y: 350 } },
+        {
+          icon: <OpentelemetryIcon className="size-6" />,
+          label: 'OpenTelemetry',
+        },
+      ),
+    ],
+    edges: [
+      edge('e-spice', 'spice', 'app', {
+        color: '#f80',
+        speed: 0.2,
+      }),
+      edge('e-aiapp', 'spice', 'aiapp'),
+      edge('e-rag', 'spice', 'rag'),
+      edge('e-dataapp', 'spice', 'dataapp'),
+      edge('e-prometheus', 'spice', 'prometheus'),
+      edge('e-otel', 'spice', 'otel'),
+      edge('e-postgres', 'db', 'spice'),
+      edge('e-ftp', 'ftp', 'spice'),
+      edge('e-datalake', 'datalake', 'spice'),
+      edge('e-openai', 'ai', 'spice'),
+      edge('e-llm', 'llm', 'spice'),
+      edge('e-onnx', 'onnx', 'spice'),
+      edge('e-hf', 'hf', 'spice'),
+      edge('e-s3', 's3', 'spice'),
+      edge('e-gql', 'gql', 'spice'),
+      edge('e-mysql', 'mysql', 'spice'),
+      edge('e-snowflake', 'snowflake', 'spice'),
+      edge('e-clickhouse', 'clickhouse', 'spice'),
     ],
   },
 };

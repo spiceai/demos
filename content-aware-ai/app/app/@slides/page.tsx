@@ -119,7 +119,12 @@ const edgeTypes = {
 export default function Slide({ searchParams: { state } }: Params) {
   const slide = slides[state] || slides[0];
   return (
-    <div className="relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-8 pt-8">
+    <div
+      className={cn(
+        'relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-8 pt-8',
+        slide.fullscreen ? 'h-full grow' : 'h-[500px]',
+      )}
+    >
       <ReactFlowProvider>
         <SlideView {...slide} />
       </ReactFlowProvider>
@@ -128,17 +133,27 @@ export default function Slide({ searchParams: { state } }: Params) {
   );
 }
 
-const SlideView = ({ title, nodes, edges }: SlideProps) => {
+const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
   const { fitView } = useReactFlow();
 
   useEffect(() => {
-    setTimeout(() => fitView({ padding: 0.2, duration: 500 }), 200);
+    setTimeout(() => fitView({ padding: 0.2, duration: 500 }), 300);
   }, [nodes]);
 
   return (
-    <div className="flex w-full h-full flex-row grow align-middle">
-      <div className="flex w-40 items-center">
-        <h2 className="text-xl font-semibold text-wrap mx-auto text-center">
+    <div
+      className={cn(
+        'flex w-full h-full grow align-middle',
+        fullscreen ? 'flex-col' : 'flex-row',
+      )}
+    >
+      <div
+        className={cn(
+          'flex items-center',
+          !fullscreen && 'w-64 whitespace-pre',
+        )}
+      >
+        <h2 className="text-4xl font-semibold text-wrap mx-auto text-center">
           {title}
         </h2>
       </div>
@@ -156,8 +171,6 @@ const SlideView = ({ title, nodes, edges }: SlideProps) => {
           }}
         />
       </div>
-
-      <div className="w-40" />
     </div>
   );
 };
