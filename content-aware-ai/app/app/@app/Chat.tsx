@@ -29,14 +29,12 @@ export function Chat({ accelerated }: { accelerated: boolean }) {
     onToolCall: ({ toolCall }) => {
       if (!accelerated) {
         store.setAnimatedEdge('e-spice', true);
-      }
-
-      if (toolCall.toolName === 'summarizeConversation') {
-        store.setAnimatedEdge('e-datalake', true);
-      }
-
-      if (toolCall.toolName === 'searchInDecisions') {
-        store.setAnimatedEdge('e-ftp', true);
+        if (toolCall.toolName === 'summarizeConversation') {
+          store.setAnimatedEdge('e-datalake', true);
+        }
+        if (toolCall.toolName === 'searchInDecisions') {
+          store.setAnimatedEdge('e-ftp', true);
+        }
       }
     },
     onFinish: () => {
