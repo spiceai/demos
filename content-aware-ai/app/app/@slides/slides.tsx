@@ -19,7 +19,7 @@ import {
 } from './icons';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 import { TableCellsIcon } from '@heroicons/react/24/outline';
-import { DatabaseZap, TableIcon, CpuIcon, SearchCode } from 'lucide-react';
+import { DatabaseZap, CpuIcon, SearchCode } from 'lucide-react';
 
 function spiceChatBlock(node: Partial<Node> = {}): Node {
   return {

@@ -121,14 +121,13 @@ export default function Slide({ searchParams: { state } }: Params) {
   return (
     <div
       className={cn(
-        'relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-4 pt-4',
+        'w-full flex flex-shrink-0 h-[500px] justify-center items-center px-16 pt-4',
         slide.fullscreen ? 'h-full grow' : 'h-[500px]',
       )}
     >
       <ReactFlowProvider>
         <SlideView {...slide} />
       </ReactFlowProvider>
-      <Switcher />
     </div>
   );
 }
@@ -157,7 +156,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
           {title}
         </h2>
       </div>
-      <div className="grow bg-gray-300 border border-gray-400 rounded-lg">
+      <div className="relative grow bg-gray-300 border border-gray-400 rounded-lg">
         <ReactFlow
           fitView
           zoomOnScroll={false}
@@ -170,6 +169,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
             hideAttribution: true,
           }}
         />
+        <Switcher />
       </div>
     </div>
   );

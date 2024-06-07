@@ -31,7 +31,7 @@ export const Switcher = () => {
   };
 
   return (
-    <div className="absolute top-6 right-6 flex items-center gap-1">
+    <div className="absolute top-4 right-4 flex items-center gap-1">
       <Button disabled={state <= 0} variant="ghost" onClick={() => toState(-1)}>
         <ChevronLeftIcon className="w-6 h-6" />
       </Button>
