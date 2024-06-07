@@ -121,7 +121,7 @@ export default function Slide({ searchParams: { state } }: Params) {
   return (
     <div
       className={cn(
-        'relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-8 pt-8',
+        'relative w-full flex flex-shrink-0 h-[500px] justify-center items-center px-4 pt-4',
         slide.fullscreen ? 'h-full grow' : 'h-[500px]',
       )}
     >
@@ -143,8 +143,8 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
   return (
     <div
       className={cn(
-        'flex w-full h-full grow align-middle',
-        fullscreen ? 'flex-col' : 'flex-row',
+        'flex w-full h-full grow align-middle gap-8',
+        fullscreen ? 'flex-col pb-4' : 'flex-row',
       )}
     >
       <div
@@ -157,7 +157,7 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
           {title}
         </h2>
       </div>
-      <div className="grow">
+      <div className="grow bg-gray-300 border border-gray-400 rounded-lg">
         <ReactFlow
           fitView
           zoomOnScroll={false}

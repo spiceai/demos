@@ -221,13 +221,13 @@ export interface Slide {
 
 export const slides: Record<string, Slide> = {
   0: {
-    title: 'Without Spice',
+    title: 'Just postgres',
     nodes: [spiceChatBlock(), postgresBlock({ position: { x: 400, y: 0 } })],
     edges: [edge('e-postgres', 'db', 'app')],
   },
 
   1: {
-    title: 'Without Spice',
+    title: 'Add OpenAI',
     nodes: [
       spiceChatBlock(),
       postgresBlock({ position: { x: 600, y: 0 } }),
@@ -241,7 +241,7 @@ export const slides: Record<string, Slide> = {
   },
 
   2: {
-    title: 'Without Spice',
+    title: 'Postgres + databricks',
     nodes: [spiceChatBlock(), postgresBlock(), datalakeBlock(), aiBlock()],
     edges: [
       edge('e-postgres', 'db', 'app'),
@@ -251,7 +251,7 @@ export const slides: Record<string, Slide> = {
   },
 
   3: {
-    title: 'Spice Unified Query',
+    title: 'Spice unified query and intelligence',
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -275,7 +275,7 @@ export const slides: Record<string, Slide> = {
   },
 
   4: {
-    title: 'Spice Unified Query and AI',
+    title: 'LLMs in Spice',
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -299,7 +299,7 @@ export const slides: Record<string, Slide> = {
   },
 
   5: {
-    title: 'Spice Unified Query & Acceleration',
+    title: 'Spice accelerated queries',
     accelerated: true,
     nodes: [
       spiceChatBlock(),
@@ -330,7 +330,7 @@ export const slides: Record<string, Slide> = {
   },
 
   6: {
-    title: 'Spice Content-Aware AI',
+    title: 'Content-aware Spice AI',
     accelerated: true,
     augmented: true,
     nodes: [
