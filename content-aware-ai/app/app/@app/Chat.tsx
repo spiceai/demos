@@ -22,6 +22,7 @@ import {
 import { useAnimationStore } from '@/lib/store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserIcon } from '@heroicons/react/24/outline';
+import { Timer } from './Timer';
 
 const users = {
   Luke: 'https://avatars.githubusercontent.com/u/80174?v=4',
@@ -32,15 +33,19 @@ const users = {
 export function Chat({
   conversation,
   accelerated,
+  withai,
   augmented,
 }: {
   conversation: string;
   accelerated: boolean;
+  withai: boolean;
   augmented: boolean;
 }) {
+  const [history, setHistory] = useState<Message[]>([]);
   const { messages, setMessages, append, input, setInput } = useChat({
-    api: `/api/chat?augmented=true`,
+    api: `/api/chat?augmented=${augmented}&accelerated=${accelerated}`,
     maxToolRoundtrips: 0,
+    initialMessages: history,
     onToolCall: ({ toolCall }) => {
       store.setAnimatedEdge('e-spice', true);
       if (!accelerated) {
@@ -53,7 +58,6 @@ export function Chat({
       }
     },
     onFinish: (message) => {
-      console.log(message);
       store.reset();
     },
   });
@@ -73,6 +77,7 @@ export function Chat({
   );
 
   useEffect(() => {
+    setHistory(messages);
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
@@ -124,7 +129,7 @@ export function Chat({
 
     if (cursorPos !== undefined && cursorPos !== null && value.includes('@')) {
       const atIndex = value.lastIndexOf('@', cursorPos - 1);
-      if (atIndex === cursorPos - 1) {
+      if (withai && atIndex === cursorPos - 1) {
         setShowCompletions(true);
       } else {
         setShowCompletions(false);
@@ -210,56 +215,67 @@ export function Chat({
           >
             {m.toolInvocations?.slice(-1).map((invocation) => {
               const toolCallId = invocation.toolCallId;
+              const hasResult = 'result' in invocation;
 
               if (invocation.toolName === 'spiceAssist') {
                 return (
-                  <div key={toolCallId} className="flex items-center gap-2">
-                    {'result' in invocation ? (
-                      <span className="text-primary">
-                        {invocation.result.text}
-                      </span>
-                    ) : (
-                      <>
-                        <span className="text-muted-foreground">
-                          Searching in datasets:
+                  <div className="flex flex-col">
+                    <Timer completed={hasResult} />
+                    <div key={toolCallId} className="flex items-center gap-2">
+                      {hasResult ? (
+                        <span className="text-primary">
+                          {invocation.result.text}
                         </span>
-                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                      </>
-                    )}
+                      ) : (
+                        <>
+                          <span className="text-muted-foreground">
+                            Searching in datasets:
+                          </span>
+
+                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                        </>
+                      )}
+                    </div>
                   </div>
                 );
               }
 
               if (invocation.toolName === 'searchInDecisions') {
                 return (
-                  <div key={toolCallId} className="flex items-center gap-2">
-                    {'result' in invocation ? (
-                      <SpiceAssitanceCard result={invocation.result} />
-                    ) : (
-                      <>
-                        <span className="text-muted-foreground">
-                          Searching in sources:
-                        </span>
-                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                      </>
-                    )}
+                  <div className="flex flex-col">
+                    <Timer completed={hasResult} />{' '}
+                    <div key={toolCallId} className="flex items-center gap-2">
+                      {hasResult ? (
+                        <SpiceAssitanceCard result={invocation.result} />
+                      ) : (
+                        <>
+                          <span className="text-muted-foreground">
+                            Searching in sources:
+                          </span>
+                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                        </>
+                      )}
+                    </div>
                   </div>
                 );
               }
 
               if (invocation.toolName === 'summarizeConversation') {
                 return (
-                  <div key={toolCallId} className="flex items-center gap-2">
-                    {'result' in invocation ? (
-                      invocation.result
-                    ) : (
-                      <>
-                        <span className="text-muted-foreground">
-                          Sumarizing:
-                        </span>
-                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                      </>
-                    )}
+                  <div className="flex flex-col">
+                    <Timer completed={hasResult} />{' '}
+                    <div key={toolCallId} className="flex items-center gap-2">
+                      {hasResult ? (
+                        invocation.result
+                      ) : (
+                        <>
+                          <span className="text-muted-foreground">
+                            Sumarizing:
+                          </span>
+                          <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                        </>
+                      )}
+                    </div>
                   </div>
                 );
               }
