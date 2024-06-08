@@ -256,6 +256,7 @@ export const slides: Record<string, Slide> = {
 
   3: {
     title: 'Spice federated data and AI',
+    augmented: true,
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -283,6 +284,7 @@ export const slides: Record<string, Slide> = {
   4: {
     title: 'Spice acceleration with DuckDB',
     accelerated: true,
+    augmented: true,
     nodes: [
       spiceChatBlock(),
       spiceBlock(

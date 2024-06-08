@@ -143,10 +143,10 @@ const SlideView = ({ title, nodes, edges, fullscreen }: SlideProps) => {
     <div
       className={cn(
         'flex w-full h-full grow align-middle gap-8',
-        fullscreen ? 'flex-col pb-8' : 'flex-col max-w-6xl',
+        fullscreen ? 'flex-col' : 'flex-col max-w-6xl',
       )}
     >
-      <div className="relative grow bg-gray-300 border border-gray-400 rounded-lg">
+      <div className="relative grow bg-gray-50 border border-gray-400 rounded-lg">
         <ReactFlow
           fitView
           zoomOnScroll={false}

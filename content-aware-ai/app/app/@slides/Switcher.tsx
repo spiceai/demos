@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useAnimationStore } from '@/lib/store';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -9,6 +10,7 @@ const maxState = 7;
 
 export const Switcher = () => {
   const router = useRouter();
+  const store = useAnimationStore();
   const params = useSearchParams();
   const state = parseInt(params.get('state') || '0');
 
@@ -27,6 +29,7 @@ export const Switcher = () => {
     }
     const newParams = new URLSearchParams(params);
     newParams.set('state', String(next));
+    store.reset();
     router.push(`?${newParams.toString()}`);
   };
 

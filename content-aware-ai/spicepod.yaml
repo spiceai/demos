@@ -87,6 +87,22 @@ datasets:
       - column: content
         use: openai_embeddings
 
+  # File data, indexed using OpenAI embeddings
+  - from: ftp://localhost
+    name: decisions_ftp
+    metadata: true
+    params:
+      file_format: md
+      ftp_user: user
+      ftp_pass: 123
+    # acceleration:
+    #   enabled: true
+    #   refresh_mode: full
+    #   refresh_interval: 10s
+    embeddings:
+      - column: content
+        use: openai_embeddings
+
 embeddings:
   - name: openai_embeddings
     from: openai

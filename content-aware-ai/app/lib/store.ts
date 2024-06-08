@@ -2,24 +2,33 @@ import { create } from 'zustand';
 import { createContext, useContext } from 'react';
 
 interface AnimationState {
-  started: boolean;
-  animateOpeanai: boolean;
   animatedEdges: Record<string, number>;
+  animationStarted?: Date;
+  animationEnded?: Date;
 
-  setStarted: (started: boolean) => void;
-  setAnimateOpeanai: (animateOpeanai: boolean) => void;
   isAnimatedEdge: (id: string) => boolean;
+
+  reset: () => void;
   setAnimatedEdge: (id: string, animated: boolean) => void;
+  setAnimationStarted: () => void;
+  setAnimationEnded: () => void;
 }
 
 export const createAnimationStore = create<AnimationState>((set, get) => ({
-  started: false,
-  animateOpeanai: false,
   animatedEdges: {},
 
-  setStarted: (started: boolean) => set({ started }),
-  setAnimateOpeanai: (animateOpeanai: boolean) => set({ animateOpeanai }),
-  isAnimatedEdge: (id: string) => get().animatedEdges[id] > 0,
+  isAnimatedEdge: (id: string) => {
+    console.log('test', id, get().animatedEdges[id]);
+    return get().animatedEdges[id] > 0;
+  },
+
+  reset: () =>
+    set({
+      animatedEdges: {},
+      animationStarted: undefined,
+      animationEnded: undefined,
+    }),
+
   setAnimatedEdge: (id: string, animated: boolean) =>
     set((state) => {
       const currentValue = state.animatedEdges[id] || 0;
@@ -30,6 +39,12 @@ export const createAnimationStore = create<AnimationState>((set, get) => ({
         },
       };
     }),
+
+  setAnimationStarted: () => {
+    set({ animationStarted: new Date() });
+  },
+
+  setAnimationEnded: () => set({ animationEnded: new Date() }),
 }));
 
 export const AnimationStoreContext = createContext<AnimationState | undefined>(
