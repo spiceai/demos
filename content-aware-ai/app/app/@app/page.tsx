@@ -89,6 +89,7 @@ export default function Home({
                   conversation={currentConversation.id}
                   accelerated={!!slide.accelerated}
                   augmented={!!slide.augmented}
+                  withai={!!slide.withai}
                 />
               ) : (
                 <Messages

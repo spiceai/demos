@@ -215,6 +215,7 @@ export interface Slide {
   title: string;
   accelerated?: boolean;
   augmented?: boolean;
+  withai?: boolean;
   nodes: Node[];
   edges: Edge[];
 }
@@ -228,6 +229,7 @@ export const slides: Record<string, Slide> = {
 
   1: {
     title: 'Database and AI',
+    withai: true,
     nodes: [
       spiceChatBlock(),
       postgresBlock({ position: { x: 600, y: 0 } }),
@@ -244,6 +246,7 @@ export const slides: Record<string, Slide> = {
 
   2: {
     title: 'Multiple data sources',
+    withai: true,
     nodes: [spiceChatBlock(), postgresBlock(), datalakeBlock(), aiBlock()],
     edges: [
       edge('e-postgres', 'db', 'app'),
@@ -256,6 +259,7 @@ export const slides: Record<string, Slide> = {
 
   3: {
     title: 'Spice federated data and AI',
+    withai: true,
     augmented: true,
     nodes: [
       spiceChatBlock(),
@@ -284,6 +288,7 @@ export const slides: Record<string, Slide> = {
   4: {
     title: 'Spice acceleration with DuckDB',
     accelerated: true,
+    withai: true,
     augmented: true,
     nodes: [
       spiceChatBlock(),
@@ -316,6 +321,7 @@ export const slides: Record<string, Slide> = {
   5: {
     title: 'Spice Retrieval-Augmented-AI (RAG)',
     accelerated: true,
+    withai: true,
     augmented: true,
     nodes: [
       spiceChatBlock(),
@@ -350,6 +356,7 @@ export const slides: Record<string, Slide> = {
     fullscreen: true,
     title: '',
     accelerated: true,
+    withai: true,
     augmented: true,
     nodes: [
       block(

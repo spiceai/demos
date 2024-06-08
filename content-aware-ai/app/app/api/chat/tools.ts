@@ -76,25 +76,36 @@ export const searchInDecisions = tool({
   },
 });
 
-export const summarizeConversation = tool({
-  description: 'Summarize recent messages in current conversation',
-  parameters: z.object({
-    // question: z.string(),
-  }),
-  execute: async () => {
-    const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
-      method: 'POST',
-      body: 'select text from messages where text is not null limit 50',
-      cache: 'no-cache',
-    });
+export const summarizeConversation = (accelerated?: boolean) =>
+  tool({
+    description: 'Summarize recent messages in current conversation',
+    parameters: z.object({
+      // question: z.string(),
+    }),
+    execute: async () => {
+      console.log('summarize request');
 
-    const response = await request.json();
+      const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
+        method: 'POST',
+        body: `select text from ${accelerated ? 'general_accelerated' : 'general'}`,
+        cache: 'no-cache',
+      });
 
-    const { text } = await generateText({
-      model: openai('gpt-4-turbo'),
-      prompt: `Summarize following messages_accelerated conversation: ${response.map((m: any) => m.text).join(', ')}`,
-    });
+      if (!accelerated) {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
 
-    return text;
-  },
-});
+      const response = await request.json();
+
+      console.log('response', response);
+
+      const { text } = await generateText({
+        model: openai('gpt-4o'),
+        prompt: `Summarize following conversation: ${response.map((m: any) => m.text).join(', ')}`,
+      });
+
+      console.log('summary', text);
+
+      return text;
+    },
+  });

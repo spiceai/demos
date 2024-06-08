@@ -13,11 +13,11 @@ export interface SpiceAssistantRsult {
 export async function POST(req: Request) {
   const searchParams = new URL(req.url).searchParams;
   const augmented = searchParams.get('augmented') === 'true';
-  console.log(augmented);
+  const accelerated = searchParams.get('accelerated') === 'true';
 
   const { messages } = await req.json();
 
-  const model = openai('gpt-4-turbo');
+  const model = openai('gpt-4o');
 
   const result = await streamText({
     model,
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       ? {
           spiceAssist: spiceAssist,
           searchInDecisions: searchInDecisions,
-          summarizeConversation: summarizeConversation,
+          summarizeConversation: summarizeConversation(accelerated),
         }
       : {},
   });
