@@ -8,6 +8,7 @@ import { Chat } from './Chat';
 import { Messages } from './Messages';
 import { Input } from '@/components/ui/input';
 import { slides } from '../@slides/slides';
+import { Stats } from './Stats';
 
 interface Params {
   searchParams: {
@@ -65,7 +66,8 @@ export default function Home({
                   ))}
               </nav>
               <div className="grow" />
-              <div className="text-muted-foreground">using mode: {state}</div>
+
+              <Stats slide={slide} />
             </div>
           </aside>
 

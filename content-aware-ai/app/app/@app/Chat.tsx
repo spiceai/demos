@@ -39,6 +39,7 @@ export function Chat({
   augmented: boolean;
 }) {
   const { messages, setMessages, append, input, setInput } = useChat({
+    api: `/api/chat?augmented=true`,
     maxToolRoundtrips: 0,
     onToolCall: ({ toolCall }) => {
       store.setAnimatedEdge('e-spice', true);
@@ -51,12 +52,9 @@ export function Chat({
         store.setAnimatedEdge('e-ftp', true);
       }
     },
-    onFinish: () => {
-      store.setAnimatedEdge('e-openai', false);
-      store.setAnimatedEdge('e-spice', false);
-      store.setAnimatedEdge('e-postgres', false);
-      store.setAnimatedEdge('e-datalake', false);
-      store.setAnimatedEdge('e-ftp', false);
+    onFinish: (message) => {
+      console.log(message);
+      store.reset();
     },
   });
 
@@ -287,6 +285,7 @@ export function Chat({
               sideOffset={4}
             >
               <DropdownMenuItem
+                className="text-lg"
                 onSelect={() => {
                   onCompletionSelect('PepperAI');
                   textareaRef.current?.focus();
