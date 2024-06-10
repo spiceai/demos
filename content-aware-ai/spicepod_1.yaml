@@ -8,8 +8,7 @@ datasets:
     name: messages
     params:
       pg_host: aws-0-us-west-1.pooler.supabase.com
-      pg_user: spicychat
-      pg_pass_key: password
+      pg_user: 'postgres.ijtwkaeeblroqgenbeef'
 
   # Datalake data (Databricks)
   - from: databricks:hive_metastore.default.messages
@@ -18,6 +17,6 @@ datasets:
       endpoint: adb-4473752745667967.7.azuredatabricks.net
       databricks-cluster-id: 0423-065654-nu3nflpo
 
-llms:
+models:
   - name: openai
     from: openai/gpt-4o

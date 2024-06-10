@@ -123,6 +123,7 @@ export function Chat({
           role: 'user',
         } as any,
       ];
+
       setMessages(newMessages);
       setInput('');
     }
@@ -246,7 +247,7 @@ export function Chat({
                       ) : (
                         <>
                           <span className="text-muted-foreground">
-                            Searching in datasets:
+                            Searching datasets:
                           </span>
 
                           <Loader2 className="size-4 animate-spin text-muted-foreground" />
@@ -375,11 +376,15 @@ const SpiceAssitanceCard = ({
       {result.from
         ? Object.keys(result.from).map((from) => {
             const entries = result.from[from];
+            const entries_with_content = entries.filter(entry => entry.content !== undefined);
+            if (entries_with_content.length === 0) { 
+              return null;
+            }
             return (
               <div key={from} className="flex flex-col gap-1">
                 References:
                 <div className="grid gap-2 grid-cols-3">
-                  {entries.map((entry, i) => (
+                  {entries_with_content.map((entry, i) => (
                     <Dialog key={i}>
                       <DialogTrigger asChild>
                         <div className="border rounded-lg transition-all p-2 text-xs max-h-28 min-w-0 overflow-hidden cursor-pointer hover:shadow-md opacity-65 hover:opacity-100 flex flex-row gap-2">

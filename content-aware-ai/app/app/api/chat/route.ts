@@ -22,10 +22,14 @@ export async function POST(req: Request) {
   const tools: Record<string, CoreTool<any, any>> = {};
 
   if (openaiConnected) {
-    tools.spiceAssist = spiceAssist;
-    tools.summarizeConversation = summarizeConversation(accelerated);
+    
     if (ftpConnected) {
-      tools.searchInDecisions = searchInDecisions;
+      tools.searchInDecisions = searchInDecisions(["decisions"])
+    } else if (accelerated) {
+      tools.searchInDecisions = searchInDecisions(["daily_journal_accelerated", "general_accelerated"]);
+    } else {
+      tools.summarizeConversation = summarizeConversation(accelerated);
+      tools.spiceAssist = spiceAssist;
     }
   }
 

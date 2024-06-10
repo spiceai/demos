@@ -44,12 +44,13 @@ export const spiceAssist = tool({
   },
 });
 
-export const searchInDecisions = tool({
+export const searchInDecisions = (datasets?: string[]) => tool({
   description: 'Search for information in decision records channel',
   parameters: z.object({
     question: z.string(),
   }),
   execute: async ({ question }: { question: string }) => {
+    console.log("searchInDecisions", question, datasets);
     const request = await fetch(
       `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
       {
@@ -59,7 +60,7 @@ export const searchInDecisions = tool({
         },
         body: JSON.stringify({
           text: question,
-          from: ['decisions'],
+          from: datasets || ['decisions'],
           use: 'openai',
         }),
       },

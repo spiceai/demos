@@ -8,7 +8,7 @@ datasets:
     name: daily_journal
     params:
       pg_host: aws-0-us-west-1.pooler.supabase.com
-      pg_user: '[supabase_user]'
+      pg_user: 'postgres.ijtwkaeeblroqgenbeef'
       pg_pass_key: password
 
   # Datalake data (Databricks)
@@ -20,11 +20,12 @@ datasets:
       endpoint: adb-4473752745667967.7.azuredatabricks.net
       databricks-cluster-id: 0423-065654-nu3nflpo
 
-  - from: ftp://Users/evgenii/Developer/Spice/demos/content-aware-ai/decisions
+  - from: ftp://localhost
     name: decisions
     params:
+      ftp_user: 'ftp.ijtwkaeeblroqgenbeef'
       file_format: md
 
-llms:
+models:
   - name: openai
     from: openai/gpt-4o
