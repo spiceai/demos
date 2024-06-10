@@ -16,6 +16,7 @@ datasets:
     name: messages
     acceleration:
       enabled: true
+      engine: duckdb
     params:
       endpoint: adb-4473752745667967.7.azuredatabricks.net
       databricks-cluster-id: 0423-065654-nu3nflpo
