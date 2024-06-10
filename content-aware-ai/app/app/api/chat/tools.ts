@@ -2,7 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
-export interface SpiceAssistantRsult {
+export interface SpiceAssistantResult {
   text: string;
   from: Record<string, Array<{ content: string }>>;
 }
@@ -20,60 +20,29 @@ export const spiceAssist = tool({
     query: string;
     datasets: string[];
   }) => {
-    const request = await fetch(
-      `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: query,
-          from: datasets,
-          use: 'openai',
-        }),
-      },
-    );
-
-    try {
-      const response = await request.text();
-      return { text: response };
-    } catch (e) {
-      return { text: 'Something went wrong: ' + e };
+    const promises = [];
+    for (const use of ['openai', 'groq']) {
+      promises.push(assist(query, datasets, use));
     }
+    return await Promise.any(promises);
   },
 });
 
-export const searchInDecisions = (datasets?: string[]) => tool({
-  description: 'Search for information in decision records channel',
-  parameters: z.object({
-    question: z.string(),
-  }),
-  execute: async ({ question }: { question: string }) => {
-    console.log("searchInDecisions", question, datasets);
-    const request = await fetch(
-      `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: question,
-          from: datasets || ['decisions'],
-          use: 'openai',
-        }),
-      },
-    );
-
-    try {
-      const response = (await request.json()) as SpiceAssistantRsult;
-      return response;
-    } catch (e) {
-      return { text: 'Something went wrong: ' + e };
-    }
-  },
-});
+export const searchInDecisions = (datasets?: string[]) =>
+  tool({
+    description: 'Search for information in decision records channel',
+    parameters: z.object({
+      question: z.string(),
+    }),
+    execute: async ({ question }: { question: string }) => {
+      const promises = [];
+      for (const use of ['openai', 'groq']) {
+        console.log('searchInDecisions', question, datasets, use);
+        promises.push(assist(question, datasets || ['decisions'], use));
+      }
+      return await Promise.any(promises);
+    },
+  });
 
 export const summarizeConversation = (accelerated?: boolean) =>
   tool({
@@ -84,7 +53,9 @@ export const summarizeConversation = (accelerated?: boolean) =>
     execute: async () => {
       const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
         method: 'POST',
-        body: `select text from ${accelerated ? 'general_accelerated' : 'general'}`,
+        body: `select text from ${
+          accelerated ? 'general_accelerated' : 'general'
+        }`,
         cache: 'no-cache',
       });
 
@@ -95,9 +66,32 @@ export const summarizeConversation = (accelerated?: boolean) =>
       const response = await request.json();
       const { text } = await generateText({
         model: openai('gpt-4o'),
-        prompt: `Summarize following conversation: ${response.map((m: any) => m.text).join(', ')}`,
+        prompt: `Summarize following conversation: ${response
+          .map((m: any) => m.text)
+          .join(', ')}`,
       });
 
       return text;
     },
   });
+
+const assist = async (prompt: string, datasets: string[], model: string) => {
+  const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text: prompt,
+      from: datasets,
+      use: model,
+    }),
+  });
+
+  try {
+    const response = (await request.json()) as SpiceAssistantResult;
+    return response;
+  } catch (e) {
+    return { text: 'Something went wrong: ' + e };
+  }
+};
