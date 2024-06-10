@@ -237,7 +237,7 @@ export function Chat({
               if (invocation.toolName === 'spiceAssist') {
                 return (
                   <div className="flex flex-col">
-                    <Timer completed={hasResult} />
+                    <Timer completed={hasResult} />{' '}
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
                         <span className="text-primary">
@@ -258,7 +258,6 @@ export function Chat({
               }
 
               if (invocation.toolName === 'searchInDecisions') {
-                console.log(portal);
                 return (
                   <div className="flex flex-col">
                     <Timer completed={hasResult} />{' '}
@@ -271,7 +270,7 @@ export function Chat({
                       ) : (
                         <>
                           <span className="text-muted-foreground">
-                            Searching in sources:
+                            Searching in content...:
                           </span>
                           <Loader2 className="size-4 animate-spin text-muted-foreground" />
                         </>
