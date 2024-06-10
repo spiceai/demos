@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { HashtagIcon, MegaphoneIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -25,6 +26,14 @@ export default function Home({
   searchParams: { conversation: conversationId, state },
 }: Params) {
   const slide = slides[state] || slides['0'];
+  const container = useRef<HTMLDivElement>(null);
+  const [portal, setPortal] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (container.current) {
+      setPortal(container.current);
+    }
+  }, []);
 
   const currentConversation =
     conversations[conversationId] || Object.values(conversations)[0];
@@ -36,7 +45,7 @@ export default function Home({
   return (
     <div className="px-4 pt-4 pb-4 grow flex row items-stretch justify-center min-w-0 min-h-0">
       <div className="border rounded-lg overflow-hidden grow flex flex-col shadow-xl max-w-6xl">
-        <main className="flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
+        <main className=" relative flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
           <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4 bg-gray-900 text-white dark">
             <div className="px-4 text-xl font-semibold">🌶️ Spicy Chat</div>
 
@@ -91,6 +100,7 @@ export default function Home({
                   openaiConnected={!!slide.openaiConnected}
                   ftpConnected={!!slide.ftpConnected}
                   withai={!!slide.withai}
+                  portal={portal || undefined}
                 />
               ) : (
                 <Messages
@@ -100,6 +110,8 @@ export default function Home({
               )}
             </div>
           </div>
+
+          <div ref={container} />
         </main>
       </div>
     </div>

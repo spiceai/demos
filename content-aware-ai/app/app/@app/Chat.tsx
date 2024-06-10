@@ -2,7 +2,12 @@
 
 import { Message } from 'ai';
 import { useState, useEffect, useRef } from 'react';
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import {
+  DocumentIcon,
+  DocumentTextIcon,
+  PaperAirplaneIcon,
+} from '@heroicons/react/24/outline';
+import Markdown from 'react-markdown';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +16,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
 import type { SpiceAssistantRsult } from '../api/chat/route';
@@ -23,6 +34,8 @@ import { useAnimationStore } from '@/lib/store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserIcon } from '@heroicons/react/24/outline';
 import { Timer } from './Timer';
+import { cn } from '@/lib/utils';
+import remarkGfm from 'remark-gfm';
 
 const users = {
   Luke: 'https://avatars.githubusercontent.com/u/80174?v=4',
@@ -36,12 +49,14 @@ export function Chat({
   withai,
   openaiConnected,
   ftpConnected,
+  portal,
 }: {
   conversation: string;
   accelerated: boolean;
   withai: boolean;
   openaiConnected: boolean;
   ftpConnected: boolean;
+  portal?: HTMLElement;
 }) {
   const [history, setHistory] = useState<Message[]>([]);
   const { messages, setMessages, append, input, setInput } = useChat({
@@ -243,12 +258,16 @@ export function Chat({
               }
 
               if (invocation.toolName === 'searchInDecisions') {
+                console.log(portal);
                 return (
                   <div className="flex flex-col">
                     <Timer completed={hasResult} />{' '}
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
-                        <SpiceAssitanceCard result={invocation.result} />
+                        <SpiceAssitanceCard
+                          portal={portal}
+                          result={invocation.result}
+                        />
                       ) : (
                         <>
                           <span className="text-muted-foreground">
@@ -336,26 +355,57 @@ export function Chat({
   );
 }
 
-const SpiceAssitanceCard = ({ result }: { result: SpiceAssistantRsult }) => {
-  console.log(result);
+const SpiceAssitanceCard = ({
+  result,
+  portal,
+}: {
+  result: SpiceAssistantRsult;
+  portal?: HTMLElement;
+}) => {
+  const [more, setMore] = useState(false);
+
   return (
     <div className="flex flex-col gap-2">
-      <div>{result.text}</div>
+      <div className={cn(more ? '' : 'line-clamp-2')}>{result.text}</div>
+
+      <div
+        className="text-muted-foreground underline cursor-pointer hover:text-primary"
+        onClick={() => setMore((s) => !s)}
+      >
+        {more ? 'show less' : 'show more'}
+      </div>
 
       {result.from
         ? Object.keys(result.from).map((from) => {
             const entries = result.from[from];
             return (
               <div key={from} className="flex flex-col gap-1">
-                {from}:
-                <div className="grid gap-1 grid-cols-3">
+                References:
+                <div className="grid gap-2 grid-cols-3">
                   {entries.map((entry, i) => (
-                    <div
-                      className="border rounded-lg shadow-sm p-2 text-xs max-h-24 text-ellipsis min-w-0 overflow-hidden"
-                      key={i}
-                    >
-                      {entry.content}
-                    </div>
+                    <Dialog key={i}>
+                      <DialogTrigger asChild>
+                        <div className="border rounded-lg shadow-sm p-2 text-xs min-w-0 overflow-hidden cursor-pointer hover:outline flex flex-col gap-1">
+                          <DocumentTextIcon className="size-6" />
+                          <Markdown remarkPlugins={[remarkGfm]}>
+                            {entry.content.slice(0, 100) + '...'}
+                          </Markdown>
+                        </div>
+                      </DialogTrigger>
+
+                      <DialogContent container={portal}>
+                        <DialogHeader>
+                          <div className="max-h-[400px] overflow-y-auto text-xl">
+                            <Markdown
+                              className="prose"
+                              remarkPlugins={[remarkGfm]}
+                            >
+                              {entry.content}
+                            </Markdown>
+                          </div>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
                   ))}
                 </div>
               </div>
