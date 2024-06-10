@@ -106,7 +106,11 @@ _Ask pepper to summarise #archive channel, don't wait_
   - Is fast for Spicy Chat
   - For Pepper to search and answer questions
 
-"Pepper now has access to data in PostgreSQL, in our data lake, and content from our FTP server. And all that data is materialized and accelerated in DuckDB for super fast retrieval."
+"Pepper now has access to data in PostgreSQL, in our data lake, and content from our FTP server."
+
+"And something that's subtle to highlight here, Spice works with structured data queryable through SQL, and also unstructured data, like the content from these files."
+
+"And all that data is materialized and accelerated in DuckDB for super fast retrieval."
 
 "Let's ask Pepper that question again"
 
