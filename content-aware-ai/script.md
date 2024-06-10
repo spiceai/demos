@@ -7,7 +7,8 @@
 
 
 ## Mode 0: Just postgres
-- Click on general, show conversation, explain application data.
+_Click on general, show conversation_
+- Explain application data, graph.
 
 ## Mode 1: Add OpenAI
 - Show Pepper: _"Of course Spice Chat is AI native, so it has a built-in AI-assistant called Pepper. Let's say Hi"_
