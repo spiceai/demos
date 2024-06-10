@@ -90,3 +90,7 @@ _Ask pepper to summarise #archive channel, don't wait_
 <!-- [Spicepod Three](./spicepod_3.yaml) -->
 
 ## Spice Data and AI Connectors
+
+"Spice doesn't just connect to PostgreSQL and Databricks."
+
+"Spice has many data and AI connectors to make building AI apps easy"
