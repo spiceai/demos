@@ -116,8 +116,9 @@ llms:
     from: openai/mixtral-8x7b-32768 # llama3-8b-8192 # llama3-70b-8192  # llama3-8b-8192
     params:
       endpoint: https://api.groq.com/openai/v1
+      openai_api_key: <>
 
-  - name: lmstudio
-    from: openai/lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF
-    params:
-      endpoint: http://localhost:1234/v1
+  # - name: lmstudio
+  #   from: openai/lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF
+  #   params:
+  #     endpoint: http://localhost:1234/v1
