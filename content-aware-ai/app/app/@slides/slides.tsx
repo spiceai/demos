@@ -214,7 +214,8 @@ export interface Slide {
   fullscreen?: boolean;
   title: string;
   accelerated?: boolean;
-  augmented?: boolean;
+  openaiConnected?: boolean;
+  ftpConnected?: boolean;
   withai?: boolean;
   nodes: Node[];
   edges: Edge[];
@@ -260,7 +261,7 @@ export const slides: Record<string, Slide> = {
   3: {
     title: 'Spice federated data and AI',
     withai: true,
-    augmented: true,
+    openaiConnected: true,
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -289,7 +290,7 @@ export const slides: Record<string, Slide> = {
     title: 'Spice acceleration with DuckDB',
     accelerated: true,
     withai: true,
-    augmented: true,
+    openaiConnected: true,
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -322,7 +323,8 @@ export const slides: Record<string, Slide> = {
     title: 'Spice Retrieval-Augmented-AI (RAG)',
     accelerated: true,
     withai: true,
-    augmented: true,
+    openaiConnected: true,
+    ftpConnected: true,
     nodes: [
       spiceChatBlock(),
       spiceBlock(
@@ -357,7 +359,7 @@ export const slides: Record<string, Slide> = {
     title: '',
     accelerated: true,
     withai: true,
-    augmented: true,
+    openaiConnected: true,
     nodes: [
       block(
         'aiapp',

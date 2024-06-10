@@ -34,16 +34,18 @@ export function Chat({
   conversation,
   accelerated,
   withai,
-  augmented,
+  openaiConnected,
+  ftpConnected,
 }: {
   conversation: string;
   accelerated: boolean;
   withai: boolean;
-  augmented: boolean;
+  openaiConnected: boolean;
+  ftpConnected: boolean;
 }) {
   const [history, setHistory] = useState<Message[]>([]);
   const { messages, setMessages, append, input, setInput } = useChat({
-    api: `/api/chat?augmented=${augmented}&accelerated=${accelerated}`,
+    api: `/api/chat?openaiConnected=${openaiConnected}&accelerated=${accelerated}&ftpConnected=${ftpConnected}`,
     maxToolRoundtrips: 0,
     initialMessages: history,
     onToolCall: ({ toolCall }) => {
