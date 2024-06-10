@@ -30,7 +30,7 @@
 
 "In this example, we need to query archival messaging data stored in our S3 datalake using Databricks, journal data stored in PostgreSQL, and combine that with the application's messaging data."
 
-"That's two datasets, but most enterprises have many more. And that can often lead to data management nightmare."
+"That's two data sources, but most enterprises have many more. And that can often lead to data management nightmare."
 
 ## Spice Federated Data and AI
 
