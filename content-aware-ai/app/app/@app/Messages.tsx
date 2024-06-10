@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
 import dayjs from 'dayjs';
 import {
@@ -37,8 +36,9 @@ export function useConversationMessages(
   );
 
   useEffect(() => {
+    store.reset();
+    store.startTimer();
     updateAnimation(true);
-
     setMessages([]);
     setLoading(true);
     fetch(`/api/conversations/${conversation}?accelerated=${accelerated}`)
@@ -48,7 +48,9 @@ export function useConversationMessages(
         setMessages(response);
       })
       .finally(() => {
-        updateAnimation(false);
+        setLoading(false);
+        // updateAnimation(false);
+        store.reset();
       });
   }, [conversation]);
 
