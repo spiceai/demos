@@ -5,10 +5,10 @@ name: content-aware-ai
 datasets:
   # Application data (PostgreSQL)
   - from: postgres:syncs
-    name: daily_journal
+    name: messages
     params:
       pg_host: aws-0-us-west-1.pooler.supabase.com
-      pg_user: '[supabase_user]'
+      pg_user: spicychat
       pg_pass_key: password
 
   # Datalake data (Databricks)
@@ -17,3 +17,8 @@ datasets:
     params:
       endpoint: adb-4473752745667967.7.azuredatabricks.net
       databricks-cluster-id: 0423-065654-nu3nflpo
+
+llms:
+  # OpenAI GPT-4o
+  - name: openai
+    from: openai/gpt-4o

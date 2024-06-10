@@ -2,88 +2,97 @@
 
 ## Introducing Spicy Chat
 
-- Today, we are building Spicy Chat - our own AI-native enterprise messaging app.
-- Demo has two part: data flows on top, UX of Spicy Chat on bottom. 
+"Today we're building Spicy Chat - our own AI-native enterprise messaging app."
 
+"To show you what's happening, at the top we have a diagram of data flows, with the app on the bottom."
 
-## Mode 0: Just postgres
+## Database Only: Typical app with PostgreSQL
 _Click on general, show conversation_
 - Explain application data, graph.
 
-## Mode 1: Add OpenAI
-- Show Pepper: _"Of course Spice Chat is AI native, so it has a built-in AI-assistant called Pepper. Let's say Hi"_
+- Click on General, show conversation, explain application data.
 
-_Ask Pepper to tell us joke_
+## Database and AI: Add OpenAI
 
-- Simple call to OpenAI, thats what most Chatbots are like. 
+- Show Pepper
 
-__ Ask Pepper to summarise chat __
+"Of course Spicy Chat is AI native, so it has a built-in AI-assistant called Pepper. Let's say Hi"
 
-- Explain we're getting everything postgres, inserting into OpenAI. Fine for a toy app, Slow, lots of work for Spicy Chat
+- Ask Pepper to tell us joke
 
-## Mode 2: Postgres + databricks
--  The first step in creating an enterprise AI-driven experience is data. For many organizations this often means querying data from many disparate sources, like agumenting application data with big data stored in data lakes or warehouses and fetching content from files.
-In this example, we need to query archival messaging data stored in our S3 datalake using Databricks, journal data stored in PostgreSQL, and combine that with the application's messaging data.
+"This is a pretty typical app. Nothing special. A simple call to OpenAI, which is what most chatbots are like."
 
-- Two datasets, but most enterprises have many more.
+- Ask Pepper to summarise chat and show that OpenAI doesn't know anything about the channel.
 
+"For OpenAI to give better answers, you have to do a lot of work to get your data to it"
 
+## Multiple Data Sources: PostgreSQL + Databricks
 
-## Mode 3: Spice unified query and intelligence
+"The first step in creating an enterprise AI-driven experience is data. For many organizations this often means querying data from many disparate sources, like agumenting application data with big data stored in data lakes or warehouses and fetching content from files."
 
-- UNified query interface, query across many sources at once. App has one interface
-- Configure this in spice.
+"In this example, we need to query archival messaging data stored in our S3 datalake using Databricks, journal data stored in PostgreSQL, and combine that with the application's messaging data."
+
+"That's two data sources, but most enterprises have many more. And that can often lead to data management nightmare."
+
+## Spice Federated Data and AI
+
+"Spice provides developers with a unified interface for federated data and AI."
+
+"It's easy to configure this in Spice"
 
 _Walk through spicepod_1.yaml_
 
-- When I click the `archive` channel which includes this additional data, note that it's very slow to load, and this is because it's trying to query across all the messages in the data lake, which is a lot of data, and slow to query.
-- Very slow, databricks is expensive.
+"When I click the `archive` channel which includes this additional data, note that it's very slow to load, and this is because it's trying to query across all the messages in the data lake, which is a lot of data, and slow to query."
 
-### Mode 4: LLMs in Spice
-- Explain Models in spice
-    - Like datasets, reduce complexity
-    - Reduce data transit
-    - Speed
-
-- If I want Pepper to use that information in her reply, it's unusable, too slow to be productive.
+"Very slow, databricks can be expensive."
 
 _Ask pepper to summarise #archive channel, don't wait_
 
-- AI experience, has to be fast
+- Fast data is no longer nice to have... for AI apps fast data is a necessity. User's won't wait.
 
 <!-- [Spicepod One](./spicepod_1.yaml) -->
 
-## Mode 5: Spice accelerated queries
-- Spice can materialise the data Spicy Chat needs
+## Spice Acceleration with DuckDB
 
-__ Walk through spicepod_2.yaml and change to acceleration __
+- Spice can make slow data fast by accelerating data using **DuckDB**.
 
-- Click on the `spiced-archive` channel, which has been materialized by Spice, you can see it's like night and day
-- Pepper uses this data to give fast AI responses to users.
+** Walk through spicepod_2.yaml and change to acceleration **
 
-__ Ask pepper to answer GCP question in #archive channel __
+- Click on the `spiced-archive` channel, which has been materialized by Spice.
+
+"You can see it's night and day"
+
+- Pepper can use this data to give intelligent AI responses to users fast.
+
+** Ask pepper to answer GCP question in #archive channel **
 
 - This speed is needed for anything AI related
-- Got some data from the daily journals, but doesn't have that much understanding. 
+- Got some data from the daily journals, but doesn't have that much understanding.
 
 <!-- [Spicepod Two](./spicepod_2.yaml) -->
 
-## Mode 6 Content-aware Spice AI
+## Spice Retrieval-Augmented-AI (RAG)
 
-- Introduce writing at Spice, decision records, show list of documents at [](). 
+- Introduce writing at Spice, decision records, show list of documents at []().
 - Pepper doesn't have them, in FTP server.
 - _"like 30% of the enterprises we recently talked to, a lot of our data is stored in legacy systems like FTP, which the Spice runtime can connect to"_
 
 - Enhance Pepper, by adding FTP
 
-__ Walk through Spicepod_3.yaml __
+** Walk through Spicepod_3.yaml **
 
 - Explain that Pepper
   - Has access to application, datalake, document stores
   - Is fast for Spicy Chat
   - For Pepper to search and answer questions
 
-__ Ask pepper to answer GCP question in #archive channel __
+** Ask pepper to answer GCP question in #archive channel **
 
 - Much faster
 <!-- [Spicepod Three](./spicepod_3.yaml) -->
+
+## Spice Data and AI Connectors
+
+"Spice doesn't just connect to PostgreSQL and Databricks."
+
+"Spice has many data and AI connectors to make building AI apps easy"
