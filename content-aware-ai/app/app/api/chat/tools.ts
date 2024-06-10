@@ -20,8 +20,6 @@ export const spiceAssist = tool({
     query: string;
     datasets: string[];
   }) => {
-    console.log('query', query, datasets);
-
     const request = await fetch(
       `${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`,
       {
@@ -83,8 +81,6 @@ export const summarizeConversation = (accelerated?: boolean) =>
       // question: z.string(),
     }),
     execute: async () => {
-      console.log('summarize request');
-
       const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/sql`, {
         method: 'POST',
         body: `select text from ${accelerated ? 'general_accelerated' : 'general'}`,
@@ -96,15 +92,10 @@ export const summarizeConversation = (accelerated?: boolean) =>
       }
 
       const response = await request.json();
-
-      console.log('response', response);
-
       const { text } = await generateText({
         model: openai('gpt-4o'),
         prompt: `Summarize following conversation: ${response.map((m: any) => m.text).join(', ')}`,
       });
-
-      console.log('summary', text);
 
       return text;
     },

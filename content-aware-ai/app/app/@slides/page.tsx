@@ -121,8 +121,8 @@ export default function Slide({ searchParams: { state } }: Params) {
   return (
     <div
       className={cn(
-        'w-full flex flex-shrink-0 h-[500px] justify-center items-center px-16 pt-4',
-        slide.fullscreen ? 'h-full grow' : 'h-[500px]',
+        'w-full flex flex-shrink-0 justify-center items-center px-16 pt-4',
+        slide.fullscreen ? 'h-full grow' : 'h-[calc(50%-32px)]',
       )}
     >
       <ReactFlowProvider>

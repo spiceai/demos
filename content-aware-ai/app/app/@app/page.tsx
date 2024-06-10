@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { HashtagIcon, MegaphoneIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -9,6 +10,7 @@ import { Messages } from './Messages';
 import { Input } from '@/components/ui/input';
 import { slides } from '../@slides/slides';
 import { Stats } from './Stats';
+import { useAnimationStore } from '@/lib/store';
 
 interface Params {
   searchParams: {
@@ -24,7 +26,16 @@ export const maxDuration = 300;
 export default function Home({
   searchParams: { conversation: conversationId, state },
 }: Params) {
+  const store = useAnimationStore();
   const slide = slides[state] || slides['0'];
+  const container = useRef<HTMLDivElement>(null);
+  const [portal, setPortal] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (container.current) {
+      setPortal(container.current);
+    }
+  }, []);
 
   const currentConversation =
     conversations[conversationId] || Object.values(conversations)[0];
@@ -36,7 +47,7 @@ export default function Home({
   return (
     <div className="px-4 pt-4 pb-4 grow flex row items-stretch justify-center min-w-0 min-h-0">
       <div className="border rounded-lg overflow-hidden grow flex flex-col shadow-xl max-w-6xl">
-        <main className="flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
+        <main className="h-[calc(50%-32px)] relative flex grow row items-stretch overflow-hidden min-h-0 min-w-0">
           <aside className="border-r min-w-[280px] flex flex-col overflow-hidden bg-secondary py-4 gap-4 bg-gray-900 text-white dark">
             <div className="px-4 text-xl font-semibold">🌶️ Spicy Chat</div>
 
@@ -47,6 +58,9 @@ export default function Home({
                   .map((conversation) => (
                     <Link
                       key={conversation.id}
+                      onClick={() => {
+                        store.reset();
+                      }}
                       href={`?conversation=${conversation.id}&state=${state}`}
                       prefetch={false}
                       className={cn(
@@ -88,8 +102,10 @@ export default function Home({
                   key={currentConversation.id}
                   conversation={currentConversation.id}
                   accelerated={!!slide.accelerated}
-                  augmented={!!slide.augmented}
+                  openaiConnected={!!slide.openaiConnected}
+                  ftpConnected={!!slide.ftpConnected}
                   withai={!!slide.withai}
+                  portal={portal || undefined}
                 />
               ) : (
                 <Messages
@@ -99,6 +115,8 @@ export default function Home({
               )}
             </div>
           </div>
+
+          <div ref={container} />
         </main>
       </div>
     </div>

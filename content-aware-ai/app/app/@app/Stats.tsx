@@ -3,6 +3,7 @@
 import { FC } from 'react';
 import { Slide } from '../@slides/slides';
 import { useAnimationStore } from '@/lib/store';
+import { Loader2, LucideTimer } from 'lucide-react';
 
 interface StatsProps {
   slide: Slide;
@@ -11,10 +12,15 @@ interface StatsProps {
 export const Stats: FC<StatsProps> = () => {
   const store = useAnimationStore();
   return (
-    <div className="bg-red-500 rounded p-4 text-lg max-w-full overflow-hidden">
-      <pre className="whitespace-pre-wrap text-xs">
-        {JSON.stringify(store, null, 2)}
-      </pre>
+    <div className="bg-gray-600 rounded p-4 max-w-full overflow-hidden text-xl font-semibold">
+      <div className="flex items-center gap-2">
+        {store.isLoading() ? (
+          <Loader2 className="size-6 animate-spin" />
+        ) : (
+          <LucideTimer className="size-6" />
+        )}{' '}
+        {store.duration} sec
+      </div>
     </div>
   );
 };

@@ -7,6 +7,8 @@
 "To show you what's happening, at the top we have a diagram of data flows, with the app on the bottom."
 
 ## Database Only: Typical app with PostgreSQL
+_Click on general, show conversation_
+- Explain application data, graph.
 
 - Click on General, show conversation, explain application data.
 

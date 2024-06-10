@@ -39,7 +39,6 @@ export const GET = async (
 
     if (!request.ok) {
       const response = await request.text();
-      console.error(response);
       return NextResponse.json([]);
     }
 
