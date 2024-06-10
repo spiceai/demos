@@ -88,7 +88,8 @@ export default function Home({
                   key={currentConversation.id}
                   conversation={currentConversation.id}
                   accelerated={!!slide.accelerated}
-                  augmented={!!slide.augmented}
+                  openaiConnected={!!slide.openaiConnected}
+                  ftpConnected={!!slide.ftpConnected}
                   withai={!!slide.withai}
                 />
               ) : (
