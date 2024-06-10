@@ -90,7 +90,7 @@ export function Chat({
   const { messages: preloadedMessages, loading } = useConversationMessages(
     conversation,
     accelerated,
-    conversation !== 'archive' ? ['e-postgres', 'e-spice'] : undefined,
+    conversation !== 'archive' ? ['e-postgres', 'e-spice'] : undefined
   );
 
   useEffect(() => {
@@ -159,7 +159,7 @@ export function Chat({
     const value = input;
     const atIndex = value.lastIndexOf('@', (cursorPosition || 0) - 1);
     const newText = `${value.slice(0, atIndex + 1)}${completion} ${value.slice(
-      cursorPosition || 0,
+      cursorPosition || 0
     )}`;
     setInput(newText);
     setShowCompletions(false);
@@ -189,7 +189,7 @@ export function Chat({
         {(preloadedMessages || []).map(
           (
             message: { username: 'Jack' | 'Luke' | 'Evgenii'; text: string },
-            i,
+            i
           ) => (
             <MessageComponent
               key={i}
@@ -211,7 +211,7 @@ export function Chat({
               }
               content={message.text}
             />
-          ),
+          )
         )}
 
         {(messages || []).map((m, i) => (
@@ -269,7 +269,7 @@ export function Chat({
                       ) : (
                         <>
                           <span className="text-muted-foreground">
-                            Searching in content...:
+                            Searching content...:
                           </span>
                           <Loader2 className="size-4 animate-spin text-muted-foreground" />
                         </>
