@@ -35,7 +35,7 @@ export const conversations: Record<string, Conversation> = {
     where text is not null limit 1000`,
     states: ['2', '3', '4', '5', '6'],
     edge_ids: ['e-datalake', 'e-postgres', 'e-spice'],
-    artifial_delay: 5500,
+    artifial_delay: 8000,
   },
   general: {
     id: 'general',
