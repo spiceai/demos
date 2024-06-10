@@ -76,11 +76,12 @@ datasets:
       enabled: true
 
   # File data, indexed using OpenAI embeddings
-  - from: file://Users/jeadie/Github/data-platform/docs/decisions
+  - from: ftp://0.0.0.0/
     name: decisions
-    metadata: true
     params:
       file_format: md
+      ftp_user: user
+      ftp_pass: 123
     acceleration:
       enabled: true
     embeddings:
