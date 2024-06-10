@@ -110,3 +110,13 @@ embeddings:
 llms:
   - name: openai
     from: openai/gpt-4o
+
+  - name: groq
+    from: openai/mixtral-8x7b-32768 # llama3-8b-8192 # llama3-70b-8192  # llama3-8b-8192
+    params:
+      endpoint: https://api.groq.com/openai/v1
+
+  - name: lmstudio
+    from: openai/lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF
+    params:
+      endpoint: http://localhost:1234/v1
