@@ -2,6 +2,8 @@ import { openai } from '@ai-sdk/openai';
 import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
+const models = ['openai', 'groq', 'groq2'];
+
 export interface SpiceAssistantResult {
   text: string;
   from: Record<string, Array<{ content: string }>>;
@@ -21,7 +23,7 @@ export const spiceAssist = tool({
     datasets: string[];
   }) => {
     const promises = [];
-    for (const use of ['openai', 'groq']) {
+    for (const use of models) {
       promises.push(assist(query, datasets, use));
     }
     return await Promise.any(promises);
@@ -36,7 +38,7 @@ export const searchInDecisions = (datasets?: string[]) =>
     }),
     execute: async ({ question }: { question: string }) => {
       const promises = [];
-      for (const use of ['openai', 'groq']) {
+      for (const use of models) {
         console.log('searchInDecisions', question, datasets, use);
         promises.push(assist(question, datasets || ['decisions'], use));
       }
