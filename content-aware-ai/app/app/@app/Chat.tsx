@@ -385,9 +385,12 @@ const SpiceAssitanceCard = ({
                   {entries.map((entry, i) => (
                     <Dialog key={i}>
                       <DialogTrigger asChild>
-                        <div className="border rounded-lg shadow-sm p-2 text-xs min-w-0 overflow-hidden cursor-pointer hover:outline flex flex-col gap-1">
-                          <DocumentTextIcon className="size-6" />
-                          <Markdown remarkPlugins={[remarkGfm]}>
+                        <div className="border rounded-lg transition-all p-2 text-xs max-h-28 min-w-0 overflow-hidden cursor-pointer hover:shadow-md opacity-65 hover:opacity-100 flex flex-row gap-2">
+                          <DocumentTextIcon className="size-6 self-start shrink-0" />
+                          <Markdown
+                            remarkPlugins={[remarkGfm]}
+                            className="prose prose-sm prose-h1:text-sm prose-h2:text-sm prose-h3:text-sm prose-p:text-xs"
+                          >
                             {entry.content.slice(0, 100) + '...'}
                           </Markdown>
                         </div>
