@@ -3,7 +3,7 @@ kind: Spicepod
 name: content-aware-ai
 
 datasets:
-  # Application data (PostgreSQL)
+  # Application data  (PostgreSQL)
   - from: postgres:syncs
     name: messages
     params:
@@ -19,6 +19,5 @@ datasets:
       databricks-cluster-id: 0423-065654-nu3nflpo
 
 llms:
-  # OpenAI GPT-4o
   - name: openai
     from: openai/gpt-4o

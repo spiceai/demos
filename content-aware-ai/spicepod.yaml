@@ -58,7 +58,7 @@ datasets:
       pg_host: aws-0-us-west-1.pooler.supabase.com
       pg_db: postgres
       pg_port: 5432
-      pg_user: <pg-username> # supabase user
+      pg_user: 'postgres.tjtwkekeblroqgenheef'
       pg_pass_key: password
       pg_sslmode: require
 
@@ -69,7 +69,7 @@ datasets:
       pg_host: aws-0-us-west-1.pooler.supabase.com
       pg_db: postgres
       pg_port: 5432
-      pg_user: <pg-username> # supabase user
+      pg_user: 'postgres.tjtwkekeblroqgenheef'
       pg_pass_key: password
       pg_sslmode: require
     acceleration:
@@ -96,10 +96,10 @@ datasets:
       file_format: md
       ftp_user: user
       ftp_pass: 123
-    # acceleration:
-    #   enabled: true
-    #   refresh_mode: full
-    #   refresh_interval: 10s
+    acceleration:
+      enabled: true
+      refresh_mode: full
+      refresh_interval: 1m
     embeddings:
       - column: content
         use: openai_embeddings

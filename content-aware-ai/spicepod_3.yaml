@@ -24,3 +24,7 @@ datasets:
     name: decisions
     params:
       file_format: md
+
+llms:
+  - name: openai
+    from: openai/gpt-4o
