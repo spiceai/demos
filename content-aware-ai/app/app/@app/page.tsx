@@ -10,6 +10,7 @@ import { Messages } from './Messages';
 import { Input } from '@/components/ui/input';
 import { slides } from '../@slides/slides';
 import { Stats } from './Stats';
+import { useAnimationStore } from '@/lib/store';
 
 interface Params {
   searchParams: {
@@ -25,6 +26,7 @@ export const maxDuration = 300;
 export default function Home({
   searchParams: { conversation: conversationId, state },
 }: Params) {
+  const store = useAnimationStore();
   const slide = slides[state] || slides['0'];
   const container = useRef<HTMLDivElement>(null);
   const [portal, setPortal] = useState<HTMLElement | null>(null);
@@ -56,6 +58,9 @@ export default function Home({
                   .map((conversation) => (
                     <Link
                       key={conversation.id}
+                      onClick={() => {
+                        store.reset();
+                      }}
                       href={`?conversation=${conversation.id}&state=${state}`}
                       prefetch={false}
                       className={cn(

@@ -3,7 +3,6 @@
 import { Message } from 'ai';
 import { useState, useEffect, useRef } from 'react';
 import {
-  DocumentIcon,
   DocumentTextIcon,
   PaperAirplaneIcon,
 } from '@heroicons/react/24/outline';
@@ -33,7 +32,6 @@ import {
 import { useAnimationStore } from '@/lib/store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserIcon } from '@heroicons/react/24/outline';
-import { Timer } from './Timer';
 import { cn } from '@/lib/utils';
 import remarkGfm from 'remark-gfm';
 
@@ -58,12 +56,15 @@ export function Chat({
   ftpConnected: boolean;
   portal?: HTMLElement;
 }) {
+  const store = useAnimationStore();
   const [history, setHistory] = useState<Message[]>([]);
   const { messages, setMessages, append, input, setInput } = useChat({
     api: `/api/chat?openaiConnected=${openaiConnected}&accelerated=${accelerated}&ftpConnected=${ftpConnected}`,
     maxToolRoundtrips: 0,
     initialMessages: history,
     onToolCall: ({ toolCall }) => {
+      store.reset();
+      store.startTimer();
       store.setAnimatedEdge('e-spice', true);
       if (!accelerated) {
         if (toolCall.toolName === 'summarizeConversation') {
@@ -85,7 +86,6 @@ export function Chat({
   >();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const store = useAnimationStore();
 
   const { messages: preloadedMessages, loading } = useConversationMessages(
     conversation,
@@ -103,11 +103,12 @@ export function Chat({
 
   async function submit() {
     if (input.toLowerCase().startsWith('@pepperai')) {
+      store.reset();
+      store.startTimer();
       if (accelerated) {
         store.setAnimatedEdge('e-spice', true);
       }
       store.setAnimatedEdge('e-openai', true);
-      // store.setAnimatedEdge('spice', true);
 
       append({
         content: input,
@@ -230,14 +231,13 @@ export function Chat({
             header={m.role === 'user' ? 'Jack' : '@Pepper AI'}
             content={m.content as string}
           >
-            {m.toolInvocations?.slice(-1).map((invocation) => {
+            {m.toolInvocations?.slice(-1).map((invocation, j) => {
               const toolCallId = invocation.toolCallId;
               const hasResult = 'result' in invocation;
 
               if (invocation.toolName === 'spiceAssist') {
                 return (
-                  <div className="flex flex-col">
-                    <Timer completed={hasResult} />{' '}
+                  <div className="flex flex-col" key={j}>
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
                         <span className="text-primary">
@@ -260,7 +260,6 @@ export function Chat({
               if (invocation.toolName === 'searchInDecisions') {
                 return (
                   <div className="flex flex-col">
-                    <Timer completed={hasResult} />{' '}
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
                         <SpiceAssitanceCard
@@ -283,7 +282,6 @@ export function Chat({
               if (invocation.toolName === 'summarizeConversation') {
                 return (
                   <div className="flex flex-col">
-                    <Timer completed={hasResult} />{' '}
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
                         invocation.result

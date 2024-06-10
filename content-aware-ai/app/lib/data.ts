@@ -35,7 +35,7 @@ export const conversations: Record<string, Conversation> = {
     where text is not null limit 1000`,
     states: ['2', '3', '4', '5', '6'],
     edge_ids: ['e-datalake', 'e-postgres', 'e-spice'],
-    artifial_delay: 3000,
+    artifial_delay: 5500,
   },
   general: {
     id: 'general',
@@ -45,6 +45,6 @@ export const conversations: Record<string, Conversation> = {
     sql_accelerated: `select username, text from general_accelerated`,
     states: ['0', '1', '2', '3', '4', '5', '6'],
     edge_ids: ['e-postgres', 'e-spice'],
-    artifial_delay: 1500,
+    artifial_delay: 1700,
   },
 };
