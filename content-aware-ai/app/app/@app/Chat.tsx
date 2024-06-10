@@ -263,7 +263,7 @@ export function Chat({
                   <div className="flex flex-col">
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
-                        <SpiceAssitanceCard
+                        <SpiceAssistanceCard
                           portal={portal}
                           result={invocation.result}
                         />
@@ -353,7 +353,7 @@ export function Chat({
   );
 }
 
-const SpiceAssitanceCard = ({
+const SpiceAssistanceCard = ({
   result,
   portal,
 }: {
@@ -376,8 +376,10 @@ const SpiceAssitanceCard = ({
       {result.from
         ? Object.keys(result.from).map((from) => {
             const entries = result.from[from];
-            const entries_with_content = entries.filter(entry => entry.content !== undefined);
-            if (entries_with_content.length === 0) { 
+            const entries_with_content = entries.filter(
+              (entry) => entry.content !== undefined
+            );
+            if (entries_with_content.length === 0) {
               return null;
             }
             return (
