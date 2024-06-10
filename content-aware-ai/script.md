@@ -60,7 +60,7 @@ _Ask pepper to summarise #archive channel, don't wait_
 
 "You can see it's night and day"
 
-- Pepper uses this data to give fast AI responses to users.
+- Pepper can use this data to give intelligent AI responses to users fast.
 
 ** Ask pepper to answer GCP question in #archive channel **
 
