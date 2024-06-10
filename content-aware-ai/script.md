@@ -127,3 +127,5 @@ _Ask pepper to summarise #archive channel, don't wait_
 "Spice doesn't just connect to PostgreSQL and Databricks."
 
 "Spice has a ton of connectors to make building AI apps easy across any data source or AI backend."
+
+"Thank you"
