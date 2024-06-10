@@ -46,7 +46,7 @@ _Walk through spicepod_1.yaml_
 
 _Ask pepper to summarise #archive channel, don't wait_
 
-- Fast data is no longer nice to have... for AI apps fast data is a necessity.
+- Fast data is no longer nice to have... for AI apps fast data is a necessity. User's won't wait.
 
 <!-- [Spicepod One](./spicepod_1.yaml) -->
 
