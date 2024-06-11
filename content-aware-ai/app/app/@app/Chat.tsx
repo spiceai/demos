@@ -359,24 +359,29 @@ const SpiceAssistanceCard = ({
   result: SpiceAssistantRsult;
   portal?: HTMLElement;
 }) => {
+  const isLong = result.text.length > 170;
   const [more, setMore] = useState(false);
 
   return (
     <div className="flex flex-col gap-2">
-      <div className={cn(more ? '' : 'line-clamp-2')}>{result.text}</div>
-
-      <div
-        className="text-muted-foreground underline cursor-pointer hover:text-primary"
-        onClick={() => setMore((s) => !s)}
-      >
-        {more ? 'show less' : 'show more'}
+      <div className={isLong ? cn(more ? '' : 'line-clamp-2') : ''}>
+        {result.text}
       </div>
+
+      {isLong && (
+        <div
+          className="text-muted-foreground underline cursor-pointer hover:text-primary"
+          onClick={() => setMore((s) => !s)}
+        >
+          {more ? 'show less' : 'show more'}
+        </div>
+      )}
 
       {result.from
         ? Object.keys(result.from).map((from) => {
             const entries = result.from[from];
             const entries_with_content = entries.filter(
-              (entry) => entry.content !== undefined
+              (entry) => entry.content !== undefined,
             );
             if (entries_with_content.length === 0) {
               return null;

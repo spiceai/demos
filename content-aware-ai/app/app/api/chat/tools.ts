@@ -37,7 +37,7 @@ export const searchInDecisions = (datasets?: string[]) =>
       question: z.string(),
     }),
     execute: async ({ question }: { question: string }) => {
-      console.log('start of searchInDecisions')
+      console.log('start of searchInDecisions');
       const promises = [];
       for (const use of models) {
         console.log('searchInDecisions', question, datasets, use);
@@ -79,6 +79,7 @@ export const summarizeConversation = (accelerated?: boolean) =>
   });
 
 const assist = async (prompt: string, datasets: string[], model: string) => {
+  console.log('assist', prompt, datasets, model);
   const request = await fetch(`${process.env.SPICE_HTTP_ENDPOINT}/v1/assist`, {
     method: 'POST',
     headers: {
@@ -95,6 +96,7 @@ const assist = async (prompt: string, datasets: string[], model: string) => {
     const response = (await request.json()) as SpiceAssistantResult;
     return response;
   } catch (e) {
+    console.error('[assist]', e);
     return { text: 'Something went wrong: ' + e };
   }
 };
