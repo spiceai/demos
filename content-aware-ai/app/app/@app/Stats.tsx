@@ -9,14 +9,16 @@ interface StatsProps {
   slide: Slide;
 }
 
-export const Stats: FC<StatsProps> = () => {
+export const Stats: FC<StatsProps> = ({ slide }) => {
   const store = useAnimationStore();
   return (
     <div className="bg-gray-600 rounded p-4 max-w-full overflow-hidden text-xl font-semibold">
       <div
         className={
           'flex items-center gap-2 ' +
-          (store.duration < 3 ? 'text-green-500' : 'text-red-500')
+          (store.duration < 3 || slide.accelerated
+            ? 'text-green-500'
+            : 'text-red-500')
         }
       >
         {store.isLoading() ? (
