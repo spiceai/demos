@@ -17,25 +17,29 @@ export async function POST(req: Request) {
   const ftpConnected = searchParams.get('ftpConnected') === 'true';
 
   const { messages } = await req.json();
-  console.log('messages', messages );
+  console.log('messages', messages);
   const model = openai('gpt-4o');
   const tools: Record<string, CoreTool<any, any>> = {};
 
   if (openaiConnected) {
-    
     if (ftpConnected) {
-      tools.searchInDecisions = searchInDecisions(["decisions"])
+      tools.searchInDecisions = searchInDecisions(['decisions']);
     } else if (accelerated) {
-      tools.searchInDecisions = searchInDecisions(["daily_journal_accelerated", "general_accelerated"]);
+      tools.searchInDecisions = searchInDecisions([
+        'daily_journal_accelerated',
+        'general_accelerated',
+      ]);
     } else {
-      tools.summarizeConversation = summarizeConversation(accelerated);
-      tools.spiceAssist = spiceAssist;
+      tools.searchInDecisions = searchInDecisions(['daily_journal', 'general']);
     }
+
+    tools.summarizeConversation = summarizeConversation(accelerated);
+    tools.spiceAssist = spiceAssist;
   }
 
   const result = await streamText({
     model,
-    messages: convertToCoreMessages([messages[messages.length-1]]),
+    messages: convertToCoreMessages([messages[messages.length - 1]]),
     tools: tools,
     maxRetries: 0,
   });
