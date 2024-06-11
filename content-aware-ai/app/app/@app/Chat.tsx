@@ -284,7 +284,7 @@ export function Chat({
                   <div className="flex flex-col">
                     <div key={toolCallId} className="flex items-center gap-2">
                       {hasResult ? (
-                        invocation.result
+                        <MessageText text={invocation.result} />
                       ) : (
                         <>
                           <span className="text-muted-foreground">
@@ -352,21 +352,13 @@ export function Chat({
   );
 }
 
-const SpiceAssistanceCard = ({
-  result,
-  portal,
-}: {
-  result: SpiceAssistantRsult;
-  portal?: HTMLElement;
-}) => {
-  const isLong = result.text.length > 170;
+const MessageText = ({ text }: { text: string }) => {
+  const isLong = text.length > 170;
   const [more, setMore] = useState(false);
 
   return (
     <div className="flex flex-col gap-2">
-      <div className={isLong ? cn(more ? '' : 'line-clamp-2') : ''}>
-        {result.text}
-      </div>
+      <div className={isLong ? cn(more ? '' : 'line-clamp-2') : ''}>{text}</div>
 
       {isLong && (
         <div
@@ -376,6 +368,20 @@ const SpiceAssistanceCard = ({
           {more ? 'show less' : 'show more'}
         </div>
       )}
+    </div>
+  );
+};
+
+const SpiceAssistanceCard = ({
+  result,
+  portal,
+}: {
+  result: SpiceAssistantRsult;
+  portal?: HTMLElement;
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <MessageText text={result.text} />
 
       {result.from
         ? Object.keys(result.from).map((from) => {
