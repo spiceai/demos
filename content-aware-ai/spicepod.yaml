@@ -74,6 +74,9 @@ datasets:
       pg_sslmode: require
     acceleration:
       enabled: true
+    embeddings:
+      - column: text
+        use: openai_embeddings
 
   # File data, indexed using OpenAI embeddings
   - from: ftp://0.0.0.0/
@@ -113,6 +116,12 @@ llms:
     from: openai/gpt-4o
 
   - name: groq
+    from: openai/mixtral-8x7b-32768 # llama3-8b-8192 # llama3-70b-8192  # llama3-8b-8192
+    params:
+      endpoint: https://api.groq.com/openai/v1
+      openai_api_key: <>
+
+  - name: groq2
     from: openai/mixtral-8x7b-32768 # llama3-8b-8192 # llama3-70b-8192  # llama3-8b-8192
     params:
       endpoint: https://api.groq.com/openai/v1

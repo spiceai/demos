@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   const ftpConnected = searchParams.get('ftpConnected') === 'true';
 
   const { messages } = await req.json();
-
+  console.log('messages', messages );
   const model = openai('gpt-4o');
   const tools: Record<string, CoreTool<any, any>> = {};
 
@@ -35,8 +35,9 @@ export async function POST(req: Request) {
 
   const result = await streamText({
     model,
-    messages: convertToCoreMessages(messages.filter((m: any) => !!m.content)),
+    messages: convertToCoreMessages([messages[messages.length-1]]),
     tools: tools,
+    maxRetries: 0,
   });
 
   return result.toAIStreamResponse();

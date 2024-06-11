@@ -37,6 +37,7 @@ export const searchInDecisions = (datasets?: string[]) =>
       question: z.string(),
     }),
     execute: async ({ question }: { question: string }) => {
+      console.log('start of searchInDecisions')
       const promises = [];
       for (const use of models) {
         console.log('searchInDecisions', question, datasets, use);
