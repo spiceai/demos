@@ -61,6 +61,9 @@ datasets:
       pg_user: 'postgres.tjtwkekeblroqgenheef'
       pg_pass_key: password
       pg_sslmode: require
+    embeddings:
+      - column: text
+        use: openai_embeddings
 
   # general messages accelerated
   - from: postgres:aidemo_messages
