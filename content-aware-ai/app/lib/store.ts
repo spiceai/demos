@@ -6,13 +6,14 @@ interface AnimationState {
   start: number;
   duration: number;
   conversationId?: string;
+  controller: AbortController;
 
   timer?: NodeJS.Timeout;
   timerStart?: number;
 
   isAnimatedEdge: (id: string) => boolean;
 
-  reset: () => void;
+  reset: (abort?: boolean) => void;
   setAnimatedEdge: (id: string, animated: boolean) => void;
   isLoading: () => boolean;
   startTimer: () => void;
@@ -22,13 +23,19 @@ export const createAnimationStore = create<AnimationState>((set, get) => ({
   animatedEdges: {},
   duration: 0,
   start: 0,
+  controller: new AbortController(),
 
   isAnimatedEdge: (id: string) => {
     return get().animatedEdges[id] > 0;
   },
 
-  reset: () => {
+  reset: (abort?: boolean) => {
     const timer = get().timer;
+
+    if (timer && abort) {
+      get().controller.abort('reset');
+      set({ controller: new AbortController() });
+    }
 
     if (timer) {
       clearInterval(timer);

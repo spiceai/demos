@@ -41,11 +41,18 @@ export function useConversationMessages(
     updateAnimation(true);
     setMessages([]);
     setLoading(true);
-    fetch(`/api/conversations/${conversation}?accelerated=${accelerated}`)
+    fetch(`/api/conversations/${conversation}?accelerated=${accelerated}`, {
+      signal: store.controller?.signal,
+    })
       .then((r) => r.json())
       .then((response: any[]) => {
         setLoading(false);
         setMessages(response);
+      })
+      .catch((err) => {
+        if (err.name === 'AbortError') {
+          return;
+        }
       })
       .finally(() => {
         setLoading(false);
