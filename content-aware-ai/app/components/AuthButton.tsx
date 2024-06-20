@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { Avatar, AvatarImage } from './ui/avatar';
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -20,6 +21,9 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4">
       Hey, {user.email}!
+      <Avatar className="size-8">
+        <AvatarImage src={user.user_metadata.avatar_url} alt={user.email} />
+      </Avatar>
       <form action={signOut}>
         <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
           Logout
