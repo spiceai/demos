@@ -1,27 +1,28 @@
-import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : 'http://localhost:3000';
+import type { Metadata } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import { Provider } from './provider';
 
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: 'Next.js and Supabase Starter Kit',
-  description: 'The fastest way to build apps with Next.js and Supabase',
+export const metadata: Metadata = {
+  title: 'Spice AI Demo',
 };
 
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  slides,
+  app,
+}: Readonly<{
+  slides: React.ReactNode;
+  app: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-background">
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
-        </main>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="overscroll-none bg-gray-200 text-foreground h-screen flex flex-col gap-4">
+        <Provider>
+          {slides}
+          {app}
+        </Provider>
       </body>
     </html>
   );
