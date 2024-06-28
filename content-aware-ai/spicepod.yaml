@@ -79,7 +79,7 @@ datasets:
       enabled: true
     embeddings:
       - column: text
-        use: openai_embeddings
+        use: hf_baai_bge
 
   # File data, indexed using OpenAI embeddings
   - from: ftp://0.0.0.0/
@@ -111,8 +111,15 @@ datasets:
         use: openai_embeddings
 
 embeddings:
-  - name: openai_embeddings
-    from: openai
+  - from: openai
+    name: openai_embeddings
+    params:
+      secret_key: openai_api_key
+      secret_name: openai
+  - from: huggingface:huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+    name: hf_minilm
+  - from: huggingface:huggingface.co/BAAI/bge-small-en-v1.5
+    name: hf_baai_bge
 
 llms:
   - name: openai
