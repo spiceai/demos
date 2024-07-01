@@ -1,0 +1,57 @@
+version: v1beta1
+kind: Spicepod
+name: content-aware-ai
+
+secrets:
+  store: env
+
+datasets:
+  # Application data (PostgreSQL)
+  - from: postgres:syncs
+    name: daily_journal
+    params:
+      pg_host: aws-0-us-west-1.pooler.supabase.com
+      pg_db: postgres
+      pg_port: 5432
+      pg_user: 'postgres.tjtwkekeblroqgenheef'
+      pg_pass_key: password
+      pg_sslmode: require
+    acceleration:
+      enabled: true
+    embeddings:
+      - column: answer
+        use: openai_embeddings
+
+  # Datalake data (Databricks)
+  - from: databricks:hive_metastore.default.messages
+    name: messages
+    params:
+      endpoint: adb-4473752745667967.7.azuredatabricks.net
+      databricks-cluster-id: 0423-065654-nu3nflpo
+
+  # Accelerated Datalake data (Databricks)
+  - from: databricks:hive_metastore.default.messages
+    name: messages_accelerated
+    acceleration:
+      enabled: true
+    params:
+      endpoint: adb-4473752745667967.7.azuredatabricks.net
+      databricks-cluster-id: 0423-065654-nu3nflpo
+
+  # File data, indexed using OpenAI embeddings
+  - from: file://Users/jeadie/Github/data-platform/docs/decisions
+    name: decisions
+    metadata: true
+    params:
+      file_format: md
+    embeddings:
+      - column: content
+        use: openai_embeddings
+
+embeddings:
+  - name: openai_embeddings
+    from: openai
+
+llms:
+  - from: openai/gpt-4o
+    name: openai

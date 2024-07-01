@@ -1,0 +1,33 @@
+services:
+  spice:
+    image: spiceai/spiceai
+    container_name: spice
+    ports:
+      - "3001:3000"
+      - "50051:50051"
+    working_dir: /app
+    volumes:
+      - ./spicepod.yaml:/app/spicepod.yaml
+    command: ["--http", "0.0.0.0:3000", "--flight", "0.0.0.0:50051"]
+
+  app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    container_name: grafana
+    environment:
+      SPICE_HTTP_ENDPOINT: "http://spice:3000"
+    ports:
+      - "3000:3000"
+
+  ftp:
+    image: garethflowers/ftp-server
+    container_name: my-ftp-server
+    environment:
+      - FTP_PASS=123
+      - FTP_USER=user
+    ports:
+      - '20-21:20-21/tcp'
+      - '40000-40009:40000-40009/tcp'
+    volumes:
+      - '${FTP_VOLUME_PATH}:/home/user'
