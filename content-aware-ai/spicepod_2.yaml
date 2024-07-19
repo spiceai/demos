@@ -13,7 +13,7 @@ datasets:
 
   # Datalake data (Databricks)
   - from: databricks:hive_metastore.default.messages
-    name: messages
+    name: messages_archive
     acceleration:
       enabled: true
       engine: duckdb

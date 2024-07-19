@@ -2,9 +2,6 @@ version: v1beta1
 kind: Spicepod
 name: content-aware-ai
 
-secrets:
-  store: env
-
 datasets:
   # Application data (PostgreSQL)
   - from: postgres:syncs
@@ -14,7 +11,6 @@ datasets:
       pg_db: postgres
       pg_port: 5432
       pg_user: 'postgres.tjtwkekeblroqgenheef'
-      pg_pass_key: password
       pg_sslmode: require
     embeddings:
       - column: answer
@@ -27,7 +23,6 @@ datasets:
       pg_db: postgres
       pg_port: 5432
       pg_user: 'postgres.tjtwkekeblroqgenheef'
-      pg_pass_key: password
       pg_sslmode: require
     acceleration:
       enabled: true
@@ -39,8 +34,8 @@ datasets:
   - from: databricks:hive_metastore.default.messages
     name: messages
     params:
-      endpoint: adb-4473752745667967.7.azuredatabricks.net
-      databricks-cluster-id: 0423-065654-nu3nflpo
+      databricks_endpoint: adb-4473752745667967.7.azuredatabricks.net
+      databricks_cluster_id: 0423-065654-nu3nflpo
 
   # Accelerated Datalake data (Databricks)
   - from: databricks:hive_metastore.default.messages
@@ -48,8 +43,8 @@ datasets:
     acceleration:
       enabled: true
     params:
-      endpoint: adb-4473752745667967.7.azuredatabricks.net
-      databricks-cluster-id: 0423-065654-nu3nflpo
+      databricks_endpoint: adb-4473752745667967.7.azuredatabricks.net
+      databricks_cluster_id: 0423-065654-nu3nflpo
 
   # general messages
   - from: postgres:aidemo_messages
@@ -59,7 +54,6 @@ datasets:
       pg_db: postgres
       pg_port: 5432
       pg_user: 'postgres.tjtwkekeblroqgenheef'
-      pg_pass_key: password
       pg_sslmode: require
     embeddings:
       - column: text
@@ -73,7 +67,6 @@ datasets:
       pg_db: postgres
       pg_port: 5432
       pg_user: 'postgres.tjtwkekeblroqgenheef'
-      pg_pass_key: password
       pg_sslmode: require
     acceleration:
       enabled: true
@@ -114,28 +107,29 @@ embeddings:
   - from: openai
     name: openai_embeddings
     params:
-      secret_key: openai_api_key
-      secret_name: openai
+      openai_api_key: '${ env: OPENAI_API_KEY }'
   - from: huggingface:huggingface.co/sentence-transformers/all-MiniLM-L6-v2
     name: hf_minilm
   - from: huggingface:huggingface.co/BAAI/bge-small-en-v1.5
     name: hf_baai_bge
 
-llms:
+models:
   - name: openai
-    from: openai/gpt-4o
+    from: openai/gpt-4o-mini
+    params:
+      openai_api_key: '${ env: OPENAI_API_KEY }'
 
   - name: groq
     from: openai/mixtral-8x7b-32768 # llama3-8b-8192 # llama3-70b-8192  # llama3-8b-8192
     params:
       endpoint: https://api.groq.com/openai/v1
-      openai_api_key: <>
+      openai_api_key: '${ env.SPICE_GROK_API_KEY_1 }'
 
   - name: groq2
     from: openai/mixtral-8x7b-32768 # llama3-8b-8192 # llama3-70b-8192  # llama3-8b-8192
     params:
       endpoint: https://api.groq.com/openai/v1
-      openai_api_key: <>
+      openai_api_key: '${ env.SPICE_GROK_API_KEY_2 }'
 
   # - name: lmstudio
   #   from: openai/lmstudio-community/Meta-Llama-3-8B-Instruct-GGUF

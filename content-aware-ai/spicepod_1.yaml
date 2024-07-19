@@ -12,7 +12,7 @@ datasets:
 
   # Datalake data (Databricks)
   - from: databricks:hive_metastore.default.messages
-    name: messages
+    name: messages_archive
     params:
       endpoint: adb-4473752745667967.7.azuredatabricks.net
       databricks-cluster-id: 0423-065654-nu3nflpo
